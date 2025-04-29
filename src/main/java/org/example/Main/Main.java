@@ -14,16 +14,14 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         try {
             // Cargar el archivo FXML
-            Parent root = FXMLLoader.load(getClass().getResource("/Interfaces/Principal/ventanaPrincipal.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/Interfaces/Login/login.fxml"));
 
             // Crear la escena
             Scene scene = new Scene(root);
 
             // Configurar el escenario (ventana)
-            primaryStage.setTitle("UQuizzes - Sistema de Gestión de Exámenes");
+            primaryStage.setTitle("UQuizzes - Iniciar sesion");
             primaryStage.setScene(scene);
-            primaryStage.setMinWidth(900);
-            primaryStage.setMinHeight(600);
 
             // Mostrar la ventana
             primaryStage.show();
