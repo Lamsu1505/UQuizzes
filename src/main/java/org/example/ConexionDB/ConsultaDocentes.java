@@ -1,4 +1,4 @@
-package org.example;
+package org.example.ConexionDB;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -15,7 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class ConsultaUsuarios extends Application {
+public class ConsultaDocentes extends Application {
 
     // Configura los datos de conexión a la base de datos Oracle
     private static final String URL = "jdbc:oracle:thin:@localhost:1522:xe"; // Cambia si es necesario
@@ -65,9 +65,12 @@ public class ConsultaUsuarios extends Application {
             }
 
             // Consultar todos los estudiantes
-            String sql = "SELECT nombre FROM ESTUDIANTE";
+            String sql = "SELECT nombre FROM docente";
+
+
             try (Statement stmt = conn.createStatement();
                  ResultSet rs = stmt.executeQuery(sql)) {
+
 
                 if (!rs.isBeforeFirst()) {
                     resultArea.appendText("No se encontraron estudiantes en la tabla.\n");
@@ -93,7 +96,7 @@ public class ConsultaUsuarios extends Application {
     }
 
     private boolean verificarTablaEstudiante(Connection conn) throws SQLException {
-        ResultSet rs = conn.getMetaData().getTables(null, USER, "ESTUDIANTE", new String[]{"TABLE"});
+        ResultSet rs = conn.getMetaData().getTables(null, USER, "Docente", new String[]{"TABLE"});
         return rs.next(); // Devuelve true si la tabla existe
     }
 
