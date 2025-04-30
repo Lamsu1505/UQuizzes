@@ -11,17 +11,12 @@ public class ConexionOracle {
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
             Connection conexion = DriverManager.getConnection(URL, USUARIO, CONTRASENA);
-            System.out.println("Conexión exitosa");
+            System.out.println("Conexion exitosa");
             return conexion;
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
             return null;
         }
-
-
-
-        
-        
     }
 }
 
