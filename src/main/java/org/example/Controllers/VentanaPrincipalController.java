@@ -50,8 +50,6 @@ public class VentanaPrincipalController implements Initializable {
             stage.setTitle("UQuizzes - Iniciar Sesión");
 
 
-            stage.setWidth(612);
-            stage.setHeight(500);
             stage.centerOnScreen();
             stage.show();
 
