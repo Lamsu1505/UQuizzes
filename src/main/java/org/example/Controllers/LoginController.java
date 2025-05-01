@@ -19,7 +19,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
@@ -38,14 +38,13 @@ public class LoginController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
     }
 
-    public void iniciarSesion(ActionEvent actionEvent) {
-
+    public void iniciarSesion(ActionEvent actionEvent) throws SQLException {
         String email = emailField.getText();
         String contrasenia = passwordField.getText();
 
         if (email.isEmpty() || contrasenia.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Campos Vacios");
+            alert.setTitle("Campos Vacíos");
             alert.setHeaderText(null);
             alert.setContentText("Por favor llena todos los campos");
             alert.showAndWait();
@@ -53,59 +52,54 @@ public class LoginController implements Initializable {
         }
 
         ConexionOracle conexion = new ConexionOracle();
-        Connection conection = conexion.conectar();
-
-        String sql = "SELECT * FROM DOCENTE WHERE CORREO = ? AND CONTRASENIA = ?";
-
-        try (
-                PreparedStatement stmt = conection.prepareStatement(sql)
-        ) {
-            stmt.setString(1, email.trim());
-            stmt.setString(2, contrasenia.trim());
-
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                if(rs.getString("CORREO").equals(email) && rs.getString("CONTRASENIA").equals(contrasenia)) {
-                    try {
-                        // 1. Cargar el archivo FXML
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfaces/Principal/ventanaPrincipal.fxml"));
-                        Parent root = loader.load();
-
-                        // 2. Obtener el Stage actual desde el botón que activó el evento
-                        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-
-                        // 3. Crear una nueva escena y asignarla al stage
-                        Scene scene = new Scene(root);
-                        stage.setScene(scene);
-                        stage.setTitle("UQuizzes - Home");
-
-                        stage.centerOnScreen();
-                        stage.show();
-
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
+        try (Connection connection = conexion.conectar()) {
+            // Intentar como docente
+            String sqlDocente = "SELECT * FROM DOCENTE WHERE CORREO = ? AND CONTRASENIA = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(sqlDocente)) {
+                stmt.setString(1, email.trim());
+                stmt.setString(2, contrasenia.trim());
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        cargarVentana("/Interfaces/Principal/ventanaPrincipalDocente.fxml", actionEvent);
+                        return;
                     }
                 }
-
-            } else {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Inicio de sesión");
-                alert.setHeaderText(null);
-                alert.setContentText("No se encontró el usuario.");
-                alert.showAndWait();
             }
 
-            rs.close();
-            conection.close();
+            // Intentar como estudiante
+            String sqlEstudiante = "SELECT * FROM ESTUDIANTE WHERE CORREO = ? AND CONTRASENIA = ?";
+            try (PreparedStatement stmt2 = connection.prepareStatement(sqlEstudiante)) {
+                stmt2.setString(1, email.trim());
+                stmt2.setString(2, contrasenia.trim());
+                try (ResultSet rs2 = stmt2.executeQuery()) {
+                    if (rs2.next()) {
+                        cargarVentana("/Interfaces/Principal/ventanaPrincipalEstudiante.fxml", actionEvent);
+                        return;
+                    }
+                }
+            }
+
+            // Si no se encontró en ninguna tabla
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Inicio de sesión");
+            alert.setHeaderText(null);
+            alert.setContentText("No se encontró el usuario.");
+            alert.showAndWait();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-
+    private void cargarVentana(String rutaFXML, ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFXML));
+        Parent root = loader.load();
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.setTitle("UQuizzes - Home");
+        stage.centerOnScreen();
+        stage.show();
+    }
 
 
 }
