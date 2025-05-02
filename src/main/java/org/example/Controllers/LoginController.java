@@ -52,6 +52,15 @@ public class LoginController implements Initializable {
         }
 
         ConexionOracle conexion = new ConexionOracle();
+
+        if(conexion == null){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error de conexion");
+            alert.setHeaderText(null);
+            alert.setContentText("Error de conexion con la base de datos");
+            alert.showAndWait();
+            return;
+        }
         try (Connection connection = conexion.conectar()) {
             // Intentar como docente
             String sqlDocente = "SELECT * FROM DOCENTE WHERE CORREO = ? AND CONTRASENIA = ?";

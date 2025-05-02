@@ -129,16 +129,7 @@
                                                 </HBox>
                                             </children>
                                         </HBox>
-                              <AnchorPane>
-                                 <children>
-                                    <Label text="Examenes futuros" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="10.0">
-                                       <font>
-                                          <Font size="18.0" />
-                                          <Font name="System Bold" size="18.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </AnchorPane>
+                              <AnchorPane />
                                         <HBox alignment="CENTER_LEFT" prefHeight="80.0" style="-fx-border-color: #AAAAAA; -fx-border-radius: 5;">
                                             <children>
                                                 <VBox prefHeight="78.0" prefWidth="463.0">
@@ -209,6 +200,12 @@
                                                 </HBox>
                                             </children>
                                         </HBox>
+                              <Label text="Proxima evaluacion">
+                                 <font>
+                                    <Font size="18.0" />
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
                                     </children>
                                     <padding>
                                         <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
