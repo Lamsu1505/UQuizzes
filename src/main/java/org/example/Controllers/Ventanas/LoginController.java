@@ -1,6 +1,7 @@
-package org.example.Controllers;
+package org.example.Controllers.Ventanas;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -11,8 +12,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import org.example.ConexionDB.ConexionOracle;
+import org.example.Model.UQuizzes;
 
 import java.io.IOException;
 import java.net.URL;
@@ -36,6 +40,15 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        EventHandler<KeyEvent> enterHandler = event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                loginButton.fire();
+            }
+        };
+
+        passwordField.setOnKeyPressed(enterHandler);
+        emailField.setOnKeyPressed(enterHandler);
     }
 
     public void iniciarSesion(ActionEvent actionEvent) throws SQLException {
@@ -69,7 +82,13 @@ public class LoginController implements Initializable {
                 stmt.setString(2, contrasenia.trim());
                 try (ResultSet rs = stmt.executeQuery()) {
                     if (rs.next()) {
-                        cargarVentana("/Interfaces/Principal/ventanaPrincipalDocente.fxml", actionEvent);
+
+                        UQuizzes uQuizzes = UQuizzes.getInstance();
+                        uQuizzes.setEsDocente(true);
+                        uQuizzes.setUsuarioEnSesion(rs.getString("IDDOCENTE"));
+
+                        cargarVentana("/Interfaces/Ventanas/ventanaInicioDocente.fxml", actionEvent);
+
                         return;
                     }
                 }
@@ -82,7 +101,7 @@ public class LoginController implements Initializable {
                 stmt2.setString(2, contrasenia.trim());
                 try (ResultSet rs2 = stmt2.executeQuery()) {
                     if (rs2.next()) {
-                        cargarVentana("/Interfaces/Principal/ventanaPrincipalEstudiante.fxml", actionEvent);
+                        cargarVentana("/Interfaces/Ventanas/ventanaPrincipalEstudiante.fxml", actionEvent);
                         return;
                     }
                 }
@@ -107,6 +126,7 @@ public class LoginController implements Initializable {
         stage.setScene(new Scene(root));
         stage.setTitle("UQuizzes - Home");
         stage.centerOnScreen();
+        stage.setMaximized(true);
         stage.show();
     }
 

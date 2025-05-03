@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.paint.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="619.0" prefWidth="1041.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Ventanas.Docente.VentanaPrincipalDocenteController">
+    <left>
+        <VBox prefHeight="542.0" prefWidth="220.0" spacing="15.0" styleClass="primary_color" BorderPane.alignment="CENTER">
+            <children>
+                <VBox prefHeight="116.0" prefWidth="220.0" spacing="20.0">
+                    <children>
+                        <HBox alignment="CENTER" prefHeight="0.0" prefWidth="162.0" spacing="15.0" translateY="20.0">
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                        </HBox>
+                        <Pane prefHeight="0.0" prefWidth="220.0" />
+                        <HBox alignment="CENTER" prefHeight="110.0" prefWidth="220.0" spacing="15.0">
+                            <children>
+                        <ImageView fitHeight="98.0" fitWidth="107.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../Images/logoUQuizzes.png" />
+                           </image>
+                        </ImageView>
+                                <Label fx:id="lblStorify" text="UQuizzes" textFill="#b7b7b7">
+                                    <font>
+                                        <Font name="System Bold" size="25.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" prefHeight="268.0" prefWidth="220.0" spacing="30.0">
+                    <children>
+                        <HBox alignment="CENTER" prefHeight="25.0" prefWidth="71.0" spacing="25.0">
+                            <children>
+                        <Button fx:id="btnInicio" mnemonicParsing="false" onAction="#irPanelInicio" prefHeight="33.0" prefWidth="200.0" style="-fx-background-color: dbdbdbff; -fx-border-color: #009a43ff; -fx-border-radius: 10;" text="Inicio">
+                           <font>
+                              <Font size="18.0" />
+                           </font></Button>
+                            </children>
+                        </HBox>
+                  <HBox alignment="CENTER" prefHeight="25.0" prefWidth="71.0" spacing="25.0">
+                     <children>
+                        <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="200.0" style="-fx-background-color: dbdbdbff; -fx-border-color: #009a43ff; -fx-border-radius: 10;" text="Crear Pregunta">
+                           <font>
+                              <Font size="18.0" />
+                           </font></Button>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="25.0" prefWidth="71.0" spacing="25.0">
+                     <children>
+                        <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="200.0" style="-fx-background-color: dbdbdbff; -fx-border-color: #009a43ff; -fx-border-radius: 10;" text="Informes">
+                           <font>
+                              <Font size="18.0" />
+                           </font></Button>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="25.0" prefWidth="71.0" spacing="25.0">
+                     <children>
+                        <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="200.0" style="-fx-background-color: dbdbdbff; -fx-border-color: #009a43ff; -fx-border-radius: 10;" text="Crear Quiz">
+                           <font>
+                              <Font size="18.0" />
+                           </font></Button>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="25.0" prefWidth="71.0" spacing="25.0">
+                     <children>
+                        <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="200.0" style="-fx-background-color: dbdbdbff; -fx-border-color: #009a43ff; -fx-border-radius: 10;" text="Mis Clases">
+                           <font>
+                              <Font size="18.0" />
+                           </font></Button>
+                     </children>
+                  </HBox>
+                    </children>
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+               <padding>
+                  <Insets top="60.0" />
+               </padding>
+                </VBox>
+            </children>
+        </VBox>
+    </left>
+    <center>
+        <BorderPane prefHeight="516.0" prefWidth="801.0">
+            <top>
+                <HBox fx:id="hboxArriba" prefHeight="33.0" prefWidth="784.0" spacing="25.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <Pane prefHeight="36.0" prefWidth="28.0" />
+                        <HBox alignment="CENTER_RIGHT" prefHeight="29.0" prefWidth="283.0" styleClass="contenedorBusqueda" translateX="6.5" translateY="6.5">
+                            <children>
+                                <SVGPath fx:id="imgBuscar" content="M21.71,20.29,18,16.61A9,9,0,1,0,16.61,18l3.68,3.68a1,1,0,0,0,1.42,0A1,1,0,0,0,21.71,20.29ZM11,18a7,7,0,1,1,7-7A7,7,0,0,1,11,18Z" fill="#009a43" scaleX="0.92" scaleY="0.92" translateX="-4.0" />
+                                <TextField fx:id="txtFIeldBuscar" cacheShape="false" centerShape="false" focusTraversable="false" prefHeight="31.0" prefWidth="224.0" promptText="   Buscar" scaleShape="false" style="-fx-background-color: #dbdbdbff; -fx-border-color: #009a43ff; -fx-border-radius: 10;">
+                           <effect>
+                              <Glow level="0.0" />
+                           </effect>
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font></TextField>
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="29.0" prefWidth="90.0" spacing="10.0" translateY="7.0">
+                            <children>
+                                <BorderPane fx:id="paneIrAtras" prefHeight="29.0" prefWidth="24.0">
+                                    <center>
+                                        <SVGPath content="M11.293 7.293a1 1 0 0 1 1.414 0l8 8a1 1 0 0 1-1.414 1.414L12 9.414l-7.293 7.293a1 1 0 0 1-1.414-1.414l8-8Z" fill="WHITE" rotate="270.0" BorderPane.alignment="CENTER" />
+                                    </center>
+                                </BorderPane>
+                                <BorderPane fx:id="paneIrAdelante" prefHeight="29.0" prefWidth="31.0">
+                                    <center>
+                                        <SVGPath content="M11.293 7.293a1 1 0 0 1 1.414 0l8 8a1 1 0 0 1-1.414 1.414L12 9.414l-7.293 7.293a1 1 0 0 1-1.414-1.414l8-8Z" fill="WHITE" rotate="90.0" BorderPane.alignment="CENTER" />
+                                    </center>
+                                </BorderPane>
+                            </children>
+                        </HBox>
+                        <Pane minHeight="-Infinity" minWidth="-Infinity" prefHeight="33.0" prefWidth="400.0" HBox.hgrow="ALWAYS" />
+                        <HBox alignment="CENTER" prefHeight="33.0" prefWidth="389.0" spacing="6.0">
+                            <children>
+
+                                <Label fx:id="lblNombreApellido" alignment="TOP_CENTER" lineSpacing="6.0" prefHeight="22.0" prefWidth="143.0" text="Nombre y Apellido" textFill="#323232" translateY="6.5">
+                                    <font>
+                                        <Font size="15.0" />
+                                    </font>
+                                </Label>
+                        <Button fx:id="btnCerrarSesion" mnemonicParsing="false" onAction="#cerrarSesion" prefHeight="33.0" prefWidth="163.0" style="-fx-background-color: dbdbdbff; -fx-border-color: #009a43ff; -fx-border-radius: 10;" text="Cerrar Sesion" translateX="10.0" translateY="5.0" />
+                            </children>
+                        </HBox>
+                        <Pane prefHeight="29.0" prefWidth="43.0" HBox.hgrow="ALWAYS" />
+                    </children>
+                    <BorderPane.margin>
+                        <Insets bottom="10.0" />
+                    </BorderPane.margin>
+                </HBox>
+            </top>
+            <center>
+                <BorderPane fx:id="panelCentral" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                    <center>
+                        <StackPane fx:id="contenedorCambiante" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                    </center>
+                </BorderPane>
+            </center>
+        </BorderPane>
+    </center>
+    <padding>
+        <Insets right="10.0" />
+    </padding>
+</BorderPane>

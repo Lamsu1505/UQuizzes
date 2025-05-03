@@ -18,7 +18,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.VentanaPrincipalController">
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Ventanas.Estudiante.VentanaPrincipalController">
     <children>
         <BorderPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: white;">
             <left>
@@ -38,7 +38,7 @@
                                 </Label>
                             </children>
                         </VBox>
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" style="-fx-background-color: white; -fx-border-color: #AAAAAA; -fx-border-radius: 5;" text="crear quiz">
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" style="-fx-background-color: white; -fx-border-color: #AAAAAA; -fx-border-radius: 5;" text="Mis cursos">
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -46,23 +46,7 @@
                                 <Insets left="20.0" right="20.0" />
                             </VBox.margin>
                         </Button>
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" style="-fx-background-color: white; -fx-border-color: #AAAAAA; -fx-border-radius: 5;" text="crear pregunta">
-                            <font>
-                                <Font size="14.0" />
-                            </font>
-                            <VBox.margin>
-                                <Insets left="20.0" right="20.0" />
-                            </VBox.margin>
-                        </Button>
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" style="-fx-background-color: white; -fx-border-color: #AAAAAA; -fx-border-radius: 5;" text="informes">
-                            <font>
-                                <Font size="14.0" />
-                            </font>
-                            <VBox.margin>
-                                <Insets left="20.0" right="20.0" />
-                            </VBox.margin>
-                        </Button>
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" style="-fx-background-color: white; -fx-border-color: #AAAAAA; -fx-border-radius: 5;" text="mis clases">
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" style="-fx-background-color: white; -fx-border-color: #AAAAAA; -fx-border-radius: 5;" text="Historial de examenes">
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -81,7 +65,7 @@
                     <children>
                         <AnchorPane prefHeight="100.0" prefWidth="200.0">
                             <children>
-                                <Label alignment="CENTER" layoutX="251.0" layoutY="30.0" text="Bienvenido Andres (Docente)" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                <Label alignment="CENTER" layoutX="251.0" layoutY="30.0" text="Bienvenido Andres (Estudiante)" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                     <font>
                                         <Font name="System Bold" size="24.0" />
                                     </font>
@@ -95,7 +79,7 @@
                         </AnchorPane>
                         <AnchorPane>
                             <children>
-                                <Label text="Examenes recientes" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="10.0">
+                                <Label text="Proxima evaluacion" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="10.0">
                                     <font>
                                         <Font size="18.0" />
                                         <Font name="System Bold" size="18.0" />
@@ -112,22 +96,22 @@
                                     <children>
                                         <HBox alignment="CENTER_LEFT" prefHeight="80.0" style="-fx-border-color: #AAAAAA; -fx-border-radius: 5;">
                                             <children>
-                                                <VBox prefHeight="78.0" prefWidth="463.0">
-                                                    <children>
-                                                        <Label text="NombreDelExamen">
-                                                            <font>
-                                                                <Font name="System Bold" size="14.0" />
-                                                            </font>
-                                                        </Label>
-                                                        <Label text="materia: materia   grupo: grupo   preguntas: 10   fecha: fecha">
-                                                            <font>
-                                                                <Font size="14.0" />
-                                                            </font>
-                                                        </Label>
-                                                    </children>
+                                                <VBox prefHeight="52.0" prefWidth="460.0">
                                                     <padding>
                                                         <Insets left="15.0" top="15.0" />
                                                     </padding>
+                                       <children>
+                                          <Label prefHeight="21.0" prefWidth="110.0" style="-fx-text-fill: black;" text="NombreDelExamen" wrapText="true">>
+                                             <font>
+                                                <Font name="System Bold" size="11.0" />
+                                             </font>
+                                          </Label>
+                                          <Label style="-fx-text-fill: black;" text="materia: materia   grupo: grupo   preguntas: 10   fecha: fecha">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
                                                 </VBox>
                                                 <HBox alignment="CENTER" prefHeight="78.0" prefWidth="150.0" spacing="10.0">
                                                     <children>
@@ -145,6 +129,7 @@
                                                 </HBox>
                                             </children>
                                         </HBox>
+                              <AnchorPane />
                                         <HBox alignment="CENTER_LEFT" prefHeight="80.0" style="-fx-border-color: #AAAAAA; -fx-border-radius: 5;">
                                             <children>
                                                 <VBox prefHeight="78.0" prefWidth="463.0">
@@ -215,41 +200,12 @@
                                                 </HBox>
                                             </children>
                                         </HBox>
-                                        <HBox alignment="CENTER_LEFT" prefHeight="80.0" style="-fx-border-color: #AAAAAA; -fx-border-radius: 5;">
-                                            <children>
-                                                <VBox prefHeight="78.0" prefWidth="463.0">
-                                                    <children>
-                                                        <Label text="NombreDelExamen">
-                                                            <font>
-                                                                <Font name="System Bold" size="14.0" />
-                                                            </font>
-                                                        </Label>
-                                                        <Label text="materia: materia   grupo: grupo   preguntas: 10   fecha: fecha">
-                                                            <font>
-                                                                <Font size="14.0" />
-                                                            </font>
-                                                        </Label>
-                                                    </children>
-                                                    <padding>
-                                                        <Insets left="15.0" top="15.0" />
-                                                    </padding>
-                                                </VBox>
-                                                <HBox alignment="CENTER" prefHeight="78.0" prefWidth="150.0" spacing="10.0">
-                                                    <children>
-                                                        <Button mnemonicParsing="false" style="-fx-background-color: white; -fx-border-color: #AAAAAA; -fx-border-radius: 5;" text="Editar">
-                                                            <font>
-                                                                <Font size="14.0" />
-                                                            </font>
-                                                        </Button>
-                                                        <Button mnemonicParsing="false" style="-fx-background-color: white; -fx-border-color: #AAAAAA; -fx-border-radius: 5;" text="Stats">
-                                                            <font>
-                                                                <Font size="14.0" />
-                                                            </font>
-                                                        </Button>
-                                                    </children>
-                                                </HBox>
-                                            </children>
-                                        </HBox>
+                              <Label text="Proxima evaluacion">
+                                 <font>
+                                    <Font size="18.0" />
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
                                     </children>
                                     <padding>
                                         <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />

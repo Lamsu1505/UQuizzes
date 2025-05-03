@@ -8,11 +8,11 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.LoginController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Ventanas.LoginController">
     <children>
-        <VBox alignment="CENTER" layoutX="150.0" layoutY="50.0" prefHeight="300.0" prefWidth="300.0" spacing="10.0">
+        <VBox alignment="CENTER" layoutX="150.0" layoutY="50.0" prefHeight="300.0" prefWidth="300.0" spacing="25.0">
             <children>
-                <Label text="UQuizzes" textFill="#3498db">
+                <Label text="UQuizzes" textFill="#009a43">
                     <font>
                         <Font name="System Bold" size="36.0" />
                     </font>
@@ -20,36 +20,38 @@
 
                 <!-- Label + TextField para correo -->
                 <VBox spacing="5">
-                    <Label text="Correo electrónico" textFill="#2c3e50">
-                        <font>
-                            <Font name="System" size="14.0" />
-                        </font>
-                    </Label>
-                    <TextField fx:id="emailField" promptText="Ej: usuario@correo.com">
-                        <font>
-                            <Font size="14.0" />
-                        </font>
-                    </TextField>
+   <children>
+                       <Label text="Correo electrónico" textFill="#2c3e50">
+                           <font>
+                               <Font name="System" size="14.0" />
+                           </font>
+                       </Label>
+                       <TextField fx:id="emailField" promptText="Ej: usuario@correo.com">
+                           <font>
+                               <Font size="14.0" />
+                           </font>
+                       </TextField>
+   </children>
                 </VBox>
 
                 <!-- Label + PasswordField para contraseña -->
                 <VBox spacing="5">
-                    <Label text="Contraseña" textFill="#2c3e50">
-                        <font>
-                            <Font name="System" size="14.0" />
-                        </font>
-                    </Label>
-                    <PasswordField fx:id="passwordField" promptText="Ingresa tu contraseña">
-                        <font>
-                            <Font size="14.0" />
-                        </font>
-                    </PasswordField>
+   <children>
+                       <Label text="Contraseña" textFill="#2c3e50" translateY="-10.0">
+                           <font>
+                               <Font name="System" size="14.0" />
+                           </font>
+                       </Label>
+                       <PasswordField fx:id="passwordField" promptText="Ingresa tu contraseña" translateY="-10.0">
+                           <font>
+                               <Font size="14.0" />
+                           </font>
+                       </PasswordField>
+   </children>
                 </VBox>
 
                 <!-- Botón de inicio de sesión -->
-                <Button fx:id="loginButton" mnemonicParsing="false" onAction="#iniciarSesion"
-                        prefHeight="40.0" prefWidth="200.0"
-                        style="-fx-background-color: #3498db;" text="Iniciar Sesión" textFill="WHITE">
+                <Button fx:id="loginButton" mnemonicParsing="false" onAction="#iniciarSesion" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #009a43ff; -fx-border-radius: 12;" text="Iniciar Sesión" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="14.0" />
                     </font>

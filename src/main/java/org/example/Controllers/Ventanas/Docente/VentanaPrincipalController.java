@@ -1,17 +1,15 @@
-package org.example.Controllers;
+package org.example.Controllers.Ventanas.Docente;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -41,7 +39,7 @@ public class VentanaPrincipalController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfaces/Login/login.fxml"));
             Parent root = loader.load();
 
-            // 2. Obtener el Stage actual desde el botón que activó el evento
+            // 2. Obtener el Stage actual desde el botón que activó el eventos
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
             // 3. Crear una nueva escena y asignarla al stage
