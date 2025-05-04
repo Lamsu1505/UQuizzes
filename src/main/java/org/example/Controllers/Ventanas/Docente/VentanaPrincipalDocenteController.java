@@ -123,19 +123,18 @@ public class VentanaPrincipalDocenteController implements Initializable {
 
     }
 
-
-    /*public void irVentanaCanciones(javafx.scene.input.MouseEvent mouseEvent) {
+    public void irPanelCrearPregunta(ActionEvent actionEvent) {
         try {
-            Parent panel = FXMLLoader.load(getClass().getResource("/Ventanas/Paneles/PanelCancionesFavoritas.fxml"));
+            Parent panel = FXMLLoader.load(getClass().getResource("/Interfaces/Paneles/Docente/panelCrearPregunta.fxml"));
             this.contenedorCambiante.getChildren().clear();
             this.contenedorCambiante.getChildren().addAll(panel);
-            //ponerLabelGrises(mouseEvent);
-            //lblCanciones.setTextFill(Color.WHITE);
+
 
         }
         catch (Exception e) {
+            e.printStackTrace();
         }
-    }*/
+    }
 
     public void irPanelInicio(ActionEvent actionEvent) {
         try {

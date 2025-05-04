@@ -66,7 +66,16 @@
                         </HBox>
                   <HBox alignment="CENTER" prefHeight="25.0" prefWidth="71.0" spacing="25.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="200.0" style="-fx-border-radius: 10;" text="Crear Pregunta">
+                        <Button fx:id="btnCrearQuiz" mnemonicParsing="false" prefHeight="33.0" prefWidth="200.0" style="-fx-border-radius: 10;" text="Crear Quiz">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="25.0" prefWidth="71.0" spacing="25.0">
+                     <children>
+                        <Button fx:id="btnCrearPregunta" mnemonicParsing="false" onAction="#irPanelCrearPregunta" prefHeight="33.0" prefWidth="200.0" style="-fx-border-radius: 10;" text="Crear Pregunta">
                            <font>
                               <Font size="18.0" />
                            </font></Button>
@@ -74,7 +83,7 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="25.0" prefWidth="71.0" spacing="25.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="200.0" style="-fx-border-radius: 10;" text="Informes">
+                        <Button fx:id="btnInformes" mnemonicParsing="false" prefHeight="33.0" prefWidth="200.0" style="-fx-border-radius: 10;" text="Informes">
                            <font>
                               <Font size="18.0" />
                            </font></Button>
@@ -82,15 +91,7 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="25.0" prefWidth="71.0" spacing="25.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="200.0" style="-fx-border-radius: 10;" text="Crear Quiz">
-                           <font>
-                              <Font size="18.0" />
-                           </font></Button>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="25.0" prefWidth="71.0" spacing="25.0">
-                     <children>
-                        <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="200.0" style="-fx-border-radius: 10;" text="Mis Clases">
+                        <Button fx:id="btnMisClases" mnemonicParsing="false" prefHeight="33.0" prefWidth="200.0" style="-fx-border-radius: 10;" text="Mis Clases">
                            <font>
                               <Font size="18.0" />
                            </font></Button>
