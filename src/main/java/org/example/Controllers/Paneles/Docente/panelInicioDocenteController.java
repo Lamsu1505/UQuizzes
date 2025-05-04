@@ -40,7 +40,7 @@ public class panelInicioDocenteController implements Initializable {
             while (rs.next()) {
                 String nombre = rs.getString("nombre");
                 String apellido = rs.getString("apellido");
-                lblBienvenido.setText("Bienvenido " + nombre + " " + apellido + " (Docente)");
+                lblBienvenido.setText("Buen dia " + nombre + " " + apellido + " (Docente)");
             }
 
         } catch (SQLException e) {
@@ -60,7 +60,7 @@ public class panelInicioDocenteController implements Initializable {
             VBoxContenedorExamenes.getChildren().clear();
 
             while (rs.next()) {
-                System.out.println("si hay examenes " + rs.getString("nombre"));
+
                 // 1) Carga el FXML de cada examen
                 FXMLLoader loader = new FXMLLoader(
                         getClass().getResource("/Interfaces/Paneles/Docente/examenPaginaPrincipal.fxml")
@@ -69,9 +69,9 @@ public class panelInicioDocenteController implements Initializable {
 
                 // 2) Obtén el controller y pásale los datos
                 ExamenPaginaPrincipalController ctrl = loader.getController();
-                ctrl.setNombreExamen(rs.getString("nombre"));
-                ctrl.setMateria      (rs.getString("materia_idmateria"));
-                ctrl.setGrupo        (rs.getString("grupo_idgrupo"));
+                ctrl.setNombreExamen(rs.getString("nombre_examen"));
+                ctrl.setMateria      (rs.getString("nombre_materia"));
+                ctrl.setGrupo        (rs.getString("nombre_grupo"));
                 ctrl.setFecha        (rs.getDate  ("fecha"));      // java.sql.Date
                 ctrl.setHora         (rs.getTime  ("hora"));       // java.sql.Time
 

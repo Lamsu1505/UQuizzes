@@ -54,9 +54,19 @@ public class UQuizzes {
         ConexionOracle conexionOracle = new ConexionOracle();
         Connection connection = conexionOracle.conectar();
 
-        String sql = "SELECT NOMBRE, MATERIA_IDMATERIA , GRUPO_IDGRUPO, FECHA, HORA " +
-                     "FROM EXAMEN " +
-                        "WHERE DOCENTE_IDDOCENTE = ?";
+        String sql = "SELECT " +
+                "e.NOMBRE AS nombre_examen, " +
+                "m.NOMBRE AS nombre_materia, " +
+                "g.NOMBRE AS nombre_grupo, " +
+                "e.FECHA, " +
+                "e.HORA " +
+                "FROM EXAMEN e " +
+                "JOIN GRUPO g ON e.GRUPO_IDGRUPO = g.IDGRUPO " +
+                "JOIN MATERIA m ON g.MATERIA_IDMATERIA = m.IDMATERIA " +
+                "WHERE e.DOCENTE_IDDOCENTE = ? " +
+                "ORDER BY e.FECHA";
+
+
         PreparedStatement ps = connection.prepareStatement(sql);
         ps.setString(1, this.getUsuarioEnSesion());
 

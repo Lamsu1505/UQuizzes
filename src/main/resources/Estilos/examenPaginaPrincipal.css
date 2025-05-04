@@ -1,0 +1,65 @@
+/* ==================== Estilo general ==================== */
+.root {
+    -fx-background-color: white;
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+/* Opcional: BorderPane con un borde fino y sombra suave */
+.border-pane {
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0.2, 0, 4);
+    -fx-background-radius: 8;
+    -fx-padding: 10;
+}
+
+/* ==================== Etiquetas ==================== */
+
+/* Título del examen */
+#lblNombreExamen {
+    -fx-text-fill: #009a43;
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+}
+
+/* Etiquetas de información secundaria (Materia, Grupo, etc.) */
+#lblMateria, #lblGrupo, #lblFecha, #lblHora {
+    -fx-text-fill: #333333;
+    -fx-font-size: 20px;
+}
+
+/* ==================== Botones ==================== */
+.button {
+    -fx-background-color: #009a43;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-padding: 8 20 8 20;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.15), 3, 0, 0, 2);
+    -fx-transition: all 0.3s ease-in-out;
+}
+
+/* Hover */
+.button:hover {
+    -fx-background-color: #007e38;
+}
+
+/* Presionado */
+.button:pressed {
+    -fx-background-color: #005e2a;
+}
+
+/* ==================== HBox y VBox ==================== */
+.hbox, .vbox {
+    -fx-background-color: transparent;
+    -fx-spacing: 10;
+    -fx-alignment: center-left;
+}
+
+/* ==================== Padding extra opcional ==================== */
+.hbox > * {
+    -fx-margin: 0 10 0 10;
+}
