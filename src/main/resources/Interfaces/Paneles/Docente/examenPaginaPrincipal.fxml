@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="153.0" prefWidth="991.0" style="-fx-border-color: grey; -fx-background-color: ##dddddd;" stylesheets="@../../../Estilos/examenPaginaPrincipal.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Docente.ExamenPaginaPrincipalController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="153.0" prefWidth="991.0" style="-fx-border-color: grey; -fx-background-color: #dddddd;" stylesheets="@../../../Estilos/examenPaginaPrincipal.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Docente.ExamenPaginaPrincipalController">
    <center>
       <HBox prefHeight="153.0" prefWidth="846.0" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
