@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="153.0" prefWidth="991.0" style="-fx-background-color: green;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Docente.ExamenPaginaPrincipalController">
+   <center>
+      <HBox prefHeight="153.0" prefWidth="846.0" spacing="20.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefHeight="133.0" prefWidth="748.0" spacing="30.0">
+               <children>
+                  <Label fx:id="lblNombreExamen" prefHeight="39.0" prefWidth="559.0" text="NombreExamen">
+                     <font>
+                        <Font name="System Bold" size="31.0" />
+                     </font>
+                  </Label>
+                  <HBox prefHeight="117.0" prefWidth="562.0" spacing="40.0">
+                     <children>
+                        <Label fx:id="lblMateria" text="Materia">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblGrupo" text="Grupo">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblFecha" text="Fecha">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblHora" text="Hora">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <HBox alignment="CENTER" prefHeight="133.0" prefWidth="89.0">
+               <children>
+                  <Button fx:id="btnStats" mnemonicParsing="false" prefHeight="48.0" prefWidth="84.0" text="Stats" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="133.0" prefWidth="89.0">
+               <children>
+                  <Button fx:id="btnEditar" mnemonicParsing="false" prefHeight="46.0" prefWidth="82.0" text="Editar" />
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+   </center>
+</BorderPane>

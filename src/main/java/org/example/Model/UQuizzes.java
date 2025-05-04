@@ -10,12 +10,12 @@ import java.sql.SQLException;
 public class UQuizzes {
 
     private static UQuizzes uQuizzes;
-    private String usuarioEnSesion = null;
+    private String usuarioEnSesion;
     private boolean esDocente;
 
 
     private UQuizzes() {
-
+        usuarioEnSesion = null;
     }
 
     public static UQuizzes getInstance()  {
@@ -49,20 +49,19 @@ public class UQuizzes {
         return stmt.executeQuery();
     }
 
-    public void cerrarConexion(ResultSet rs, PreparedStatement stmt, Connection conn) {
-        try {
-            if (rs != null) {
-                rs.close();
-            }
-            if (stmt != null) {
-                stmt.close();
-            }
-            if (conn != null) {
-                conn.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public ResultSet getExamenesDocenteSQL() throws SQLException {
+
+        ConexionOracle conexionOracle = new ConexionOracle();
+        Connection connection = conexionOracle.conectar();
+
+        String sql = "SELECT NOMBRE, MATERIA_IDMATERIA , GRUPO_IDGRUPO, FECHA, HORA " +
+                     "FROM EXAMEN " +
+                        "WHERE DOCENTE_IDDOCENTE = ?";
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ps.setString(1, this.getUsuarioEnSesion());
+
+        System.out.println("en UQuizzes el usuario en sesion es " + this.getUsuarioEnSesion());
+        return ps.executeQuery();
     }
 
     public String getUsuarioEnSesion() {
