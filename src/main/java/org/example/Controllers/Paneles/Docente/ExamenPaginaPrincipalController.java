@@ -32,15 +32,15 @@ public class ExamenPaginaPrincipalController{
         lblNombreExamen.setText(nombre);
     }
     public void setMateria(String mat) {
-        lblMateria.setText("Materia: " + mat);
+        lblMateria.setText(mat);
     }
     public void setGrupo(String grp) {
-        lblGrupo.setText("Grupo: "   + grp);
+        lblGrupo.setText(grp);
     }
     public void setFecha(java.sql.Date fecha) {
-        lblFecha.setText("Fecha: "   + fecha.toLocalDate().toString());
+        lblFecha.setText(fecha.toLocalDate().toString());
     }
     public void setHora(java.sql.Time hora) {
-        lblHora.setText("Hora: "     + hora.toLocalTime().toString());
+        lblHora.setText(hora.toLocalTime().toString());
     }
 }

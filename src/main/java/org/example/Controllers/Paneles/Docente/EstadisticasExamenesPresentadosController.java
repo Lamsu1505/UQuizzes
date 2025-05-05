@@ -1,4 +1,4 @@
-package org.example.Controllers.Ventanas;
+package org.example.Controllers.Paneles.Docente;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

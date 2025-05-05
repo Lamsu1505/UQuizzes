@@ -9,11 +9,11 @@
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="153.0" prefWidth="991.0" style="-fx-border-color: grey; -fx-background-color: #dddddd;" stylesheets="@../../../Estilos/examenPaginaPrincipal.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Docente.ExamenPaginaPrincipalController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="153.0" prefWidth="935.0" style="-fx-border-color: grey; -fx-background-color: #dddddd;" stylesheets="@../../../Estilos/examenPaginaPrincipal.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Docente.ExamenPaginaPrincipalController">
    <center>
       <HBox prefHeight="153.0" prefWidth="846.0" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="131.0" prefWidth="870.0" spacing="30.0">
+            <VBox prefHeight="131.0" prefWidth="559.0" spacing="30.0">
                <children>
                   <Label fx:id="lblNombreExamen" prefHeight="39.0" prefWidth="559.0" text="NombreExamen">
                      <font>
@@ -22,7 +22,7 @@
                   </Label>
                   <HBox prefHeight="117.0" prefWidth="562.0" spacing="40.0">
                      <children>
-                        <Label fx:id="lblMateria" prefHeight="30.0" prefWidth="304.0" text="Materia">
+                        <Label fx:id="lblMateria" prefHeight="30.0" prefWidth="142.0" text="Materia">
                            <font>
                               <Font size="22.0" />
                            </font>
@@ -46,16 +46,25 @@
                   </HBox>
                </children>
             </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0">
+            <VBox prefHeight="131.0" prefWidth="115.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="131.0" prefWidth="116.0">
+                     <children>
+                        <Button fx:id="btnEditar" mnemonicParsing="false" prefHeight="46.0" prefWidth="120.0" text="Editar" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox prefHeight="131.0" prefWidth="197.0">
                <children>
                   <HBox alignment="CENTER" prefHeight="131.0" prefWidth="97.0">
                      <children>
-                        <Button fx:id="btnStats" mnemonicParsing="false" prefHeight="48.0" prefWidth="95.0" text="Stats" />
+                        <Button fx:id="btnStats1" mnemonicParsing="false" prefHeight="48.0" prefWidth="232.0" text="Stats (pregunta)" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="131.0" prefWidth="100.0">
                      <children>
-                        <Button fx:id="btnEditar" mnemonicParsing="false" prefHeight="46.0" prefWidth="110.0" text="Editar" />
+                        <Button fx:id="btnEditar1" mnemonicParsing="false" prefHeight="46.0" prefWidth="215.0" text="Stats (Estudiantes)" />
                      </children>
                   </HBox>
                </children>

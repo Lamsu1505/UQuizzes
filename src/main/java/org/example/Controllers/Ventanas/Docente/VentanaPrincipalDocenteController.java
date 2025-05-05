@@ -149,6 +149,16 @@ public class VentanaPrincipalDocenteController implements Initializable {
         }
     }
 
+    public void irPanelCrearExamen(ActionEvent actionEvent) {
+        try {
+            Parent panel = FXMLLoader.load(getClass().getResource("/Interfaces/Paneles/Docente/panelCrearQuiz.fxml"));
+            this.contenedorCambiante.getChildren().clear();
+            this.contenedorCambiante.getChildren().addAll(panel);
+        }
+        catch (Exception e) {
+        }
+    }
+
 
 
 

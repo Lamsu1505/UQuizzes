@@ -125,7 +125,7 @@ public class LoginController implements Initializable {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
         stage.setTitle("UQuizzes - Home");
-        stage.setWidth(1300);
+        stage.setWidth(1450);
         stage.setHeight(800);
         stage.centerOnScreen();
         stage.setResizable(false);

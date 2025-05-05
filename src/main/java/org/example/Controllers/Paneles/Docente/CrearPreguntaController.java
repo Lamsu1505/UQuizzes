@@ -181,7 +181,7 @@ public class CrearPreguntaController implements Initializable {
             return;
         }
 
-        String sql = "SELECT m.nombre " +
+        String sql = "SELECT DISTINCT m.nombre " +
                 "FROM Docente d " +
                 "JOIN Grupo g ON d.iddocente = g.docente_iddocente " +
                 "JOIN Materia m ON g.materia_idmateria = m.idmateria " +
