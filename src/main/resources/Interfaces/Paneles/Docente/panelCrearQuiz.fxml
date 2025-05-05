@@ -41,7 +41,7 @@
                     </rowConstraints>
                     <children>
                         <Label fx:id="nombreQuizLabel" text="Nombre del quiz" />
-                        <TextField fx:id="nombreQuizTextField" GridPane.columnIndex="1" />
+                        <TextField fx:id="nombreQuizTextField" prefHeight="35.0" prefWidth="357.0" GridPane.columnIndex="1" />
 
                         <Label fx:id="materiaLabel" text="Materia" GridPane.columnIndex="2" />
                         <ComboBox fx:id="materiaComboBox" prefWidth="200.0" promptText="Seleccionar" GridPane.columnIndex="3" />
