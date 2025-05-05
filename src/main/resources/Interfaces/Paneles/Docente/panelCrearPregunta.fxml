@@ -57,23 +57,26 @@
                         <Label fx:id="materiaLabel" text="Materia" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                         <ComboBox fx:id="materiaComboBox" prefHeight="41.0" prefWidth="242.0" promptText="Seleccionar" GridPane.columnIndex="3" GridPane.rowIndex="1" />
 
-                        <Label fx:id="unidadLabel" text="Unidad" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <ComboBox fx:id="unidadComboBox" prefHeight="41.0" prefWidth="258.0" promptText="Seleccionar" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                        <Label fx:id="grupoLabel" text="Grupo" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <ComboBox fx:id="grupoComboBox" prefHeight="41.0" prefWidth="242.0" promptText="Seleccionar" GridPane.columnIndex="3" GridPane.rowIndex="2" />
 
-                        <Label fx:id="temaLabel" text="Tema" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                        <ComboBox fx:id="temaComboBox" prefHeight="41.0" prefWidth="242.0" promptText="Seleccionar" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                        <Label fx:id="unidadLabel" text="Unidad" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                        <ComboBox fx:id="unidadComboBox" prefHeight="41.0" prefWidth="258.0" promptText="Seleccionar" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+
+                        <Label fx:id="temaLabel" text="Tema" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                        <ComboBox fx:id="temaComboBox" prefHeight="41.0" prefWidth="242.0" promptText="Seleccionar" GridPane.columnIndex="3" GridPane.rowIndex="4" />
 
                         <Label fx:id="publicaLabel" text="Es publica?" GridPane.rowIndex="5" />
-                        <CheckBox fx:id="publicaCheckBox" translateX="-50.0" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+                        <CheckBox fx:id="publicaCheckBox" translateX="-80.0" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
 
-                        <Label fx:id="subpreguntaLabel" text="Subpregunta?" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <CheckBox fx:id="subpreguntaCheckBox" translateX="-170.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+                        <Label fx:id="subpreguntaLabel" text="Subpregunta?" translateX="-60.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <CheckBox fx:id="subpreguntaCheckBox" translateX="-271.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
 
-                        <Label fx:id="pesoLabel" text="Peso %" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                        <Label fx:id="pesoLabel" text="Peso %" translateX="50.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
                         <TextField fx:id="pesoTextField" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
 
-                        <Label fx:id="tiempoLabel" text="Tiempo (segundos)" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                        <TextField fx:id="tiempoTextField" prefHeight="39.0" prefWidth="179.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                        <Label fx:id="tiempoLabel" text="Tiempo" translateX="-260.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                        <TextField fx:id="tiempoTextField" prefHeight="39.0" prefWidth="76.0" translateX="-360.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
                     </children>
                 </GridPane>
                 <HBox alignment="CENTER" spacing="50.0">

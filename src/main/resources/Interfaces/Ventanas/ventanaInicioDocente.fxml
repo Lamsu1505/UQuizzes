@@ -158,6 +158,9 @@
                     </center>
                 </BorderPane>
             </center>
+         <bottom>
+            <HBox prefHeight="52.0" prefWidth="811.0" BorderPane.alignment="CENTER" />
+         </bottom>
         </BorderPane>
     </center>
     <padding>
