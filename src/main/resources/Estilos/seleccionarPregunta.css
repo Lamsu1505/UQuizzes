@@ -44,3 +44,30 @@
 .boton-seleccionar:hover {
     -fx-background-color: #417f3e;
 }
+
+.pregunta-card {
+    -fx-background-color: #f2f2f2;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 10;
+    -fx-cursor: hand;
+}
+
+.pregunta-card:hover {
+    -fx-background-color: #e6e6e6;
+}
+
+.pregunta-seleccionada {
+    -fx-background-color: #a0e7a0; /* verde claro */
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #1db954; /* Verde de referencia tipo Spotify */
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER-LEFT;
+}
