@@ -39,6 +39,9 @@ public class CrearPreguntaController implements Initializable {
     private Label tituloLabel;
 
     @FXML
+    private ComboBox<String> grupoComboBox;
+
+    @FXML
     private ComboBox<String> materiaComboBox;
 
     @FXML
@@ -82,15 +85,91 @@ public class CrearPreguntaController implements Initializable {
 
     private String idUsuarioEnSesion;
 
+    private String nombreMateriaSeleccionada;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         idUsuarioEnSesion = UQuizzes.getInstance().getUsuarioEnSesion();
 
         try {
+
+            cargarTipoPregunta();
             cargarMaterias();
+
+            //esto es para actualizar los grupos segun la materia que elija
+            materiaComboBox.setOnAction(event -> {
+                String materiaSeleccionada = materiaComboBox.getValue();
+                if (materiaSeleccionada != null) {
+                    nombreMateriaSeleccionada = materiaSeleccionada;
+                    try {
+                        cargarGrupos(materiaSeleccionada);
+                        cargarUnidades(materiaSeleccionada);
+                    } catch (SQLException e) {
+                        mostrarAlerta("Error al cargar grupos: " + e.getMessage());
+                    }
+                }
+            });
+
         } catch (SQLException e) {
-            mostrarAlerta("Error al cargar materias: " + e.getMessage());
+            mostrarAlerta("Error al cargar info " + e.getMessage());
         }
+    }
+
+    private void cargarUnidades(String materiaSeleccionada) throws SQLException {
+
+        ObservableList<String> unidades = FXCollections.observableArrayList();
+        ConexionOracle conexion = new ConexionOracle();
+
+        if (conexion == null) {
+            mostrarAlerta("Error de conexión con la base de datos.");
+            return;
+        }
+
+        String sql = "select * from unidad u " +
+                "JOIN materia m ON u.materia_idmateria = m.idmateria " +
+                "where m.nombre = ?";
+
+        try (Connection connection = conexion.conectar();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, materiaSeleccionada);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    unidades.add(rs.getString("nombre"));
+                }
+            }
+        }
+
+        unidadComboBox.setItems(unidades);
+    }
+
+    private void cargarTipoPregunta() {
+
+        ObservableList<String> tipoPreguntas = FXCollections.observableArrayList();
+        ConexionOracle conexion = new ConexionOracle();
+
+        if (conexion == null) {
+            mostrarAlerta("Error de conexión con la base de datos.");
+            return;
+        }
+
+        String sql = "select * " +
+                "from tipopregunta";
+
+        try (Connection connection = conexion.conectar();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    tipoPreguntas.add(rs.getString("nombre"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        tipoPreguntaComboBox.setItems(tipoPreguntas);
     }
 
     private void cargarMaterias() throws SQLException {
@@ -122,6 +201,42 @@ public class CrearPreguntaController implements Initializable {
         }
 
         materiaComboBox.setItems(materias);
+
+    }
+
+
+    private void cargarGrupos(String nombreMateriaSeleccionada) throws SQLException {
+        ObservableList<String> grupos = FXCollections.observableArrayList();
+        ConexionOracle conexion = new ConexionOracle();
+
+        if (conexion == null) {
+            mostrarAlerta("Error de conexión con la base de datos.");
+            return;
+        }
+
+        String sql = "SELECT g.nombre AS nombreGrupo, m.nombre AS nombreMateria " +
+                "FROM Docente d " +
+                "JOIN Grupo g ON d.iddocente = g.docente_iddocente " +
+                "JOIN Materia m ON g.materia_idmateria = m.idmateria " +
+                "WHERE d.iddocente = ? AND m.nombre = ? " +
+                "ORDER BY m.nombre";
+
+
+        try (Connection connection = conexion.conectar();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, idUsuarioEnSesion);
+            stmt.setString(2, nombreMateriaSeleccionada);
+
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    grupos.add(rs.getString("nombreGrupo"));
+                }
+            }
+        }
+
+        grupoComboBox.setItems(grupos);
     }
 
     private void mostrarAlerta(String mensaje) {

@@ -112,6 +112,9 @@ public class VentanaPrincipalDocenteController implements Initializable {
             stage.setScene(scene);
             stage.setTitle("UQuizzes - Iniciar Sesión");
 
+            stage.setWidth(630);
+            stage.setHeight(400);
+            stage.setResizable(false);
 
             stage.centerOnScreen();
             stage.show();
@@ -141,9 +144,6 @@ public class VentanaPrincipalDocenteController implements Initializable {
             Parent panel = FXMLLoader.load(getClass().getResource("/Interfaces/Paneles/Docente/panelInicioDocente.fxml"));
             this.contenedorCambiante.getChildren().clear();
             this.contenedorCambiante.getChildren().addAll(panel);
-            //ponerLabelGrises(mouseEvent);
-            //lblCanciones.setTextFill(Color.WHITE);
-
         }
         catch (Exception e) {
         }
