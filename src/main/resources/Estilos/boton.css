@@ -1,0 +1,59 @@
+
+
+.boton {
+    -fx-background-color: red; /* Color de fondo */
+    -fx-text-fill: white; /* Color del texto */
+	-fx-font-size: 1.2em;
+    -fx-padding: 0 1em; /* Relleno interno */
+    -fx-border-radius: 1em; /* Radio de borde */
+   	-fx-border-width: 10px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+	-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0, 0, 2);
+	-fx-pref-height: 30px;
+	-fx-pref-width: 125px;
+	-fx-background-radius: 15px;
+}
+
+.botonLibre {
+    -fx-background-color: #009a43ff ;
+    -fx-text-fill: white; /* Color del texto */
+	-fx-font-size: 1.2em;
+    -fx-padding: 0 1em; /* Relleno interno */
+    -fx-border-radius: 5em; /* Radio de borde */
+   	-fx-border-width: 10px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+	-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0, 0, 2);
+	-fx-pref-height: 56px;
+	-fx-pref-width: 160px;
+	-fx-background-radius: 15px;
+}
+
+.button.volver {
+    -fx-background-radius: 50 ;
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-border-color: black;
+    -fx-border-width: 3px;
+    -fx-border-radius: 50%;
+    -fx-padding: 0;
+    -fx-shape: "M0 0h24v24H0z"; /* Esto es solo visual, JavaFX no soporta formas SVG completas */
+}
+
+.button.volver:hover {
+    -fx-border-color: #599a53;
+    -fx-border-width: 4px;
+    -fx-effect: dropshadow(gaussian, #599a53, 10, 0.5, 0, 0);
+}
+
+/* Estilo al pasar el mouse sobre el botón */
+.botonLibre:hover {
+    -fx-background-color: #2E8B57; /* Color de fondo al pasar el mouse */
+    -fx-effect: innershadow(gaussian, #2E8B57, 10, 0.5, 0.0, 0.0);
+}
+
+/* Estilo al hacer clic en el botón */
+.boton:pressed {
+    -fx-background-color: #5321BD; /* Color de fondo al hacer clic */
+}

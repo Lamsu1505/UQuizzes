@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.171"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.Controllers.Paneles.Docente.SeleccionarPreguntasController"
+            stylesheets="@../../../Estilos/seleccionarPregunta.css"
+            prefWidth="800" prefHeight="600">
+
+</AnchorPane>

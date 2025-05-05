@@ -1,0 +1,46 @@
+.volver {
+    -fx-background-color: transparent;
+    -fx-border-color: #000000;
+    -fx-border-width: 3px;
+    -fx-border-radius: 50%;
+    -fx-background-radius: 50%;
+    -fx-cursor: hand;
+}
+
+.volver:hover {
+    -fx-border-color: #599a53;
+    -fx-border-width: 4px;
+    -fx-effect: dropshadow(gaussian, #599a53, 10, 0.5, 0, 0);
+}
+
+.scroll-fondo {
+    -fx-background: #f4f4f4;
+    -fx-background-color: transparent;
+}
+
+.pregunta-card {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 15;
+    -fx-spacing: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0.3, 0, 1);
+}
+
+.pregunta-label {
+    -fx-font-size: 16px;
+    -fx-wrap-text: true;
+}
+
+.boton-seleccionar {
+    -fx-background-color: #599a53;
+    -fx-text-fill: white;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+}
+
+.boton-seleccionar:hover {
+    -fx-background-color: #417f3e;
+}
