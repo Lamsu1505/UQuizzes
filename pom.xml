@@ -44,7 +44,15 @@
                 <version>0.0.8</version>
                 <configuration>
                     <mainClass>org.example.Main.Main</mainClass>
+                    <launcher>app</launcher>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
