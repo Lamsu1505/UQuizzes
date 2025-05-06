@@ -14,7 +14,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         try {
             // Cargar el archivo FXML
-            Parent root = FXMLLoader.load(getClass().getResource("/Interfaces/Login/login.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/Interfaces/Paneles/Docente/seleccionar_preguntas.fxml"));
 
             // Crear la escena
             Scene scene = new Scene(root);

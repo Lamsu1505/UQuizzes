@@ -47,6 +47,18 @@ public class SeleccionarPreguntasController {
         });
 
         TableViewPregunta.setFixedCellSize(60); // Optional: adjust height to fit wrapped text
+
+        VolverButton.setOnAction(event -> {
+            try {
+                javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/Interfaces/Paneles/Docente/panelTiposPregunta.fxml"));
+                javafx.scene.Parent root = loader.load();
+                javafx.scene.Scene scene = new javafx.scene.Scene(root);
+                javafx.stage.Stage stage = (javafx.stage.Stage) VolverButton.getScene().getWindow();
+                stage.setScene(scene);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
 }
