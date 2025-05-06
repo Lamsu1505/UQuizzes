@@ -57,3 +57,52 @@
 .boton:pressed {
     -fx-background-color: #5321BD; /* Color de fondo al hacer clic */
 }
+
+.radio-button {
+    -fx-background-color: white;
+    -fx-border-color: #b5bfd9;
+    -fx-border-radius: 8px;
+    -fx-font-size: 13px;
+    -fx-text-fill: #707070;
+}
+
+.radio-button:selected {
+    -fx-border-color: #2260ff;
+    -fx-text-fill: #2260ff;
+}
+
+.radio-button:hover {
+    -fx-border-color: #2260ff;
+}
+
+.toggle-button {
+    -fx-background-color: white; /* Gris claro cuando no está seleccionado */
+    -fx-text-fill: Back;
+    -fx-font-size: 1.2em;
+    -fx-padding: 0 1em;
+    -fx-border-radius: 15px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0, 0, 2);
+    -fx-pref-height: 56px;
+    -fx-pref-width: 160px;
+}
+
+.toggle-button:selected {
+    -fx-background-color: #009a43ff; /* Verde cuando está seleccionado */
+    -fx-text-fill: white;
+}
+
+.toggle-button:hover {
+    -fx-background-color: #2E8B57;
+}
+
+.anchor-pane-fondo {
+    -fx-background-color: #F5F5F5;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+    -fx-border-color: #2E8B57;
+    -fx-border-width: 2px;
+    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.15), 10, 0.2, 0, 2);
+    -fx-padding: 10px;
+}
