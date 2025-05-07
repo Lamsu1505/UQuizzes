@@ -16,6 +16,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import org.example.ConexionDB.ConexionOracle;
+import org.example.ConexionDB.DAO.DocenteDAO;
 import org.example.Model.UQuizzes;
 
 import java.io.IOException;
@@ -37,6 +38,8 @@ public class LoginController implements Initializable {
     @FXML
     private PasswordField passwordField;
 
+    private DocenteDAO docenteDAO = new DocenteDAO();
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -51,6 +54,7 @@ public class LoginController implements Initializable {
         emailField.setOnKeyPressed(enterHandler);
     }
 
+
     public void iniciarSesion(ActionEvent actionEvent) throws SQLException {
         String email = emailField.getText();
         String contrasenia = passwordField.getText();
@@ -64,59 +68,27 @@ public class LoginController implements Initializable {
             return;
         }
 
-        ConexionOracle conexion = new ConexionOracle();
+        try {
+            String idDocente = docenteDAO.iniciarSesion(email, contrasenia);
+            if (idDocente != null) {
 
-        if(conexion == null){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Error de conexion");
-            alert.setHeaderText(null);
-            alert.setContentText("Error de conexion con la base de datos");
-            alert.showAndWait();
-            return;
-        }
-        try (Connection connection = conexion.conectar()) {
-            // Intentar como docente
-            String sqlDocente = "SELECT * FROM DOCENTE WHERE CORREO = ? AND CONTRASENIA = ?";
-            try (PreparedStatement stmt = connection.prepareStatement(sqlDocente)) {
-                stmt.setString(1, email.trim());
-                stmt.setString(2, contrasenia.trim());
-                try (ResultSet rs = stmt.executeQuery()) {
-                    if (rs.next()) {
+                UQuizzes uQuizzes = UQuizzes.getInstance();
+                uQuizzes.setEsDocente(true);
+                uQuizzes.setUsuarioEnSesion(idDocente);
 
-                        UQuizzes uQuizzes = UQuizzes.getInstance();
-                        uQuizzes.setEsDocente(true);
-                        uQuizzes.setUsuarioEnSesion(rs.getString("IDDOCENTE"));
-
-                        cargarVentana("/Interfaces/Ventanas/ventanaInicioDocente.fxml", actionEvent);
-
-                        return;
-                    }
-                }
+                cargarVentana("/Interfaces/Ventanas/ventanaInicioDocente.fxml", actionEvent);
             }
-
-            // Intentar como estudiante
-            String sqlEstudiante = "SELECT * FROM ESTUDIANTE WHERE CORREO = ? AND CONTRASENIA = ?";
-            try (PreparedStatement stmt2 = connection.prepareStatement(sqlEstudiante)) {
-                stmt2.setString(1, email.trim());
-                stmt2.setString(2, contrasenia.trim());
-                try (ResultSet rs2 = stmt2.executeQuery()) {
-                    if (rs2.next()) {
-                        cargarVentana("/Interfaces/Ventanas/ventanaPrincipalEstudiante.fxml", actionEvent);
-                        return;
-                    }
-                }
+            else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Credenciales incorrecas");
+                alert.setHeaderText(null);
+                alert.setContentText("Credenciales incorrectas, por favor verifique su email o su contraseña");
+                alert.showAndWait();
             }
-
-            // Si no se encontró en ninguna tabla
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Inicio de sesión");
-            alert.setHeaderText(null);
-            alert.setContentText("No se encontró el usuario.");
-            alert.showAndWait();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
     private void cargarVentana(String rutaFXML, ActionEvent event) throws IOException {

@@ -37,10 +37,11 @@ public class ExamenPaginaPrincipalController{
     public void setGrupo(String grp) {
         lblGrupo.setText(grp);
     }
-    public void setFecha(java.sql.Date fecha) {
-        lblFecha.setText(fecha.toLocalDate().toString());
+
+    public void setFecha(String fecha) {
+        lblFecha.setText(fecha);
     }
-    public void setHora(java.sql.Time hora) {
-        lblHora.setText(hora.toLocalTime().toString());
+    public void setHora(String hora) {
+        lblHora.setText(hora);
     }
 }

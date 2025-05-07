@@ -1,8 +1,11 @@
 package org.example.Model;
 
 import org.example.ConexionDB.ConexionOracle;
+import org.example.ConexionDB.DAO.DocenteDAO;
 
 import java.sql.*;
+import java.util.List;
+import java.util.Map;
 
 public class UQuizzes {
 
@@ -23,30 +26,12 @@ public class UQuizzes {
     }
 
 
-    public ResultSet getUsuarioEnSesionSQL() throws SQLException {
+    public List<Map<String, Object>> getExamenesDocenteSQL() throws SQLException {
         ConexionOracle conexionOracle = new ConexionOracle();
         Connection connection = conexionOracle.conectar();
+        DocenteDAO docenteDAO = new DocenteDAO();
 
-        CallableStatement stmt = connection.prepareCall("{call obtener_usuario_en_sesion(?, ?, ?)}");
-        stmt.setString(1, getUsuarioEnSesion());
-        stmt.setBoolean(2, isEsDocente());
-        stmt.registerOutParameter(3, oracle.jdbc.OracleTypes.CURSOR);
-
-        stmt.execute();
-        return (ResultSet) stmt.getObject(3);
-    }
-
-
-    public ResultSet getExamenesDocenteSQL() throws SQLException {
-        ConexionOracle conexionOracle = new ConexionOracle();
-        Connection connection = conexionOracle.conectar();
-
-        CallableStatement stmt = connection.prepareCall("{call obtener_examenes_docente(?, ?)}");
-        stmt.setString(1, getUsuarioEnSesion());
-        stmt.registerOutParameter(2, oracle.jdbc.OracleTypes.CURSOR);
-
-        stmt.execute();
-        return (ResultSet) stmt.getObject(2);
+        return docenteDAO.getExamenes(getUsuarioEnSesion());
     }
 
     public String getUsuarioEnSesion() {

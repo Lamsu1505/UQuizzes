@@ -12,24 +12,26 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        try {
-            // Cargar el archivo FXML
-            Parent root = FXMLLoader.load(getClass().getResource("/Interfaces/Login/login.fxml"));
 
-            // Crear la escena
-            Scene scene = new Scene(root);
+       try{
+           // Cargar el archivo FXML
+           Parent root = FXMLLoader.load(getClass().getResource("/Interfaces/Login/login.fxml"));
 
-            // Configurar el escenario (ventana)
-            primaryStage.setTitle("UQuizzes - Iniciar sesion");
-            primaryStage.setScene(scene);
+           // Crear la escena
+           Scene scene = new Scene(root);
 
-            // Mostrar la ventana
-            primaryStage.show();
+           // Configurar el escenario (ventana)
+           primaryStage.setTitle("UQuizzes - Iniciar sesion");
+           primaryStage.setScene(scene);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error al cargar el archivo FXML: " + e.getMessage());
-        }
+           // Mostrar la ventana
+           primaryStage.show();
+       } catch (IOException e) {
+           e.printStackTrace();
+           throw new RuntimeException(e);
+       }
+
+
     }
 
     public static void main(String[] args) {
