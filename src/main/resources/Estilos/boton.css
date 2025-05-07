@@ -77,7 +77,7 @@
 
 .toggle-button {
     -fx-background-color: white; /* Gris claro cuando no está seleccionado */
-    -fx-text-fill: Back;
+    -fx-text-fill: black;
     -fx-font-size: 1.2em;
     -fx-padding: 0 1em;
     -fx-border-radius: 15px;

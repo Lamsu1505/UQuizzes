@@ -1,9 +1,17 @@
 package org.example.Controllers.Paneles.Docente;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class SeleccionarPreguntasController {
 
@@ -11,54 +19,42 @@ public class SeleccionarPreguntasController {
     private Button AgregarButton;
 
     @FXML
-    private TableColumn<?, ?> ColumnTipoPregunta;
+    private TableColumn<?, ?> ColumnPregunta;
 
     @FXML
-    private TableColumn<Object, String> ColumnPregunta;
+    private TableColumn<?, ?> ColumnTipoPregunta;
 
     @FXML
     private Button DesagregarButton;
 
     @FXML
-    private TableView<Object> TableViewPregunta;
+    private TableView<?> TableViewPregunta;
 
     @FXML
-    private Button VolverButton;
+    private Button volverButton;
 
     @FXML
-    private void initialize() {
-        ColumnPregunta.setCellFactory(tc -> new javafx.scene.control.TableCell<>() {
-            private final javafx.scene.text.Text text = new javafx.scene.text.Text();
+    void agregarButton(ActionEvent event) {
 
-            {
-                text.wrappingWidthProperty().bind(ColumnPregunta.widthProperty().subtract(10));
-                setGraphic(text);
-            }
+    }
 
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    text.setText(null);
-                } else {
-                    text.setText(item);
-                }
-            }
-        });
+    @FXML
+    void desagregarButton(ActionEvent event) {
 
-        TableViewPregunta.setFixedCellSize(60); // Optional: adjust height to fit wrapped text
+    }
 
-        VolverButton.setOnAction(event -> {
-            try {
-                javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/Interfaces/Paneles/Docente/panelTiposPregunta.fxml"));
-                javafx.scene.Parent root = loader.load();
-                javafx.scene.Scene scene = new javafx.scene.Scene(root);
-                javafx.stage.Stage stage = (javafx.stage.Stage) VolverButton.getScene().getWindow();
-                stage.setScene(scene);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+    @FXML
+    void volverEvent(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfaces/Paneles/Docente/panelTiposPregunta.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
