@@ -1,5 +1,6 @@
 package org.example.Controllers.Paneles.Docente;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -64,5 +65,15 @@ public class CrearQuizController {
 
     @FXML
     private Label unidadLabel;
+
+    @FXML
+    void cancelarEvent(ActionEvent event) {
+
+    }
+
+    @FXML
+    void siguienteEvent(ActionEvent event) {
+
+    }
 
 }

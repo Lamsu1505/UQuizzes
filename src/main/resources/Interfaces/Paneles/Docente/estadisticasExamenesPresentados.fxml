@@ -10,7 +10,7 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../../../Estilos/tableStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Docente.EstadisticasExamenesPresentadosController">
    <children>
-      <Button layoutX="38.0" layoutY="23.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="36.0" style="-fx-padding: 10 12 10 12; -fx-background-color: #85ca85; -fx-background-radius: 8;">
+      <Button fx:id="homeButton" layoutX="38.0" layoutY="23.0" mnemonicParsing="false" onAction="#homeEvent" prefHeight="37.0" prefWidth="36.0" style="-fx-padding: 10 12 10 12; -fx-background-color: #85ca85; -fx-background-radius: 8;">
          <graphic>
             <SVGPath content="M21,12H19v8a1,1,0,0,1-1,1H6a1,1,0,0,1-1-1V12H3l9-9Z" />
          </graphic>
@@ -25,8 +25,8 @@
             <TableColumn fx:id="ColumnTiempoTomado" prefWidth="150.0" text="Time taken" />
         </columns>
       </TableView>
-      <TextField fx:id="searchField" layoutX="309.0" layoutY="30.0" promptText="First name" />
-      <Button layoutX="503.0" layoutY="24.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="72.0" style="-fx-padding: 10 8 10 8; -fx-background-color: #85ca85; -fx-background-radius: 8;" text="Search">
+      <TextField fx:id="searchField" layoutX="309.0" layoutY="30.0" onAction="#searchFieldEvent" promptText="First name" />
+      <Button fx:id="searchButton" layoutX="503.0" layoutY="24.0" mnemonicParsing="false" onAction="#searchEvent" prefHeight="20.0" prefWidth="72.0" style="-fx-padding: 10 8 10 8; -fx-background-color: #85ca85; -fx-background-radius: 8;" text="Search">
          <font>
             <Font name="System Bold" size="13.0" />
          </font></Button>

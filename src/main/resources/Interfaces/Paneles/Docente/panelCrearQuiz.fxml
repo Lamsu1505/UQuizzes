@@ -67,8 +67,8 @@
                 </GridPane>
                 <HBox alignment="CENTER" spacing="50.0">
                     <children>
-                        <Button fx:id="cancelarButton" minWidth="150.0" mnemonicParsing="false" text="Cancelar" />
-                        <Button fx:id="siguienteButton" minWidth="150.0" mnemonicParsing="false" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Siguiente" />
+                        <Button fx:id="cancelarButton" minWidth="150.0" mnemonicParsing="false" onAction="#cancelarEvent" text="Cancelar" />
+                        <Button fx:id="siguienteButton" minWidth="150.0" mnemonicParsing="false" onAction="#siguienteEvent" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Siguiente" />
                     </children>
                 </HBox>
             </children>
