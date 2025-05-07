@@ -9,10 +9,7 @@ import org.example.ConexionDB.ConexionOracle;
 import org.example.Model.UQuizzes;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ResourceBundle;
 
 public class CrearPreguntaController implements Initializable {
@@ -116,25 +113,17 @@ public class CrearPreguntaController implements Initializable {
     }
 
     private void cargarUnidades(String materiaSeleccionada) throws SQLException {
-
         ObservableList<String> unidades = FXCollections.observableArrayList();
         ConexionOracle conexion = new ConexionOracle();
 
-        if (conexion == null) {
-            mostrarAlerta("Error de conexión con la base de datos.");
-            return;
-        }
-
-        String sql = "select * from unidad u " +
-                "JOIN materia m ON u.materia_idmateria = m.idmateria " +
-                "where m.nombre = ?";
-
         try (Connection connection = conexion.conectar();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+             CallableStatement cs = connection.prepareCall("{ call sp_get_unidades_materia(?, ?) }")) {
 
-            stmt.setString(1, materiaSeleccionada);
+            cs.setString(1, materiaSeleccionada);
+            cs.registerOutParameter(2, oracle.jdbc.OracleTypes.CURSOR);
+            cs.execute();
 
-            try (ResultSet rs = stmt.executeQuery()) {
+            try (ResultSet rs = (ResultSet) cs.getObject(2)) {
                 while (rs.next()) {
                     unidades.add(rs.getString("nombre"));
                 }
@@ -143,6 +132,7 @@ public class CrearPreguntaController implements Initializable {
 
         unidadComboBox.setItems(unidades);
     }
+
 
     private void cargarTipoPregunta() {
 
@@ -176,24 +166,14 @@ public class CrearPreguntaController implements Initializable {
         ObservableList<String> materias = FXCollections.observableArrayList();
         ConexionOracle conexion = new ConexionOracle();
 
-        if (conexion == null) {
-            mostrarAlerta("Error de conexión con la base de datos.");
-            return;
-        }
-
-        String sql = "SELECT DISTINCT m.nombre " +
-                "FROM Docente d " +
-                "JOIN Grupo g ON d.iddocente = g.docente_iddocente " +
-                "JOIN Materia m ON g.materia_idmateria = m.idmateria " +
-                "WHERE d.iddocente = ? " +
-                "ORDER BY m.nombre";
-
         try (Connection connection = conexion.conectar();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+             CallableStatement cs = connection.prepareCall("{ call sp_get_materias_docente(?, ?) }")) {
 
-            stmt.setString(1, idUsuarioEnSesion);
+            cs.setString(1, idUsuarioEnSesion);
+            cs.registerOutParameter(2, oracle.jdbc.OracleTypes.CURSOR);
+            cs.execute();
 
-            try (ResultSet rs = stmt.executeQuery()) {
+            try (ResultSet rs = (ResultSet) cs.getObject(2)) {
                 while (rs.next()) {
                     materias.add(rs.getString("nombre"));
                 }
@@ -201,35 +181,23 @@ public class CrearPreguntaController implements Initializable {
         }
 
         materiaComboBox.setItems(materias);
-
     }
+
 
 
     private void cargarGrupos(String nombreMateriaSeleccionada) throws SQLException {
         ObservableList<String> grupos = FXCollections.observableArrayList();
         ConexionOracle conexion = new ConexionOracle();
 
-        if (conexion == null) {
-            mostrarAlerta("Error de conexión con la base de datos.");
-            return;
-        }
-
-        String sql = "SELECT g.nombre AS nombreGrupo, m.nombre AS nombreMateria " +
-                "FROM Docente d " +
-                "JOIN Grupo g ON d.iddocente = g.docente_iddocente " +
-                "JOIN Materia m ON g.materia_idmateria = m.idmateria " +
-                "WHERE d.iddocente = ? AND m.nombre = ? " +
-                "ORDER BY m.nombre";
-
-
         try (Connection connection = conexion.conectar();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+             CallableStatement cs = connection.prepareCall("{ call sp_get_grupos_docente_materia(?, ?, ?) }")) {
 
-            stmt.setString(1, idUsuarioEnSesion);
-            stmt.setString(2, nombreMateriaSeleccionada);
+            cs.setString(1, idUsuarioEnSesion);
+            cs.setString(2, nombreMateriaSeleccionada);
+            cs.registerOutParameter(3, oracle.jdbc.OracleTypes.CURSOR);
+            cs.execute();
 
-
-            try (ResultSet rs = stmt.executeQuery()) {
+            try (ResultSet rs = (ResultSet) cs.getObject(3)) {
                 while (rs.next()) {
                     grupos.add(rs.getString("nombreGrupo"));
                 }
@@ -238,6 +206,7 @@ public class CrearPreguntaController implements Initializable {
 
         grupoComboBox.setItems(grupos);
     }
+
 
     private void mostrarAlerta(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

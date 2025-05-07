@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/src/main/resources/sentenciasSQL/procedimientos/obtener_examenes_docente.sql" dialect="Oracle" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/sentenciasSQL/procedimientos/obtener_usuario_en_sesion.sql" dialect="Oracle" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/sentenciasSQL/procedimientos/sp_get_grupos_docente_materia.sql" dialect="Oracle" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/sentenciasSQL/procedimientos/sp_get_materias_docente.sql" dialect="Oracle" />
+  </component>
+</project>

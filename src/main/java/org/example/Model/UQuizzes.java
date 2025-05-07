@@ -2,10 +2,7 @@ package org.example.Model;
 
 import org.example.ConexionDB.ConexionOracle;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class UQuizzes {
 
@@ -30,48 +27,26 @@ public class UQuizzes {
         ConexionOracle conexionOracle = new ConexionOracle();
         Connection connection = conexionOracle.conectar();
 
-        if (connection == null) {
-            throw new SQLException("No se pudo establecer conexión con la base de datos.");
-        }
-
-        String query="";
-
-        if(isEsDocente()){
-            query = "SELECT * FROM DOCENTE WHERE IDDOCENTE  = ?";
-        }
-        else{
-            query = "SELECT * FROM ESTUDIANTE WHERE IDESTUDIANTE  = ?";
-        }
-
-        PreparedStatement stmt = connection.prepareStatement(query);
+        CallableStatement stmt = connection.prepareCall("{call obtener_usuario_en_sesion(?, ?, ?)}");
         stmt.setString(1, getUsuarioEnSesion());
+        stmt.setBoolean(2, isEsDocente());
+        stmt.registerOutParameter(3, oracle.jdbc.OracleTypes.CURSOR);
 
-        return stmt.executeQuery();
+        stmt.execute();
+        return (ResultSet) stmt.getObject(3);
     }
 
-    public ResultSet getExamenesDocenteSQL() throws SQLException {
 
+    public ResultSet getExamenesDocenteSQL() throws SQLException {
         ConexionOracle conexionOracle = new ConexionOracle();
         Connection connection = conexionOracle.conectar();
 
-        String sql = "SELECT " +
-                "e.NOMBRE AS nombre_examen, " +
-                "m.NOMBRE AS nombre_materia, " +
-                "g.NOMBRE AS nombre_grupo, " +
-                "e.FECHA, " +
-                "e.HORA " +
-                "FROM EXAMEN e " +
-                "JOIN GRUPO g ON e.GRUPO_IDGRUPO = g.IDGRUPO " +
-                "JOIN MATERIA m ON g.MATERIA_IDMATERIA = m.IDMATERIA " +
-                "WHERE e.DOCENTE_IDDOCENTE = ? " +
-                "ORDER BY e.FECHA";
+        CallableStatement stmt = connection.prepareCall("{call obtener_examenes_docente(?, ?)}");
+        stmt.setString(1, getUsuarioEnSesion());
+        stmt.registerOutParameter(2, oracle.jdbc.OracleTypes.CURSOR);
 
-
-        PreparedStatement ps = connection.prepareStatement(sql);
-        ps.setString(1, this.getUsuarioEnSesion());
-
-        System.out.println("en UQuizzes el usuario en sesion es " + this.getUsuarioEnSesion());
-        return ps.executeQuery();
+        stmt.execute();
+        return (ResultSet) stmt.getObject(2);
     }
 
     public String getUsuarioEnSesion() {
