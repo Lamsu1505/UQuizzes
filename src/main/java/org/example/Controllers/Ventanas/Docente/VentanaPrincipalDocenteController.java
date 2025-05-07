@@ -69,9 +69,14 @@ public class VentanaPrincipalDocenteController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         UQuizzes uQuizzes = UQuizzes.getInstance();
+        Connection conn = new ConexionOracle().conectar();
 
         try {
-            ResultSet rs = uQuizzes.getUsuarioEnSesionSQL();
+            String sql = "select nombre , apellido from docente where iddocente = ?";
+            PreparedStatement stm = conn.prepareStatement(sql);
+            stm.setString(1 , uQuizzes.getUsuarioEnSesion());
+
+            ResultSet rs = stm.executeQuery();
 
             while (rs.next()) {
                 String nombre = rs.getString("nombre");
@@ -99,6 +104,8 @@ public class VentanaPrincipalDocenteController implements Initializable {
     public void cerrarSesion(javafx.event.ActionEvent actionEvent) {
 
         try {
+            UQuizzes uQuizzes = UQuizzes.getInstance();
+            uQuizzes.setUsuarioEnSesion(null);
 
             // 1. Cargar el archivo FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfaces/Login/login.fxml"));
@@ -113,7 +120,7 @@ public class VentanaPrincipalDocenteController implements Initializable {
             stage.setTitle("UQuizzes - Iniciar Sesión");
 
             stage.setWidth(630);
-            stage.setHeight(400);
+            stage.setHeight(390);
             stage.setResizable(false);
 
             stage.centerOnScreen();

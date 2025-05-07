@@ -6,14 +6,24 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
+import oracle.sql.TIMESTAMPTZ;
+import org.example.ConexionDB.ConexionOracle;
 import org.example.Model.UQuizzes;
 
 import javafx.scene.control.Label;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class panelInicioDocenteController implements Initializable {
@@ -28,15 +38,20 @@ public class panelInicioDocenteController implements Initializable {
     private Label lblBienvenido;
 
     @FXML private VBox VBoxContenedorExamenes;
-
+    UQuizzes uQuizzes = UQuizzes.getInstance();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        UQuizzes uQuizzes = UQuizzes.getInstance();
+
+
+        Connection conn = new ConexionOracle().conectar();
 
         try {
-            ResultSet rs = uQuizzes.getUsuarioEnSesionSQL();
+            String sql = "select nombre , apellido from docente where iddocente = ?";
+            PreparedStatement stm = conn.prepareStatement(sql);
+            stm.setString(1 , uQuizzes.getUsuarioEnSesion());
 
+            ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 String nombre = rs.getString("nombre");
                 String apellido = rs.getString("apellido");
@@ -44,24 +59,26 @@ public class panelInicioDocenteController implements Initializable {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
 
-        System.out.println("en panelInicioDocenteController voy a cargar los exmanes del usuario");
-        cargarExamenes();
+        try {
+
+            cargarExamenes();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private void cargarExamenes() {
+    private void cargarExamenes() throws SQLException {
 
-        System.out.println("estoy en cargar examenes");
+        List<Map<String, Object>> lista = uQuizzes.getExamenesDocenteSQL();
 
-        UQuizzes uQuizzes = UQuizzes.getInstance();
-        try (ResultSet rs = uQuizzes.getExamenesDocenteSQL()) {
-            VBoxContenedorExamenes.getChildren().clear();
+        try {
 
-            while (rs.next()) {
+            for (Map<String,Object> fila : lista) {
 
-                // 1) Carga el FXML de cada examen
                 FXMLLoader loader = new FXMLLoader(
                         getClass().getResource("/Interfaces/Paneles/Docente/examenPaginaPrincipal.fxml")
                 );
@@ -69,21 +86,28 @@ public class panelInicioDocenteController implements Initializable {
 
                 // 2) Obtén el controller y pásale los datos
                 ExamenPaginaPrincipalController ctrl = loader.getController();
-                ctrl.setNombreExamen(rs.getString("nombre_examen"));
-                ctrl.setMateria      (rs.getString("nombre_materia"));
-                ctrl.setGrupo        (rs.getString("nombre_grupo"));
-                ctrl.setFecha        (rs.getDate  ("fecha"));      // java.sql.Date
-                ctrl.setHora         (rs.getTime  ("hora"));       // java.sql.Time
+
+                ctrl.setNombreExamen("" + fila.get("NOMBRE_EXAMEN"));
+                ctrl.setMateria      ("" + fila.get("NOMBRE_MATERIA"));
+                ctrl.setGrupo        ("" + fila.get("NOMBRE_GRUPO"));
+                ctrl.setFecha(("" + fila.get("FECHA")).substring(0, 10));
+
+                //TODO no se como formatear esto (esta llegando como objeto y no como string)
+                ctrl.setHora(("" + fila.get("HORA")).toString().substring(0, 5));
+
+
+
+
+
 
                 // 3) Añádelo al VBox
                 VBoxContenedorExamenes.getChildren().add(examenNode);
             }
 
-        } catch (SQLException ex) {
-            ex.printStackTrace();
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
     }
 }
