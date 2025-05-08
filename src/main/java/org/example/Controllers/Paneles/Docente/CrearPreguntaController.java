@@ -10,6 +10,8 @@ import org.example.Model.UQuizzes;
 
 import java.net.URL;
 import java.sql.*;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class CrearPreguntaController implements Initializable {
@@ -84,12 +86,13 @@ public class CrearPreguntaController implements Initializable {
 
     private String nombreMateriaSeleccionada;
 
+    private UQuizzes uQuizzes = UQuizzes.getInstance();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        idUsuarioEnSesion = UQuizzes.getInstance().getUsuarioEnSesion();
+
 
         try {
-
             cargarTipoPregunta();
             cargarMaterias();
 
@@ -113,24 +116,7 @@ public class CrearPreguntaController implements Initializable {
     }
 
     private void cargarUnidades(String materiaSeleccionada) throws SQLException {
-        ObservableList<String> unidades = FXCollections.observableArrayList();
-        ConexionOracle conexion = new ConexionOracle();
 
-        try (Connection connection = conexion.conectar();
-             CallableStatement cs = connection.prepareCall("{ call sp_get_unidades_materia(?, ?) }")) {
-
-            cs.setString(1, materiaSeleccionada);
-            cs.registerOutParameter(2, oracle.jdbc.OracleTypes.CURSOR);
-            cs.execute();
-
-            try (ResultSet rs = (ResultSet) cs.getObject(2)) {
-                while (rs.next()) {
-                    unidades.add(rs.getString("nombre"));
-                }
-            }
-        }
-
-        unidadComboBox.setItems(unidades);
     }
 
 
@@ -164,47 +150,23 @@ public class CrearPreguntaController implements Initializable {
 
     private void cargarMaterias() throws SQLException {
         ObservableList<String> materias = FXCollections.observableArrayList();
-        ConexionOracle conexion = new ConexionOracle();
+        List<Map<String, Object>> listaSQL = uQuizzes.getMateriasDocente(uQuizzes.getUsuarioEnSesion());
 
-        try (Connection connection = conexion.conectar();
-             CallableStatement cs = connection.prepareCall("{ call sp_get_materias_docente(?, ?) }")) {
-
-            cs.setString(1, idUsuarioEnSesion);
-            cs.registerOutParameter(2, oracle.jdbc.OracleTypes.CURSOR);
-            cs.execute();
-
-            try (ResultSet rs = (ResultSet) cs.getObject(2)) {
-                while (rs.next()) {
-                    materias.add(rs.getString("nombre"));
-                }
-            }
+        for(int i =0 ; i < listaSQL.size() ; i++){
+            String nombreMateria = listaSQL.get(i).get("NOMBRE_MATERIA").toString();
+            materias.add(nombreMateria);
+            System.out.println(nombreMateria);
         }
 
         materiaComboBox.setItems(materias);
+
+
     }
 
 
 
     private void cargarGrupos(String nombreMateriaSeleccionada) throws SQLException {
-        ObservableList<String> grupos = FXCollections.observableArrayList();
-        ConexionOracle conexion = new ConexionOracle();
 
-        try (Connection connection = conexion.conectar();
-             CallableStatement cs = connection.prepareCall("{ call sp_get_grupos_docente_materia(?, ?, ?) }")) {
-
-            cs.setString(1, idUsuarioEnSesion);
-            cs.setString(2, nombreMateriaSeleccionada);
-            cs.registerOutParameter(3, oracle.jdbc.OracleTypes.CURSOR);
-            cs.execute();
-
-            try (ResultSet rs = (ResultSet) cs.getObject(3)) {
-                while (rs.next()) {
-                    grupos.add(rs.getString("nombreGrupo"));
-                }
-            }
-        }
-
-        grupoComboBox.setItems(grupos);
     }
 
 
