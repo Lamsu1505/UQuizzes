@@ -1,6 +1,9 @@
 package org.example.ConexionDB;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
+import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -38,6 +41,29 @@ public class ConexionOracle {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+
+    public static void ejecutarSQLDesdeArchivo(InputStream inputStream) throws SQLException, IOException {
+        try (Connection conn = conectar()) {
+            StringBuilder queryBuilder = new StringBuilder();
+            Scanner scanner = new Scanner(inputStream);
+
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                if (line.trim().equals("/")) { // ejecuta el bloque cuando se encuentra la barra
+                    String query = queryBuilder.toString();
+                    if (!query.trim().isEmpty()) {
+                        try (Statement stmt = conn.createStatement()) {
+                            stmt.execute(query);
+                        }
+                        queryBuilder.setLength(0); // reiniciar
+                    }
+                } else {
+                    queryBuilder.append(line).append("\n");
+                }
+            }
         }
     }
 }

@@ -132,8 +132,8 @@ public class CrearPreguntaController implements Initializable {
                     }
 
                     try {
-                        cargarGrupos(idMateriaSeleccionada);
-                        cargarUnidades(idMateriaSeleccionada);
+                        cargarGrupos();
+                        cargarUnidades();
                     } catch (SQLException e) {
                         e.printStackTrace();
                         mostrarAlerta("Error al cargar grupos en crearPreguntaController: " + e.getMessage());
@@ -201,7 +201,7 @@ public class CrearPreguntaController implements Initializable {
     }
 
 
-    private void cargarUnidades(String materiaSeleccionada) throws SQLException {
+    private void cargarUnidades() throws SQLException {
         ObservableList<String> unidades = FXCollections.observableArrayList();
         List<Map<String, Object>> listaSQL = uQuizzes.getUnidadesDocenteByMateria(idMateriaSeleccionada);
 
@@ -258,7 +258,7 @@ public class CrearPreguntaController implements Initializable {
 
 
 
-    private void cargarGrupos(String nombreMateriaSeleccionada) throws SQLException {
+    private void cargarGrupos() throws SQLException {
         ObservableList<String> grupos = FXCollections.observableArrayList();
         List<Map<String, Object>> listaSQL = uQuizzes.getGruposDocenteByMateria(uQuizzes.getUsuarioEnSesion() , idMateriaSeleccionada);
 
