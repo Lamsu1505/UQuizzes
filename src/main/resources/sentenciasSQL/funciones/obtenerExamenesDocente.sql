@@ -19,3 +19,4 @@ ORDER BY fecha;
 
 RETURN c_examenes;
 END obtenerExamenesDocente;
+/

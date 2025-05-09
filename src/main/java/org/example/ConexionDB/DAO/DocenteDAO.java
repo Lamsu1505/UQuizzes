@@ -45,10 +45,6 @@ public class DocenteDAO {
         }
     }
 
-    /**
-     * Llama a la función iniciarSesionDocente (que devuelve VARCHAR2) y
-     * retorna directamente ese String, o null si no hay coincidencia o hay error.
-     */
     public String iniciarSesion(String usuario, String password) {
         String call = "{ ? = call iniciarSesionDocente(?, ?) }";
 
@@ -73,6 +69,132 @@ public class DocenteDAO {
                     "Error al iniciar sesión:\n" + e.getMessage()
             ).showAndWait();
             return null;
+        }
+    }
+
+    public List<Map<String, Object>> getGruposByMateria(String idDocente , String idMateria) throws SQLException {
+        String call = "{ ? = call obtenerGruposDocenteByMateria(?, ?) }";
+
+        try (
+                Connection conn = new ConexionOracle().conectar();
+                CallableStatement stmt = conn.prepareCall(call)
+        ) {
+            // 1) Registrar salida: el cursor
+            stmt.registerOutParameter(1, OracleTypes.CURSOR);
+            // 2) Parametro IN: idDocente
+            stmt.setString(2, idDocente);
+            stmt.setString(3, idMateria);
+            // 3) Ejecutar
+            stmt.execute();
+
+            // 4) Obtener el ResultSet del cursor
+            try (ResultSet rs = (ResultSet) stmt.getObject(1)) {
+                List<Map<String, Object>> lista = new ArrayList<>();
+                ResultSetMetaData md = rs.getMetaData();
+                int cols = md.getColumnCount();
+
+                while (rs.next()) {
+                    Map<String,Object> fila = new HashMap<>();
+                    for (int i = 1; i <= cols; i++) {
+                        fila.put(md.getColumnLabel(i), rs.getObject(i));
+                    }
+                    lista.add(fila);
+                }
+                return lista;
+            }
+        }
+    }
+
+    public List<Map<String, Object>> getMateriasDocente(String idDocente) throws SQLException {
+        String call = "{ ? = call obtenerMateriasDocente(?) }";
+
+        List<Map<String, Object>> listaMaterias = new ArrayList<>();
+
+        try (
+                Connection conn = new ConexionOracle().conectar();
+                CallableStatement stmt = conn.prepareCall(call)
+        ) {
+            stmt.registerOutParameter(1, OracleTypes.CURSOR);
+            stmt.setString(2, idDocente);
+            stmt.execute();
+
+            try (ResultSet rs = (ResultSet) stmt.getObject(1)) {
+                ResultSetMetaData md = rs.getMetaData();
+                int cols = md.getColumnCount();
+
+                while (rs.next()) {
+                    Map<String, Object> fila = new HashMap<>();
+                    for (int i = 1; i <= cols; i++) {
+                        fila.put(md.getColumnLabel(i), rs.getObject(i));
+                    }
+                    listaMaterias.add(fila);
+                }
+            }
+        }
+        return listaMaterias;
+    }
+
+    public List<Map<String, Object>> getUnidadesByMateria(String idMateria) throws SQLException {
+
+        String call = "{ ? = call getUnidadesDocenteByMateria(?) }";
+
+        try (
+                Connection conn = new ConexionOracle().conectar();
+                CallableStatement stmt = conn.prepareCall(call)
+        ) {
+
+            stmt.registerOutParameter(1, OracleTypes.CURSOR);
+            stmt.setString(2, idMateria);
+
+            stmt.execute();
+
+            // 4) Obtener el ResultSet del cursor
+            try (ResultSet rs = (ResultSet) stmt.getObject(1)) {
+                List<Map<String, Object>> lista = new ArrayList<>();
+                ResultSetMetaData md = rs.getMetaData();
+                int cols = md.getColumnCount();
+
+                while (rs.next()) {
+                    Map<String,Object> fila = new HashMap<>();
+                    for (int i = 1; i <= cols; i++) {
+                        fila.put(md.getColumnLabel(i), rs.getObject(i));
+                    }
+                    lista.add(fila);
+                }
+                return lista;
+            }
+        }
+    }
+
+    public List<Map<String, Object>> getTemasByUnidad(String idUnidadSeleccionada) throws SQLException {
+
+        String call = "{ ? = call getTemasDocenteByUnidad(?) }";
+
+        try (
+                Connection conn = new ConexionOracle().conectar();
+                CallableStatement stmt = conn.prepareCall(call)
+        ) {
+
+            stmt.registerOutParameter(1, OracleTypes.CURSOR);
+            stmt.setString(2, idUnidadSeleccionada);
+
+            stmt.execute();
+
+            // 4) Obtener el ResultSet del cursor
+            try (ResultSet rs = (ResultSet) stmt.getObject(1)) {
+                List<Map<String, Object>> lista = new ArrayList<>();
+                ResultSetMetaData md = rs.getMetaData();
+                int cols = md.getColumnCount();
+
+                while (rs.next()) {
+                    Map<String,Object> fila = new HashMap<>();
+                    for (int i = 1; i <= cols; i++) {
+                        fila.put(md.getColumnLabel(i), rs.getObject(i));
+                    }
+                    lista.add(fila);
+                }
+                return lista;
+            }
         }
     }
 }

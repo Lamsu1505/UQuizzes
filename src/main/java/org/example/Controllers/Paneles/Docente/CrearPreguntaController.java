@@ -82,9 +82,17 @@ public class CrearPreguntaController implements Initializable {
     @FXML
     private Label publicaLabel;
 
+    @FXML
+    private ComboBox<String> nivelComboBox;
+
+    @FXML
+    private Label nivelLabel;
+
     private String idUsuarioEnSesion;
 
-    private String nombreMateriaSeleccionada;
+    private String idMateriaSeleccionada;
+    private String idUnidadSeleccionada;
+
 
     private UQuizzes uQuizzes = UQuizzes.getInstance();
 
@@ -98,25 +106,110 @@ public class CrearPreguntaController implements Initializable {
 
             //esto es para actualizar los grupos segun la materia que elija
             materiaComboBox.setOnAction(event -> {
-                String materiaSeleccionada = materiaComboBox.getValue();
-                if (materiaSeleccionada != null) {
-                    nombreMateriaSeleccionada = materiaSeleccionada;
-                    try {
-                        cargarGrupos(materiaSeleccionada);
-                        cargarUnidades(materiaSeleccionada);
+                String nombreMateriaSeleccionada = materiaComboBox.getValue();
+                if (nombreMateriaSeleccionada != null) {
+
+                    ConexionOracle conexion = new ConexionOracle();
+
+                    if (conexion == null) {
+                        mostrarAlerta("Error de conexión con la base de datos.");
+                        return;
+                    }
+
+                    String sql = "select idmateria " +
+                            "from materia where nombre = '" + nombreMateriaSeleccionada + "'";
+
+                    try (Connection connection = conexion.conectar();
+                         PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+                        try (ResultSet rs = stmt.executeQuery()) {
+                            while (rs.next()) {
+                                idMateriaSeleccionada = rs.getString("IDMATERIA");
+                            }
+                        }
                     } catch (SQLException e) {
-                        mostrarAlerta("Error al cargar grupos: " + e.getMessage());
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        cargarGrupos(idMateriaSeleccionada);
+                        cargarUnidades(idMateriaSeleccionada);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                        mostrarAlerta("Error al cargar grupos en crearPreguntaController: " + e.getMessage());
                     }
                 }
             });
+
+
+            unidadComboBox.setOnAction(event -> {
+                try{
+                    String nombreUnidadSeleccionada = unidadComboBox.getValue();
+                    if (nombreUnidadSeleccionada != null) {
+                        ConexionOracle conexion = new ConexionOracle();
+                        if (conexion == null) {
+                            mostrarAlerta("Error de conexión con la base de datos.");
+                            return;
+                        }
+
+                        String sql = "select idunidad " +
+                                "from unidad where nombre = '" + nombreUnidadSeleccionada + "'";
+
+                        try (Connection connection = conexion.conectar();
+                             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+                            try (ResultSet rs = stmt.executeQuery()) {
+                                while (rs.next()) {
+                                    idUnidadSeleccionada = rs.getString("IDUNIDAD");
+                                }
+                            }
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    try {
+                        cargarTemas(idUnidadSeleccionada);
+
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                        mostrarAlerta("Error al cargar temas en crearPreguntaController: " + e.getMessage());
+                    }
+
+
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                }
+            });
+
 
         } catch (SQLException e) {
             mostrarAlerta("Error al cargar info " + e.getMessage());
         }
     }
 
-    private void cargarUnidades(String materiaSeleccionada) throws SQLException {
+    private void cargarTemas(String idUnidadSeleccionada) throws SQLException {
+        ObservableList<String> temas = FXCollections.observableArrayList();
+        List<Map<String, Object>> listaSQL = uQuizzes.getTemasDocenteByUnidad(idUnidadSeleccionada);
 
+        for(int i =0 ; i < listaSQL.size() ; i++){
+            String nombreGrupo = listaSQL.get(i).get("NOMBRE_TEMA").toString();
+            temas.add(nombreGrupo);
+        }
+        temaComboBox.setItems(temas);
+    }
+
+
+    private void cargarUnidades(String materiaSeleccionada) throws SQLException {
+        ObservableList<String> unidades = FXCollections.observableArrayList();
+        List<Map<String, Object>> listaSQL = uQuizzes.getUnidadesDocenteByMateria(idMateriaSeleccionada);
+
+        for(int i =0 ; i < listaSQL.size() ; i++){
+            String nombreGrupo = listaSQL.get(i).get("NOMBRE_UNIDAD").toString();
+            unidades.add(nombreGrupo);
+        }
+        unidadComboBox.setItems(unidades);
     }
 
 
@@ -166,7 +259,14 @@ public class CrearPreguntaController implements Initializable {
 
 
     private void cargarGrupos(String nombreMateriaSeleccionada) throws SQLException {
+        ObservableList<String> grupos = FXCollections.observableArrayList();
+        List<Map<String, Object>> listaSQL = uQuizzes.getGruposDocenteByMateria(uQuizzes.getUsuarioEnSesion() , idMateriaSeleccionada);
 
+        for(int i =0 ; i < listaSQL.size() ; i++){
+            String nombreGrupo = listaSQL.get(i).get("NOMBRE_GRUPO").toString();
+            grupos.add(nombreGrupo);
+        }
+        grupoComboBox.setItems(grupos);
     }
 
 

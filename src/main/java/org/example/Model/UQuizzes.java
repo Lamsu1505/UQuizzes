@@ -38,32 +38,8 @@ public class UQuizzes {
     }
 
     public List<Map<String, Object>> getMateriasDocente(String idDocente) throws SQLException {
-        String call = "{ ? = call obtenerMateriasDocente(?) }";
-
-        List<Map<String, Object>> listaMaterias = new ArrayList<>();
-
-        try (
-                Connection conn = new ConexionOracle().conectar();
-                CallableStatement stmt = conn.prepareCall(call)
-        ) {
-            stmt.registerOutParameter(1, OracleTypes.CURSOR);
-            stmt.setString(2, idDocente);
-            stmt.execute();
-
-            try (ResultSet rs = (ResultSet) stmt.getObject(1)) {
-                ResultSetMetaData md = rs.getMetaData();
-                int cols = md.getColumnCount();
-
-                while (rs.next()) {
-                    Map<String, Object> fila = new HashMap<>();
-                    for (int i = 1; i <= cols; i++) {
-                        fila.put(md.getColumnLabel(i), rs.getObject(i));
-                    }
-                    listaMaterias.add(fila);
-                }
-            }
-        }
-        return listaMaterias;
+        DocenteDAO docenteDAO = new DocenteDAO();
+        return docenteDAO.getMateriasDocente(idDocente);
     }
 
     public String getUsuarioEnSesion() {
@@ -80,6 +56,21 @@ public class UQuizzes {
 
     public void setEsDocente(boolean esDocente) {
         this.esDocente = esDocente;
+    }
+
+    public List<Map<String, Object>> getGruposDocenteByMateria(String usuarioEnSesion, String idMateria) throws SQLException {
+        DocenteDAO docenteDAO = new DocenteDAO();
+        return docenteDAO.getGruposByMateria(usuarioEnSesion,idMateria);
+    }
+
+    public List<Map<String, Object>> getUnidadesDocenteByMateria(String idMateria) throws SQLException {
+        DocenteDAO docenteDAO = new DocenteDAO();
+        return docenteDAO.getUnidadesByMateria(idMateria);
+    }
+
+    public List<Map<String, Object>> getTemasDocenteByUnidad(String idUnidadSeleccionada) throws SQLException {
+        DocenteDAO docenteDAO = new DocenteDAO();
+        return docenteDAO.getTemasByUnidad(idUnidadSeleccionada);
     }
 }
 
