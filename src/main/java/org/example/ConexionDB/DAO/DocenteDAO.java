@@ -196,9 +196,9 @@ public class DocenteDAO {
         }
     }
 
-    public boolean crearPregunta(String idTemaSeleccionado, String idTipoPreguntaSeleccionado, String idPreguntaPadre, String idNivelPreguntaSeleccionado, boolean isPublica, String enunciado, String peso, String tiempoPregunta) {
+    public int crearPregunta(String idTemaSeleccionado, String idTipoPreguntaSeleccionado, String idPreguntaPadre, String idNivelPreguntaSeleccionado, boolean isPublica, String enunciado, String peso, String tiempoPregunta) {
 
-
+        int respuesta = 0;
 
         Integer idTema = Integer.parseInt(idTemaSeleccionado);
         Integer idTipoPregunta = Integer.parseInt(idTipoPreguntaSeleccionado);
@@ -247,9 +247,10 @@ public class DocenteDAO {
             stmt.execute();
             System.out.println(stmt.getInt(1));
 
-            if(stmt.getInt(1) == 1){
-                return true;
-            }
+            respuesta = stmt.getInt(1);
+
+            return respuesta;
+
 
 
 
@@ -260,6 +261,6 @@ public class DocenteDAO {
 
 
         }
-        return false;
+        return respuesta;
     }
 }

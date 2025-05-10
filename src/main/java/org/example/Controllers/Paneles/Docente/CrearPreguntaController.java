@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -415,7 +416,7 @@ public class CrearPreguntaController implements Initializable {
 
 
 
-    public void crearPregunta(ActionEvent actionEvent) {
+    public void crearPregunta(ActionEvent actionEvent) throws IOException {
         if (validarCamposObligatorios()) {
             if (subpreguntaCheckBox.isSelected()) {
                 //TODO si selecciona que es subpregunta, que se hace?
@@ -430,9 +431,24 @@ public class CrearPreguntaController implements Initializable {
 
 
 
-                boolean verificacion = uQuizzes.crearPregunta(idTemaSeleccionado , idTipoPreguntaSeleccionado , idPreguntaPadre , idNivelPreguntaSeleccionado , isPublica , enunciado , peso , tiempoPregunta);
-                if(verificacion){
-                    mostrarAlerta("Pregunta creada con exito " + idTemaSeleccionado +  " " + idTipoPreguntaSeleccionado + " " + idNivelPreguntaSeleccionado + " " + isPublica + " " + enunciado);
+                int idPregunta = uQuizzes.crearPregunta(idTemaSeleccionado , idTipoPreguntaSeleccionado , idPreguntaPadre , idNivelPreguntaSeleccionado , isPublica , enunciado , peso , tiempoPregunta);
+                if(idPregunta != 0 ){
+                    mostrarAlerta("Pregunta creada con exito");
+
+                    uQuizzes.setIdPreguntaRecienCreada(idPregunta + 1);
+
+                    limpiarCampos();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfaces/Paneles/Docente/OpcionesRespuesta/contenedorGeneralOpciones.fxml"));
+                    Parent root = loader.load();
+                    Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                    stage.setScene(new Scene(root));
+                    stage.setTitle("UQuizzes - Opciones de respuesta");
+                    stage.setWidth(1000);
+                    stage.setHeight(700);
+                    stage.centerOnScreen();
+                    stage.setResizable(false);
+                    stage.show();
+
                 }
                 else {
                     mostrarAlerta("Algo fallo");
@@ -445,21 +461,7 @@ public class CrearPreguntaController implements Initializable {
 
     public void cancelar(ActionEvent actionEvent) {
 
-        enunciadoTextArea.clear();
-        tiempoTextField.clear();
-        pesoTextField.clear();
-
-        // Limpiar ComboBox (quitar selección)
-        tipoPreguntaComboBox.getSelectionModel().clearSelection();
-        grupoComboBox.getSelectionModel().clearSelection();
-        materiaComboBox.getSelectionModel().clearSelection();
-        unidadComboBox.getSelectionModel().clearSelection();
-        temaComboBox.getSelectionModel().clearSelection();
-        nivelComboBox.getSelectionModel().clearSelection();
-
-        // Desmarcar CheckBox
-        publicaCheckBox.setSelected(false);
-        subpreguntaCheckBox.setSelected(false);
+        limpiarCampos();
 
     }
 
@@ -504,5 +506,23 @@ public class CrearPreguntaController implements Initializable {
         // Añadir otras validaciones según sea necesario
 
         return true;
+    }
+
+    private void limpiarCampos() {
+        enunciadoTextArea.clear();
+        tiempoTextField.clear();
+        pesoTextField.clear();
+
+        // Limpiar ComboBox (quitar selección)
+        tipoPreguntaComboBox.getSelectionModel().clearSelection();
+        grupoComboBox.getSelectionModel().clearSelection();
+        materiaComboBox.getSelectionModel().clearSelection();
+        unidadComboBox.getSelectionModel().clearSelection();
+        temaComboBox.getSelectionModel().clearSelection();
+        nivelComboBox.getSelectionModel().clearSelection();
+
+        // Desmarcar CheckBox
+        publicaCheckBox.setSelected(false);
+        subpreguntaCheckBox.setSelected(false);
     }
 }

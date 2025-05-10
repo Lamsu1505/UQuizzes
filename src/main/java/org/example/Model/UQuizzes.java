@@ -18,9 +18,12 @@ public class UQuizzes {
 
     public DocenteDAO docenteDAO = new DocenteDAO();
 
+    private int idPreguntaRecienCreada;
+
 
     private UQuizzes() {
         usuarioEnSesion = null;
+        idPreguntaRecienCreada = 0;
     }
 
     public static UQuizzes getInstance()  {
@@ -42,6 +45,14 @@ public class UQuizzes {
     public List<Map<String, Object>> getMateriasDocente(String idDocente) throws SQLException {
 
         return docenteDAO.getMateriasDocente(idDocente);
+    }
+
+    public int getIdPreguntaRecienCreada() {
+        return idPreguntaRecienCreada;
+    }
+
+    public void setIdPreguntaRecienCreada(int idPreguntaRecienCreada) {
+        this.idPreguntaRecienCreada = idPreguntaRecienCreada;
     }
 
     public String getUsuarioEnSesion() {
@@ -76,7 +87,7 @@ public class UQuizzes {
     }
 
 
-    public boolean crearPregunta(String idTemaSeleccionado, String idTipoPreguntaSeleccionado, String idPreguntaPadre, String idNivelPreguntaSeleccionado, Boolean isPublica, String enunciado, String peso, String tiempoPregunta) {
+    public int crearPregunta(String idTemaSeleccionado, String idTipoPreguntaSeleccionado, String idPreguntaPadre, String idNivelPreguntaSeleccionado, Boolean isPublica, String enunciado, String peso, String tiempoPregunta) {
         return docenteDAO.crearPregunta(idTemaSeleccionado , idTipoPreguntaSeleccionado , idPreguntaPadre , idNivelPreguntaSeleccionado , isPublica, enunciado , peso , tiempoPregunta);
     }
 }

@@ -65,6 +65,15 @@ public class VentanaPrincipalDocenteController implements Initializable {
     @FXML
     private SVGPath imgBuscar;
 
+    private static VentanaPrincipalDocenteController ventanaPrincipalDocenteController = new VentanaPrincipalDocenteController();
+
+
+    public static VentanaPrincipalDocenteController getInstance()  {
+        if (ventanaPrincipalDocenteController == null){
+            ventanaPrincipalDocenteController = new VentanaPrincipalDocenteController();
+        }
+        return ventanaPrincipalDocenteController;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
