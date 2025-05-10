@@ -72,11 +72,8 @@ public class panelInicioDocenteController implements Initializable {
     }
 
     private void cargarExamenes() throws SQLException {
-
         List<Map<String, Object>> lista = uQuizzes.getExamenesDocenteSQL();
-
         try {
-
             for (Map<String,Object> fila : lista) {
 
                 FXMLLoader loader = new FXMLLoader(
@@ -91,9 +88,7 @@ public class panelInicioDocenteController implements Initializable {
                 ctrl.setMateria      ("" + fila.get("NOMBRE_MATERIA"));
                 ctrl.setGrupo        ("" + fila.get("NOMBRE_GRUPO"));
                 ctrl.setFecha(("" + fila.get("FECHA")).substring(0, 10));
-
-                //TODO no se como formatear esto (esta llegando como objeto y no como string)
-                ctrl.setHora(("" + fila.get("HORA")).toString().substring(0, 5));
+                ctrl.setHora(("" + fila.get("HORA")).toString());
 
                 // 3) Añádelo al VBox
                 VBoxContenedorExamenes.getChildren().add(examenNode);

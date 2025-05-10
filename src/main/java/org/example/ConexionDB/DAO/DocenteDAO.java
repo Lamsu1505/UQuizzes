@@ -2,14 +2,12 @@
 package org.example.ConexionDB.DAO;
 
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import oracle.jdbc.internal.OracleTypes;
 import org.example.ConexionDB.ConexionOracle;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DocenteDAO {
 
@@ -196,5 +194,79 @@ public class DocenteDAO {
                 return lista;
             }
         }
+    }
+
+    public boolean crearPregunta(String idTemaSeleccionado, String idTipoPreguntaSeleccionado, String idPreguntaPadre, String idNivelPreguntaSeleccionado, boolean isPublica, String enunciado, String peso, String tiempoPregunta) {
+
+        Integer idTema = Integer.parseInt(idTemaSeleccionado);
+        Integer idTipoPregunta = Integer.parseInt(idTipoPreguntaSeleccionado);
+
+        Integer idPreguntaPapa;
+        if(idPreguntaPadre == null){
+            idPreguntaPapa = 0;
+        }
+        else {
+            idPreguntaPapa = Integer.parseInt(idPreguntaPadre);
+        }
+
+        Integer idNivelPregunta = Integer.parseInt(idNivelPreguntaSeleccionado);
+        String esPublica;
+        if(isPublica){
+            esPublica = "S";
+        }
+        else {
+            esPublica = "N";
+        }
+        Integer iPeso = Integer.parseInt(peso);
+        Integer iTiempoPregunta = Integer.parseInt(tiempoPregunta);
+
+        String call = "{ ? = call crearPregunta(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+
+        try (
+                Connection conn = new ConexionOracle().conectar();
+                CallableStatement stmt = conn.prepareCall(call)
+        ) {
+
+
+            stmt.registerOutParameter(1, Types.INTEGER);
+
+
+            //TODO trigger despues de que zz mande con autoincrementable
+            stmt.setInt(2, 1089); //no importa pq hay un trigger que cambia
+
+            stmt.setInt(3, idTema);
+            stmt.setInt(4, idTipoPregunta);
+
+            if (idPreguntaPadre==null) {
+
+                //IMPORTANTE EL SETNULL SINO NO FUNCIONA
+                stmt.setNull(5, Types.INTEGER);
+            } else {
+                //TODO aca es cuando si tiene padre
+            }
+
+            stmt.setInt(6, idNivelPregunta);
+            stmt.setString(7, esPublica);
+            stmt.setString(8, enunciado);
+            stmt.setInt(9, iPeso);
+            stmt.setInt(10, iTiempoPregunta);
+
+            stmt.execute();
+            System.out.println(stmt.getInt(1));
+
+            if(stmt.getInt(1) == 1){
+                return true;
+            }
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Optional<ButtonType> buttonType = new Alert(Alert.AlertType.ERROR,
+                    "Error al crear la pregunta:\n" + e.getMessage()).showAndWait();
+
+
+        }
+        return false;
     }
 }

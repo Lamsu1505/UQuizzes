@@ -16,6 +16,8 @@ public class UQuizzes {
     private String usuarioEnSesion;
     private boolean esDocente;
 
+    public DocenteDAO docenteDAO = new DocenteDAO();
+
 
     private UQuizzes() {
         usuarioEnSesion = null;
@@ -32,13 +34,13 @@ public class UQuizzes {
     public List<Map<String, Object>> getExamenesDocenteSQL() throws SQLException {
         ConexionOracle conexionOracle = new ConexionOracle();
         Connection connection = conexionOracle.conectar();
-        DocenteDAO docenteDAO = new DocenteDAO();
+
 
         return docenteDAO.getExamenes(getUsuarioEnSesion());
     }
 
     public List<Map<String, Object>> getMateriasDocente(String idDocente) throws SQLException {
-        DocenteDAO docenteDAO = new DocenteDAO();
+
         return docenteDAO.getMateriasDocente(idDocente);
     }
 
@@ -59,18 +61,23 @@ public class UQuizzes {
     }
 
     public List<Map<String, Object>> getGruposDocenteByMateria(String usuarioEnSesion, String idMateria) throws SQLException {
-        DocenteDAO docenteDAO = new DocenteDAO();
+
         return docenteDAO.getGruposByMateria(usuarioEnSesion,idMateria);
     }
 
     public List<Map<String, Object>> getUnidadesDocenteByMateria(String idMateria) throws SQLException {
-        DocenteDAO docenteDAO = new DocenteDAO();
+
         return docenteDAO.getUnidadesByMateria(idMateria);
     }
 
     public List<Map<String, Object>> getTemasDocenteByUnidad(String idUnidadSeleccionada) throws SQLException {
-        DocenteDAO docenteDAO = new DocenteDAO();
+
         return docenteDAO.getTemasByUnidad(idUnidadSeleccionada);
+    }
+
+
+    public boolean crearPregunta(String idTemaSeleccionado, String idTipoPreguntaSeleccionado, String idPreguntaPadre, String idNivelPreguntaSeleccionado, Boolean isPublica, String enunciado, String peso, String tiempoPregunta) {
+        return docenteDAO.crearPregunta(idTemaSeleccionado , idTipoPreguntaSeleccionado , idPreguntaPadre , idNivelPreguntaSeleccionado , isPublica, enunciado , peso , tiempoPregunta);
     }
 }
 

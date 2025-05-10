@@ -22,7 +22,8 @@ public class Main extends Application {
                 "/sentenciasSQL/funciones/iniciarSesionDocente.sql",
                 "/sentenciasSQL/funciones/obtenerExamenesDocente.sql",
                 "/sentenciasSQL/funciones/obtenerGruposDocenteByMateria.sql",
-                "/sentenciasSQL/funciones/obtenerMateriasDocente.sql"
+                "/sentenciasSQL/funciones/obtenerMateriasDocente.sql",
+                "/sentenciasSQL/funciones/crearPregunta.sql"
         };
 
         for (String archivo : archivosSQL) {
