@@ -94,6 +94,7 @@ public class panelInicioDocenteController implements Initializable {
 
                 //TODO no se como formatear esto (esta llegando como objeto y no como string)
                 ctrl.setHora(("" + fila.get("HORA")).toString().substring(0, 5));
+                System.out.println(fila.get("HORA"));
 
                 // 3) Añádelo al VBox
                 VBoxContenedorExamenes.getChildren().add(examenNode);

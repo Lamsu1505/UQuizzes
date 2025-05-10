@@ -1,0 +1,21 @@
+-- Tema
+DECLARE
+  v_max_id NUMBER;
+  v_count  NUMBER;
+BEGIN
+  SELECT NVL(MAX(idTema), 0) + 1 INTO v_max_id FROM Tema;
+  SELECT COUNT(*) INTO v_count FROM user_sequences WHERE sequence_name = 'TEMA_SEQ';
+  IF v_count = 0 THEN
+    EXECUTE IMMEDIATE 'CREATE SEQUENCE TEMA_SEQ START WITH ' || v_max_id || ' INCREMENT BY 1 NOCACHE';
+  END IF;
+END;
+/
+CREATE OR REPLACE TRIGGER trg_tema_seq
+BEFORE INSERT ON Tema
+FOR EACH ROW
+BEGIN
+  IF :NEW.idTema IS NULL THEN
+    SELECT TEMA_SEQ.NEXTVAL INTO :NEW.idTema FROM dual;
+  END IF;
+END;
+/
