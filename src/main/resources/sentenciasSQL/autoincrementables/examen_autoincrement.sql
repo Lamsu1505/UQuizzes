@@ -1,0 +1,21 @@
+-- Examen
+DECLARE
+  v_max_id NUMBER;
+  v_count  NUMBER;
+BEGIN
+  SELECT NVL(MAX(idExamen), 0) + 1 INTO v_max_id FROM Examen;
+  SELECT COUNT(*) INTO v_count FROM user_sequences WHERE sequence_name = 'EXAMEN_SEQ';
+  IF v_count = 0 THEN
+    EXECUTE IMMEDIATE 'CREATE SEQUENCE EXAMEN_SEQ START WITH ' || v_max_id || ' INCREMENT BY 1 NOCACHE';
+  END IF;
+END;
+/
+CREATE OR REPLACE TRIGGER trg_examen_seq
+BEFORE INSERT ON Examen
+FOR EACH ROW
+BEGIN
+  IF :NEW.idExamen IS NULL THEN
+    SELECT EXAMEN_SEQ.NEXTVAL INTO :NEW.idExamen FROM dual;
+  END IF;
+END;
+/

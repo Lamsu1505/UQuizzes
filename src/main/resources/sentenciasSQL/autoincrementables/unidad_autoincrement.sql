@@ -1,0 +1,21 @@
+-- Unidad
+DECLARE
+  v_max_id NUMBER;
+  v_count  NUMBER;
+BEGIN
+  SELECT NVL(MAX(idUnidad), 0) + 1 INTO v_max_id FROM Unidad;
+  SELECT COUNT(*) INTO v_count FROM user_sequences WHERE sequence_name = 'UNIDAD_SEQ';
+  IF v_count = 0 THEN
+    EXECUTE IMMEDIATE 'CREATE SEQUENCE UNIDAD_SEQ START WITH ' || v_max_id || ' INCREMENT BY 1 NOCACHE';
+  END IF;
+END;
+/
+CREATE OR REPLACE TRIGGER trg_unidad_seq
+BEFORE INSERT ON Unidad
+FOR EACH ROW
+BEGIN
+  IF :NEW.idUnidad IS NULL THEN
+    SELECT UNIDAD_SEQ.NEXTVAL INTO :NEW.idUnidad FROM dual;
+  END IF;
+END;
+/

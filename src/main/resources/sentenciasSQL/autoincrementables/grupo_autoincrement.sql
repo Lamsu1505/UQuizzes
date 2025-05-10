@@ -1,0 +1,21 @@
+-- Grupo
+DECLARE
+  v_max_id NUMBER;
+  v_count  NUMBER;
+BEGIN
+  SELECT NVL(MAX(idGrupo), 0) + 1 INTO v_max_id FROM Grupo;
+  SELECT COUNT(*) INTO v_count FROM user_sequences WHERE sequence_name = 'GRUPO_SEQ';
+  IF v_count = 0 THEN
+    EXECUTE IMMEDIATE 'CREATE SEQUENCE GRUPO_SEQ START WITH ' || v_max_id || ' INCREMENT BY 1 NOCACHE';
+  END IF;
+END;
+/
+CREATE OR REPLACE TRIGGER trg_grupo_seq
+BEFORE INSERT ON Grupo
+FOR EACH ROW
+BEGIN
+  IF :NEW.idGrupo IS NULL THEN
+    SELECT GRUPO_SEQ.NEXTVAL INTO :NEW.idGrupo FROM dual;
+  END IF;
+END;
+/
