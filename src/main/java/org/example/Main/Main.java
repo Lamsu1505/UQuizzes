@@ -27,6 +27,7 @@ public class Main extends Application {
             // Obtener el path real en el sistema de archivos desde los recursos
             Path path = Paths.get(getClass().getResource(carpetaSQL).toURI());
 
+            System.out.println(path);
             // Recorrer todos los archivos .sql dentro de la carpeta y subcarpetas
             List<String> archivosSQL = Files.walk(path)
                     .filter(p -> p.toString().endsWith(".sql"))
@@ -35,6 +36,7 @@ public class Main extends Application {
 
             for (String archivo : archivosSQL) {
                 InputStream input = getClass().getResourceAsStream(archivo);
+
                 if (input != null) {
                     ConexionOracle.ejecutarSQLDesdeArchivo(input);
                 } else {

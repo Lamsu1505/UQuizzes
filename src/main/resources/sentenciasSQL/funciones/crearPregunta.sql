@@ -22,7 +22,7 @@ INSERT INTO Pregunta (
     pesoPorcentaje,
     tiempoResponderMinutos
 ) VALUES (
-             p_idpregunta,
+             p_idPregunta,
              P_idTema,
              P_idTipoPregunta,
              P_idPreguntaPadre,
@@ -36,7 +36,7 @@ INSERT INTO Pregunta (
 RETURN 1;
 EXCEPTION
     WHEN OTHERS THEN
-    DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
+        DBMS_OUTPUT.PUT_LINE('Error al insertar en Pregunta: ' || SQLERRM);
 RETURN 0;
 END crearPregunta;
 /

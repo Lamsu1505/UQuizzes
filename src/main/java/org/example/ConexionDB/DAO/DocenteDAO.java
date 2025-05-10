@@ -198,17 +198,10 @@ public class DocenteDAO {
 
     public boolean crearPregunta(String idTemaSeleccionado, String idTipoPreguntaSeleccionado, String idPreguntaPadre, String idNivelPreguntaSeleccionado, boolean isPublica, String enunciado, String peso, String tiempoPregunta) {
 
+
+
         Integer idTema = Integer.parseInt(idTemaSeleccionado);
         Integer idTipoPregunta = Integer.parseInt(idTipoPreguntaSeleccionado);
-
-        Integer idPreguntaPapa;
-        if(idPreguntaPadre == null){
-            idPreguntaPapa = 0;
-        }
-        else {
-            idPreguntaPapa = Integer.parseInt(idPreguntaPadre);
-        }
-
         Integer idNivelPregunta = Integer.parseInt(idNivelPreguntaSeleccionado);
         String esPublica;
         if(isPublica){
@@ -232,7 +225,7 @@ public class DocenteDAO {
 
 
             //TODO trigger despues de que zz mande con autoincrementable
-            stmt.setInt(2, 1089); //no importa pq hay un trigger que cambia
+            stmt.setNull(2, Types.INTEGER); //no importa pq hay un trigger que cambia
 
             stmt.setInt(3, idTema);
             stmt.setInt(4, idTipoPregunta);
