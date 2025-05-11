@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.example.ConexionDB.ConexionOracle;
+import org.example.Controllers.ControladorGlobal;
 import org.example.Controllers.Ventanas.Docente.VentanaPrincipalDocenteController;
 import org.example.Model.UQuizzes;
 
@@ -419,42 +420,36 @@ public class CrearPreguntaController implements Initializable {
     public void crearPregunta(ActionEvent actionEvent) throws IOException {
         if (validarCamposObligatorios()) {
             if (subpreguntaCheckBox.isSelected()) {
-                //TODO si selecciona que es subpregunta, que se hace?
-
+                // TODO: lógica si es subpregunta
             } else {
-
                 boolean isPublica = publicaCheckBox.isSelected();
                 String idPreguntaPadre = null;
                 String enunciado = enunciadoTextArea.getText();
                 String peso = pesoTextField.getText();
                 String tiempoPregunta = tiempoTextField.getText();
 
-
-
                 int idPregunta = uQuizzes.crearPregunta(idTemaSeleccionado , idTipoPreguntaSeleccionado , idPreguntaPadre , idNivelPreguntaSeleccionado , isPublica , enunciado , peso , tiempoPregunta);
                 if(idPregunta != 0 ){
-                    mostrarAlerta("Pregunta creada con exito");
+                    mostrarAlerta("Pregunta creada con éxito");
 
                     uQuizzes.setIdPreguntaRecienCreada(idPregunta + 1);
-
                     limpiarCampos();
+
+
+
+
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfaces/Paneles/Docente/OpcionesRespuesta/contenedorGeneralOpciones.fxml"));
                     Parent root = loader.load();
                     Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
                     stage.setScene(new Scene(root));
                     stage.setTitle("UQuizzes - Opciones de respuesta");
-                    stage.setWidth(1000);
-                    stage.setHeight(700);
                     stage.centerOnScreen();
                     stage.setResizable(false);
                     stage.show();
 
+                } else {
+                    mostrarAlerta("Algo falló al crear la pregunta.");
                 }
-                else {
-                    mostrarAlerta("Algo fallo");
-
-                }
-
             }
         }
     }

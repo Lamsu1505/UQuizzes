@@ -12,6 +12,8 @@ module UQuizzes {
     exports org.example.Controllers.Paneles.Docente to javafx.fxml;
     opens org.example.Controllers.Paneles.Docente to javafx.fxml;
     opens org.example.Controllers.Ventanas.Docente to javafx.fxml;
+    exports org.example.Controllers.Paneles.Docente.TiposPregunta to  javafx.fxml;
+    opens org.example.Controllers.Paneles.Docente.TiposPregunta to  javafx.fxml;
     opens org.example.Controllers.Ventanas to javafx.fxml;
 
     exports org.example.Main;

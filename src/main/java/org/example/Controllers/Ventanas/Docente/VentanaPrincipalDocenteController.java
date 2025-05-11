@@ -190,22 +190,10 @@ public class VentanaPrincipalDocenteController implements Initializable {
         }
     }
 
-    /**
-     * Metodo que se usa para ir al panel de artistas
-     * @param mouseEvent variable que almacena un evento del mouse
-     */
-    /*public void irPanelArtistas(MouseEvent mouseEvent) {
-        try {
-
-            Parent panel = FXMLLoader.load(getClass().getResource("/Ventanas/Paneles/PanelArtistas.fxml"));
-            this.contenedorCambiante.getChildren().clear();
-            this.contenedorCambiante.getChildren().addAll(panel);
-            ponerLabelGrises(mouseEvent);
-            lblArtistas.setTextFill(Color.WHITE);
-        }
-        catch (Exception e) {
-        }
-    }*/
+    public void cambiarContenido(Parent nuevoPanel) {
+        this.contenedorCambiante.getChildren().clear();
+        this.contenedorCambiante.getChildren().add(nuevoPanel);
+    }
 
 
 }

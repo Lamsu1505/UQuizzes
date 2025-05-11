@@ -224,7 +224,6 @@ public class DocenteDAO {
             stmt.registerOutParameter(1, Types.INTEGER);
 
 
-            //TODO trigger despues de que zz mande con autoincrementable
             stmt.setNull(2, Types.INTEGER); //no importa pq hay un trigger que cambia
 
             stmt.setInt(3, idTema);

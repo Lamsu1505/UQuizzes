@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox fx:id="opcionMultiplePanel" prefWidth="710.0" spacing="15.0" styleClass="pregunta-panel" stylesheets="@../../../../Estilos/MultipleUnicaRespuesa.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Docente.TiposPregunta.OpcionMultipleController">
+    <padding>
+        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+    </padding>
+    <children>
+        <Label styleClass="section-title" text="Opciones de Respuesta (Selecciona solo una correcta)">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Label>
+
+        <ScrollPane fitToWidth="true" prefHeight="250.0" style="-fx-background: white; -fx-border-color: #d3d3d3; -fx-border-radius: 5;" styleClass="opciones-container">
+            <content>
+                <VBox fx:id="opcionesContainer" spacing="10.0" style="-fx-padding: 10;">
+                    <children>
+                        <!-- Las opciones se agregarán dinámicamente aquí -->
+                    </children>
+                </VBox>
+            </content>
+        </ScrollPane>
+
+        <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <children>
+                <Button fx:id="agregarOpcionButton" mnemonicParsing="false" onAction="#agregarOpcion" styleClass="add-button" text="Agregar Opción" />
+                <Label fx:id="mensajeError" styleClass="error-message" textFill="RED" />
+            </children>
+        </HBox>
+    </children>
+</VBox>

@@ -1,0 +1,60 @@
+/* Fondo general del panel */
+.pregunta-panel {
+    -fx-background-color: #f9f9f9;
+    -fx-border-color: #007e38;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0,126,56,0.2), 8, 0, 0, 4);
+}
+
+/* Título de sección */
+.section-title {
+    -fx-text-fill: #007e38;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+/* ScrollPane para opciones */
+.opciones-container {
+    -fx-background-color: white;
+    -fx-border-color: #007e38;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 6, 0, 0, 3);
+}
+
+/* Botón agregar opción */
+.add-button {
+    -fx-background-color: #007e38;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8 16 8 16;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,126,56,0.3), 5, 0.2, 0, 2);
+    -fx-transition: all 0.3s ease-in-out;
+}
+
+.add-button:hover {
+    -fx-background-color: #005c2a;
+}
+
+/* Mensaje de error */
+.error-message {
+    -fx-font-size: 12px;
+    -fx-text-fill: red;
+    -fx-padding: 5 0 0 0;
+    -fx-font-style: italic;
+}
+
+/* Estilo de botones de opción (si se agregan dinámicamente) */
+.radio-button, .check-box {
+    -fx-font-size: 13px;
+    -fx-text-fill: #333;
+}
+
+.radio-button:hover, .check-box:hover {
+    -fx-text-fill: #007e38;
+}

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox fx:id="respuestaCortaPanel" prefWidth="710.0" spacing="15.0" stylesheets="@../../../../Estilos/MultipleUnicaRespuesa.css" styleClass="pregunta-panel" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Docente.TiposPregunta.RespuestaCortaController">
+    <padding>
+        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+    </padding>
+    <children>
+        <Label styleClass="section-title" text="Respuestas aceptadas">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Label>
+
+        <ScrollPane fitToWidth="true" prefHeight="120.0" styleClass="respuestas-container">
+            <content>
+                <VBox fx:id="respuestasContainer" spacing="10.0">
+                    <children>
+                        <!-- Las respuestas se agregarán dinámicamente aquí -->
+                    </children>
+                </VBox>
+            </content>
+        </ScrollPane>
+
+        <HBox alignment="CENTER_LEFT" spacing="15.0">
+            <children>
+                <TextField fx:id="nuevaRespuestaTextField" prefWidth="300.0" promptText="Ingrese una respuesta válida..." styleClass="text-field" HBox.hgrow="ALWAYS" />
+                <Button fx:id="agregarRespuestaButton" mnemonicParsing="false" onAction="#agregarRespuesta" styleClass="add-button" text="Agregar" />
+                <Label fx:id="mensajeError" styleClass="error-message" textFill="RED" />
+            </children>
+        </HBox>
+
+        <VBox spacing="10.0">
+            <children>
+                <Label styleClass="field-label" text="Configuración">
+                    <font>
+                        <Font size="13.0" />
+                    </font>
+                </Label>
+                <CheckBox fx:id="ignorarMayusculasCheckBox" mnemonicParsing="false" selected="true" styleClass="config-checkbox" text="Ignorar mayúsculas y minúsculas" />
+                <CheckBox fx:id="ignorarAcentosCheckBox" mnemonicParsing="false" selected="true" styleClass="config-checkbox" text="Ignorar acentos" />
+            </children>
+        </VBox>
+
+        <VBox spacing="10.0">
+            <children>
+                <Label styleClass="field-label" text="Retroalimentación (opcional):">
+                    <font>
+                        <Font size="13.0" />
+                    </font>
+                </Label>
+                <TextArea fx:id="retroalimentacionTextArea" prefHeight="60.0" promptText="Ingrese la retroalimentación para esta pregunta..." styleClass="text-area" wrapText="true" />
+            </children>
+        </VBox>
+    </children>
+</VBox>
