@@ -5,10 +5,10 @@ CREATE OR REPLACE FUNCTION crearOpcion(
 ) RETURN NUMBER IS
     v_idOpcion NUMBER;
 BEGIN
-    -- Obtener el siguiente valor de la secuencia
+    -- Obtener el valor siguiente de la secuencia, aunque el trigger también lo manejará
 SELECT OPCIONES_SEQ.NEXTVAL INTO v_idOpcion FROM dual;
 
--- Insertar opción con el ID explícitamente generado
+-- Insertar opción (usamos v_idOpcion directamente, pero también funcionaría con NULL si se confía 100% en el trigger)
 INSERT INTO Opciones (
     idOpcion,
     pregunta_idPregunta,

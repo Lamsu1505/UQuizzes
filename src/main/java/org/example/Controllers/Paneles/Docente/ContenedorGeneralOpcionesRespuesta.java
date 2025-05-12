@@ -12,14 +12,17 @@ import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.example.ConexionDB.ConexionOracle;
+import org.example.Controllers.Paneles.Docente.TiposPregunta.OpcionMultipleUnicaRespuestaController;
+import org.example.Controllers.Paneles.Docente.TiposPregunta.SeleccionMultipleController;
+import org.example.Model.OpcionMultipleUnicaRespuesta;
 import org.example.Model.UQuizzes;
 
-import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ContenedorGeneralOpcionesRespuesta implements Initializable {
@@ -51,19 +54,31 @@ public class ContenedorGeneralOpcionesRespuesta implements Initializable {
     @FXML
     private StackPane panelCambiante;
 
+
+    private OpcionMultipleUnicaRespuestaController unicaRespuestaController;
+
     UQuizzes uQuizzes = UQuizzes.getInstance();
 
     private int idTipoPregunta;
-
+    private int idPregunta;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Hacer no editable el TextArea de enunciado
+        enunciadoTextArea.setEditable(false);
+
+        // Hacer no editable el ComboBox de tipo de pregunta
+        tipoPreguntaComboBox.setEditable(false);
+
+        // Deshabilitar la edición del ComboBox
+        tipoPreguntaComboBox.setMouseTransparent(true);
+        tipoPreguntaComboBox.setFocusTraversable(false);
+
         try{
-            int idPregunta = uQuizzes.getIdPreguntaRecienCreada();
+            this.idPregunta = uQuizzes.getIdPreguntaRecienCreada();
             idPreguntaLabel.setText("Id de pregunta " + idPregunta);
 
             //para agarrar info de la pregunta
-
             String enunciado= "";
             String materia ="";
             String tema ="";
@@ -100,8 +115,6 @@ public class ContenedorGeneralOpcionesRespuesta implements Initializable {
             try (Connection connection = conexion.conectar();
                  PreparedStatement stmt = connection.prepareStatement(sql)) {
 
-
-
                 try (ResultSet rs = stmt.executeQuery()) {
                     while (rs.next()) {
                         enunciado = rs.getString("enunciado");
@@ -137,47 +150,15 @@ public class ContenedorGeneralOpcionesRespuesta implements Initializable {
             throw new RuntimeException(e);
         }
 
-
-        tipoPreguntaComboBox.setOnAction(event -> {
-            String nombreTipoSeleccionado = tipoPreguntaComboBox.getValue();
-            if (nombreTipoSeleccionado != null) {
-
-                ConexionOracle conexion = new ConexionOracle();
-
-                if (conexion == null) {
-                    mostrarAlerta("Error de conexión con la base de datos.");
-                    return;
-                }
-
-                String sql = "select idtipopregunta " +
-                        "from tipopregunta where nombre = '" + nombreTipoSeleccionado + "'";
-
-                try (Connection connection = conexion.conectar();
-                     PreparedStatement stmt = connection.prepareStatement(sql)) {
-
-                    try (ResultSet rs = stmt.executeQuery()) {
-                        while (rs.next()) {
-                            idTipoPregunta = rs.getInt("idtipopregunta");
-                        }
-                        try{
-                            cargarPanelOpcionesRespuesta(idTipoPregunta);
-                        }catch (Exception e){e.printStackTrace();}
-
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        // Se elimina el listener de cambio de tipo de pregunta para evitar modificaciones
     }
 
-
     private void cargarPanelOpcionesRespuesta(int idTipoPregunta) throws Exception {
-
-        if(idTipoPregunta==1){
-            Parent panel = FXMLLoader.load(getClass().getResource("/Interfaces/Paneles/Docente/OpcionesRespuesta/PanelUnicaRespuesta.fxml"));
-            this.panelCambiante.getChildren().clear();
-            this.panelCambiante.getChildren().addAll(panel);
+        if (idTipoPregunta == 1) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfaces/Paneles/Docente/OpcionesRespuesta/PanelUnicaRespuesta.fxml"));
+            Parent panel = loader.load();
+            unicaRespuestaController = loader.getController();
+            this.panelCambiante.getChildren().add(panel);
         }
         if(idTipoPregunta==2){
             Parent panel = FXMLLoader.load(getClass().getResource("/Interfaces/Paneles/Docente/OpcionesRespuesta/PanelVerdaderoFalso.fxml"));
@@ -199,8 +180,6 @@ public class ContenedorGeneralOpcionesRespuesta implements Initializable {
             this.panelCambiante.getChildren().clear();
             this.panelCambiante.getChildren().addAll(panel);
         }
-
-
     }
 
     private void cargarTiposPregunta() {
@@ -230,7 +209,6 @@ public class ContenedorGeneralOpcionesRespuesta implements Initializable {
         tipoPreguntaComboBox.setItems(tipoPreguntas);
     }
 
-
     private void mostrarAlerta(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Información");
@@ -238,7 +216,6 @@ public class ContenedorGeneralOpcionesRespuesta implements Initializable {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
-
 
     public void cancelar(javafx.event.ActionEvent actionEvent) {
         //TODO si le da a cancelar, se elimina la pregunta tambien de la base de datos
@@ -256,15 +233,100 @@ public class ContenedorGeneralOpcionesRespuesta implements Initializable {
             stage.show();
 
         }catch (Exception e) {e.printStackTrace();}
+    }
 
+    public boolean crearPregunta(javafx.event.ActionEvent actionEvent) {
+        try {
+
+            // Crear conexión a la base de datos
+            ConexionOracle conexion = new ConexionOracle();
+            Connection connection = conexion.conectar();
+
+            // Determinar qué controlador específico de opciones usar según el tipo de pregunta
+            switch (idTipoPregunta) {
+
+                case 1: // Única Respuesta
+                    if( guardarPreguntaUnicaRespuesta(connection)){
+                        mostrarAlerta("Pregunta creada exitosamente");
+                        irPanelInicioDocente();
+                        return true;
+                    };
+                    break;
+
+                case 2: // Verdadero Falso
+                    //guardarPreguntaVerdaderoFalso(connection);
+                    break;
+
+                case 3: // Respuesta Corta
+                    //guardarPreguntaRespuestaCorta(connection);
+                    break;
+
+                case 4: // Emparejar
+                    //guardarPreguntaEmparejar(connection);
+                    break;
+
+                case 5: // Múltiple Respuesta
+                    //guardarPreguntaMultipleRespuesta(connection);
+                    break;
+
+                default:
+                    throw new IllegalArgumentException("Tipo de pregunta no reconocido");
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarAlerta("Error al crear la pregunta: " + e.getMessage());
+        }
+
+        return true;
+    }
+
+    private void irPanelInicioDocente() {
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfaces/Ventanas/ventanaInicioDocente.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("UQuizzes - Home");
+            stage.setWidth(1450);
+            stage.setHeight(800);
+            stage.centerOnScreen();
+            stage.setResizable(false);
+            stage.show();
+
+        }catch (Exception e) {e.printStackTrace();}
 
     }
 
-    public void crearPregunta(javafx.event.ActionEvent actionEvent) {
-        //TODO agarrar la info de las opciones y agregarsela a la pregunta en cuestion
 
+    /**
+     * Método para guardar pregunta de Única Respuesta
+     * @param connection Conexión a la base de datos
+     */
+    private boolean guardarPreguntaUnicaRespuesta(Connection connection) throws Exception {
+        List<OpcionMultipleUnicaRespuesta> opciones = unicaRespuestaController.getListaOpciones();
+
+
+        System.out.println("");
+        for (OpcionMultipleUnicaRespuesta opcion : opciones) {
+
+            try{
+                if(uQuizzes.guardarPreguntaUnicaRespuestaDocente(opcion , idPregunta)){
+                    System.out.println("Guardando la opcion: " + opcion.getTexto());
+
+                }
+                else {
+                    mostrarAlerta("Error al guardar la opcion: " + opcion.getTexto());
+                    throw new Exception("Error creando las opciones");
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        return true;
     }
-
-
-
 }

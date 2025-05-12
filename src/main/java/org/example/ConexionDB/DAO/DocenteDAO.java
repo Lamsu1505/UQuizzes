@@ -5,6 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import oracle.jdbc.internal.OracleTypes;
 import org.example.ConexionDB.ConexionOracle;
+import org.example.Model.OpcionMultipleUnicaRespuesta;
 
 import java.sql.*;
 import java.util.*;
@@ -252,6 +253,59 @@ public class DocenteDAO {
 
 
 
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Optional<ButtonType> buttonType = new Alert(Alert.AlertType.ERROR,
+                    "Error al crear la pregunta:\n" + e.getMessage()).showAndWait();
+
+
+        }
+        return respuesta;
+    }
+
+    public boolean crearPreguntaUnicaRespuestaDocente(OpcionMultipleUnicaRespuesta opcion , int idPregunta) {
+
+
+        boolean respuesta = false;
+
+        String texto = opcion.getTexto();
+        boolean esCorrecta = opcion.isEsCorrecta();
+        String isCorrecta ="";
+
+
+        if(esCorrecta){
+            isCorrecta = "S";
+        }
+        else {
+            isCorrecta = "N";
+        }
+
+        String call = "{ ? = call crearOpcion(?, ?, ?)}";
+
+        try (
+                Connection conn = new ConexionOracle().conectar();
+                CallableStatement stmt = conn.prepareCall(call)
+        ) {
+
+
+
+            stmt.registerOutParameter(1, Types.INTEGER);
+            stmt.setInt(2, idPregunta);
+            stmt.setString(3, isCorrecta);
+            stmt.setString(4, texto);
+
+            stmt.execute();
+
+            int resultado = stmt.getInt(1);
+
+            System.out.println("Resultado de la insercion de la opcion: " + resultado);
+
+            if(resultado != 0){
+                respuesta = true;
+            }
+
+            return respuesta;
 
         } catch (Exception e) {
             e.printStackTrace();
