@@ -7,12 +7,14 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import org.example.Model.OpcionMultipleUnicaRespuesta;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class OpcionMultipleController implements Initializable {
+public class OpcionMultipleUnicaRespuestaController implements Initializable {
 
     @FXML
     private VBox opcionesContainer;
@@ -25,41 +27,37 @@ public class OpcionMultipleController implements Initializable {
 
     private ToggleGroup toggleGroup = new ToggleGroup(); // para controlar selección única
     private List<HBox> listaOpciones = new ArrayList<>();
+    private List<OpcionMultipleUnicaRespuesta> listaOpcionesModel = new ArrayList<>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         mensajeError.setText("");
         mensajeError.setVisible(false);
-
         opcionesContainer.setStyle("-fx-background-color: #f8f9fa;");
 
-
-        agregarOpcionConTexto("");
-        agregarOpcionConTexto("");
 
     }
 
     @FXML
     void agregarOpcion(ActionEvent event) {
-        agregarOpcionConTexto("");
+        agregarOpcionConTexto("t7uyfguj");
     }
 
     private void agregarOpcionConTexto(String texto) {
+        // Crear modelo
+        OpcionMultipleUnicaRespuesta opcion = new OpcionMultipleUnicaRespuesta(texto);
+        listaOpcionesModel.add(opcion);
+
+        // Crear contenedor visual
         HBox opcionHBox = new HBox(10);
         opcionHBox.setAlignment(Pos.CENTER_LEFT);
         opcionHBox.setPadding(new Insets(5, 10, 5, 10));
         opcionHBox.setStyle("-fx-background-color: #f8f9fa; -fx-border-radius: 5;");
 
-        // Usar RadioButton con el ToggleGroup para selección única
+        // RadioButton con grupo
         RadioButton radioButton = new RadioButton();
         radioButton.setToggleGroup(toggleGroup);
         radioButton.setStyle("-fx-padding: 0 5 0 0;");
-
-        // Botón eliminar
-        Button eliminarButton = new Button("Eliminar");
-        eliminarButton.setStyle("-fx-background-color: transparent; -fx-text-fill: #3498db; -fx-font-size: 14px; -fx-cursor: hand;");
-        eliminarButton.setPadding(new Insets(0, 2, 0, 2));
-        eliminarButton.setOnAction(e -> eliminarOpcion(opcionHBox));
 
         // Campo de texto
         TextField opcionTextField = new TextField(texto);
@@ -68,8 +66,22 @@ public class OpcionMultipleController implements Initializable {
         opcionTextField.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
         HBox.setHgrow(opcionTextField, Priority.ALWAYS);
 
-        // Armar HBox
+        // Sincroniza texto del modelo con el campo
+        opcionTextField.textProperty().addListener((obs, oldVal, newVal) -> {
+            opcion.setTexto(newVal);
+        });
+
+        // Botón eliminar
+        Button eliminarButton = new Button("Eliminar");
+        eliminarButton.setStyle("-fx-background-color: transparent; -fx-text-fill: #3498db; -fx-font-size: 14px; -fx-cursor: hand;");
+        eliminarButton.setPadding(new Insets(0, 2, 0, 2));
+        eliminarButton.setOnAction(e -> eliminarOpcion(opcionHBox));
+
+        // Agregar componentes
         opcionHBox.getChildren().addAll(radioButton, eliminarButton, opcionTextField);
+        opcionHBox.setUserData(opcion); // vincular modelo con vista
+
+        // Agregar a listas y vista
         listaOpciones.add(opcionHBox);
         opcionesContainer.getChildren().add(opcionHBox);
 
@@ -79,17 +91,22 @@ public class OpcionMultipleController implements Initializable {
     }
 
     private void eliminarOpcion(HBox opcionHBox) {
-        if (listaOpciones.size() <= 2) {
+        if (listaOpciones.size() == 2) {
             mostrarMensajeError("No se pueden dejar menos de dos opciones.");
             return;
         }
 
-        // Si se elimina la seleccionada, deselecciona del grupo
+        // Eliminar del modelo
+        OpcionMultipleUnicaRespuesta modelo = (OpcionMultipleUnicaRespuesta) opcionHBox.getUserData();
+        listaOpcionesModel.remove(modelo);
+
+        // Deseleccionar si es la opción marcada
         RadioButton rb = (RadioButton) opcionHBox.getChildren().get(0);
         if (rb.isSelected()) {
             toggleGroup.selectToggle(null);
         }
 
+        // Eliminar visualmente
         opcionesContainer.getChildren().remove(opcionHBox);
         listaOpciones.remove(opcionHBox);
     }
@@ -97,25 +114,6 @@ public class OpcionMultipleController implements Initializable {
     private void mostrarMensajeError(String mensaje) {
         mensajeError.setText(mensaje);
         mensajeError.setVisible(true);
-    }
-
-    public boolean validarDatos() {
-        mensajeError.setVisible(false);
-
-        for (HBox opcionHBox : listaOpciones) {
-            TextField opcionTextField = (TextField) opcionHBox.getChildren().get(2);
-            if (opcionTextField.getText().trim().isEmpty()) {
-                mostrarMensajeError("Todas las opciones deben tener texto");
-                return false;
-            }
-        }
-
-        if (toggleGroup.getSelectedToggle() == null) {
-            mostrarMensajeError("Debe seleccionar una opción como correcta");
-            return false;
-        }
-
-        return true;
     }
 
     public List<String> getOpciones() {
@@ -127,13 +125,30 @@ public class OpcionMultipleController implements Initializable {
         return opciones;
     }
 
-    public int getOpcionCorrecta() {
+    public int getOpcionCorrectaVista() {
         for (int i = 0; i < listaOpciones.size(); i++) {
             RadioButton rb = (RadioButton) listaOpciones.get(i).getChildren().get(0);
             if (rb.isSelected()) {
                 return i;
             }
         }
-        return -1; // si no hay selección
+        return -1;
+    }
+
+    private void ponerOpcionCorrecta() {
+        for (OpcionMultipleUnicaRespuesta op : listaOpcionesModel) {
+            op.setEsCorrecta(false);
+        }
+        int opcionCorrecta = getOpcionCorrectaVista();
+        if (opcionCorrecta >= 0 && opcionCorrecta < listaOpcionesModel.size()) {
+            listaOpcionesModel.get(opcionCorrecta).setEsCorrecta(true);
+        }
+    }
+
+    public List<OpcionMultipleUnicaRespuesta> getListaOpciones() {
+
+        System.out.println(listaOpcionesModel.size() + " " + listaOpciones.size());
+        ponerOpcionCorrecta();
+        return listaOpcionesModel;
     }
 }

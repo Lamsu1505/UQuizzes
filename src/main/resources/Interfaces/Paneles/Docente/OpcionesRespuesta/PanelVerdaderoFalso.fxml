@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:id="verdaderoFalsoPanel" stylesheets="@../../../../Estilos/MultipleUnicaRespuesa.css" prefWidth="710.0" spacing="15.0" styleClass="pregunta-panel" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Docente.TiposPregunta.VerdaderoFalsoController">
+<VBox fx:id="verdaderoFalsoPanel" prefWidth="710.0" spacing="15.0" styleClass="pregunta-panel" stylesheets="@../../../../Estilos/MultipleUnicaRespuesa.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Docente.TiposPregunta.VerdaderoFalsoController">
     <padding>
         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
     </padding>
@@ -30,15 +31,6 @@
             </padding>
         </VBox>
 
-        <VBox spacing="10.0">
-            <children>
-                <Label styleClass="field-label" text="Retroalimentación (opcional):">
-                    <font>
-                        <Font size="13.0" />
-                    </font>
-                </Label>
-                <TextArea fx:id="retroalimentacionTextArea" prefHeight="80.0" promptText="Ingrese la retroalimentación para esta pregunta..." styleClass="text-area" wrapText="true" />
-            </children>
-        </VBox>
+        <VBox spacing="10.0" />
     </children>
 </VBox>

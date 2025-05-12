@@ -90,5 +90,9 @@ public class UQuizzes {
     public int crearPregunta(String idTemaSeleccionado, String idTipoPreguntaSeleccionado, String idPreguntaPadre, String idNivelPreguntaSeleccionado, Boolean isPublica, String enunciado, String peso, String tiempoPregunta) {
         return docenteDAO.crearPregunta(idTemaSeleccionado , idTipoPreguntaSeleccionado , idPreguntaPadre , idNivelPreguntaSeleccionado , isPublica, enunciado , peso , tiempoPregunta);
     }
+
+    public boolean guardarPreguntaUnicaRespuestaDocente(OpcionMultipleUnicaRespuesta opcion , int idPregunta) {
+        return docenteDAO.crearPreguntaUnicaRespuestaDocente(opcion , idPregunta);
+    }
 }
 
