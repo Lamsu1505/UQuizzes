@@ -179,13 +179,13 @@ public class VentanaPrincipalDocenteController implements Initializable {
     @FXML
     void informesEvent(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfaces/Paneles/Docente/estadisticasExamenesPresentados.fxml"));
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
+            Parent panel = FXMLLoader.load(getClass().getResource("/Interfaces/Paneles/Docente/estadisticasExamenesPresentados.fxml"));
+            this.contenedorCambiante.getChildren().clear();
+            this.contenedorCambiante.getChildren().addAll(panel);
+
+
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
     }

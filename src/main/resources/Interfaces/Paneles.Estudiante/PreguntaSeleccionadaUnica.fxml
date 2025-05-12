@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.Controllers.Ventanas.Estudiante.PreguntaSeleccionadaUnicaController"
+            prefWidth="750" prefHeight="150"
+            style="-fx-background-color: #F0FFF0; -fx-border-color: #cccccc; -fx-background-radius: 10; -fx-padding: 10;">
+
+    <children>
+        <!-- Pregunta -->
+        <Label fx:id="enunciadoLabel" layoutX="10" layoutY="10" wrapText="true"
+               style="-fx-font-size: 16px; -fx-text-fill: #333333;" prefWidth="700"/>
+
+        <!-- Opciones como Google Forms -->
+        <VBox layoutX="10" layoutY="50" spacing="10">
+            <children>
+                <RadioButton fx:id="opcion1" text="Opción 1"/>
+                <RadioButton fx:id="opcion2" text="Opción 2"/>
+                <RadioButton fx:id="opcion3" text="Opción 3"/>
+                <RadioButton fx:id="opcion4" text="Opción 4"/>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

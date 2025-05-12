@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" stylesheets="" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Ventanas.Estudiante.ExamenesEstudianteController">
+    <children>
+        <Button fx:id="homeButton" layoutX="38.0" layoutY="23.0" mnemonicParsing="false" onAction="#homeEvent" prefHeight="37.0" prefWidth="36.0" style="-fx-padding: 10 12 10 12; -fx-background-color: #85ca85; -fx-background-radius: 8;">
+            <graphic>
+                <SVGPath content="M21,12H19v8a1,1,0,0,1-1,1H6a1,1,0,0,1-1-1V12H3l9-9Z" />
+            </graphic>
+        </Button>
+        <TableView fx:id="TableViewReporte" layoutX="1.0" layoutY="108.0" prefHeight="491.0" prefWidth="800.0">
+            <columns>
+                <TableColumn fx:id="ColumnNombreQuiz" prefWidth="193.0" text="Nombre quiz" />
+                <TableColumn fx:id="ColumnMateriaQuiz" prefWidth="161.0" text="Materia" />
+                <TableColumn fx:id="ColumnUnidadQuiz" prefWidth="151.0" text="Unidad" />
+                <TableColumn fx:id="ColumnTemaQuiz" prefWidth="147.0" text="Tema" />
+                <TableColumn fx:id="ColumnFechaFinQuiz" prefWidth="147.0" text="Fecha Fin " />
+            </columns>
+        </TableView>
+        <TextField fx:id="searchField" layoutX="309.0" layoutY="30.0" onAction="#searchFieldEvent" promptText="Nombre del quiz" />
+        <Button fx:id="searchButton" layoutX="503.0" layoutY="24.0" mnemonicParsing="false" onAction="#searchEvent" prefHeight="20.0" prefWidth="72.0" style="-fx-padding: 10 8 10 8; -fx-background-color: #85ca85; -fx-background-radius: 8;" text="Search">
+            <font>
+                <Font name="System Bold" size="13.0" />
+            </font></Button>
+    </children>
+</AnchorPane>

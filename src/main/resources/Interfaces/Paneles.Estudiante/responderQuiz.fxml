@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.Controllers.Ventanas.Estudiante.ResponderQuizController"
+            prefWidth="800" prefHeight="600">
+
+    <children>
+        <!-- Scrollable area where all the questions will be loaded -->
+        <ScrollPane fx:id="scrollPane" fitToWidth="true" layoutX="0" layoutY="0" prefHeight="540" prefWidth="800">
+            <content>
+                <VBox fx:id="contenedorPreguntas" spacing="20" style="-fx-padding: 20;" />
+            </content>
+        </ScrollPane>
+
+        <!-- Button to submit the quiz -->
+        <Button fx:id="enviarButton" layoutX="650" layoutY="550" prefWidth="120" prefHeight="30" text="Enviar" />
+    </children>
+</AnchorPane>

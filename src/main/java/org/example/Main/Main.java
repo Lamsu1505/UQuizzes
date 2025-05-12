@@ -21,6 +21,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException, URISyntaxException {
+
         String carpetaSQL = "/sentenciasSQL";
 
         try {
