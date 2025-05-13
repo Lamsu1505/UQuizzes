@@ -94,5 +94,9 @@ public class UQuizzes {
     public boolean guardarPreguntaUnicaRespuestaDocente(OpcionMultipleUnicaRespuesta opcion , int idPregunta) {
         return docenteDAO.crearPreguntaUnicaRespuestaDocente(opcion , idPregunta);
     }
+
+    public boolean guardarPreguntaVerdaderoFalsoDocente(Boolean respuesta, int idPregunta , String texto) {
+        return docenteDAO.crearPreguntaVerdaderoFalsoDocente(respuesta , idPregunta  , texto);
+    }
 }
 
