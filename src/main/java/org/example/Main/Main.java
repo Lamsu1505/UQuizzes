@@ -21,7 +21,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException, URISyntaxException {
-        /**
+
         String carpetaSQL = "/sentenciasSQL";
 
         try {
@@ -49,10 +49,10 @@ public class Main extends Application {
             e.printStackTrace();
             throw new RuntimeException("Error cargando archivos SQL", e);
         }
-**/
+
         // Cargar la interfaz gráfica
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Interfaces/Paneles.Estudiante/responderQuiz.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/Interfaces/Login/login.fxml"));
             Scene scene = new Scene(root);
             primaryStage.setTitle("UQuizzes - Iniciar sesión");
             primaryStage.setScene(scene);
