@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox fx:id="emparejamientoPanel" prefWidth="710.0" spacing="15.0" styleClass="pregunta-panel" stylesheets="@../../../Estilos/MultipleUnicaRespuesa.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Docente.TiposPregunta.EmparejamientoController">
+    <padding>
+        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+    </padding>
+    <children>
+        <Label styleClass="section-title" text="Elementos a emparejar">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Label>
+
+        <HBox spacing="15.0">
+            <children>
+                <VBox alignment="TOP_CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label styleClass="column-header" text="Columna A" textAlignment="CENTER">
+                            <font>
+                                <Font name="System Bold" size="13.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+
+                <VBox alignment="TOP_CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label styleClass="column-header" text="Columna B" textAlignment="CENTER">
+                            <font>
+                                <Font name="System Bold" size="13.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+
+        <ScrollPane fitToWidth="true" prefHeight="150.0" styleClass="parejas-container">
+            <content>
+                <VBox fx:id="parejasContainer" spacing="10.0">
+                    <children>
+                        <!-- Los pares se agregarán dinámicamente aquí -->
+                    </children>
+                </VBox>
+            </content>
+        </ScrollPane>
+
+        <HBox alignment="CENTER_LEFT" spacing="15.0">
+            <children>
+                <Button fx:id="agregarParButton" mnemonicParsing="false" onAction="#agregarPar" styleClass="add-button" text="Agregar Par" />
+                <Label fx:id="mensajeError" styleClass="error-message" textFill="RED" />
+            </children>
+        </HBox>
+
+        <VBox spacing="10.0" />
+    </children>
+</VBox>

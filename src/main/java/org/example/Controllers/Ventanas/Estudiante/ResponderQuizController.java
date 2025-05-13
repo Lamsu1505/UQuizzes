@@ -13,7 +13,7 @@ public class ResponderQuizController {
     private VBox contenedorPreguntas;
     public void cargarPreguntaSeleccionada() {
         try {
-            String fxmlRuta = "/Interfaces/Paneles/Docente/panelCrearQuiz.fxml";
+            String fxmlRuta = "/Interfaces/Paneles/Docente/OpcionesRespuesta/PanelUnicaRespuesta.fxml";
             System.out.println("Cargando FXML: " + fxmlRuta);
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlRuta));
