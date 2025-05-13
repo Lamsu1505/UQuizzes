@@ -12,8 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.example.ConexionDB.ConexionOracle;
-import org.example.Controllers.Paneles.Docente.TiposPregunta.OpcionMultipleUnicaRespuestaController;
-import org.example.Controllers.Paneles.Docente.TiposPregunta.SeleccionMultipleController;
+import org.example.Controllers.Paneles.Docente.TiposPregunta.*;
 import org.example.Model.OpcionMultipleUnicaRespuesta;
 import org.example.Model.UQuizzes;
 
@@ -56,6 +55,10 @@ public class ContenedorGeneralOpcionesRespuesta implements Initializable {
 
 
     private OpcionMultipleUnicaRespuestaController unicaRespuestaController;
+    private VerdaderoFalsoController verdaderoFalsoRespuestaController;
+    private RespuestaCortaController respuestaCortaController;
+    private SeleccionMultipleController seleccionMultipleController;
+    private EmparejamientoController emparejamientoController;
 
     UQuizzes uQuizzes = UQuizzes.getInstance();
 
@@ -161,24 +164,28 @@ public class ContenedorGeneralOpcionesRespuesta implements Initializable {
             this.panelCambiante.getChildren().add(panel);
         }
         if(idTipoPregunta==2){
-            Parent panel = FXMLLoader.load(getClass().getResource("/Interfaces/Paneles/Docente/OpcionesRespuesta/PanelVerdaderoFalso.fxml"));
-            this.panelCambiante.getChildren().clear();
-            this.panelCambiante.getChildren().addAll(panel);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfaces/Paneles/Docente/OpcionesRespuesta/PanelVerdaderoFalso.fxml"));
+            Parent panel = loader.load();
+            verdaderoFalsoRespuestaController = loader.getController();
+            this.panelCambiante.getChildren().add(panel);
         }
         if(idTipoPregunta==3){
-            Parent panel = FXMLLoader.load(getClass().getResource("/Interfaces/Paneles/Docente/OpcionesRespuesta/PanelRespuestaCorta.fxml"));
-            this.panelCambiante.getChildren().clear();
-            this.panelCambiante.getChildren().addAll(panel);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfaces/Paneles/Docente/OpcionesRespuesta/PanelRespuestaCorta.fxml"));
+            Parent panel = loader.load();
+            respuestaCortaController = loader.getController();
+            this.panelCambiante.getChildren().add(panel);
         }
         if(idTipoPregunta==4){
-            Parent panel = FXMLLoader.load(getClass().getResource("/Interfaces/Paneles/Docente/OpcionesRespuesta/PanelEmparejar.fxml"));
-            this.panelCambiante.getChildren().clear();
-            this.panelCambiante.getChildren().addAll(panel);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfaces/Paneles/Docente/OpcionesRespuesta/PanelEmparejar.fxml"));
+            Parent panel = loader.load();
+            emparejamientoController = loader.getController();
+            this.panelCambiante.getChildren().add(panel);
         }
         if (idTipoPregunta==5){
-            Parent panel = FXMLLoader.load(getClass().getResource("/Interfaces/Paneles/Docente/OpcionesRespuesta/PanelMultipleRespuesta.fxml"));
-            this.panelCambiante.getChildren().clear();
-            this.panelCambiante.getChildren().addAll(panel);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfaces/Paneles/Docente/OpcionesRespuesta/PanelMultipleRespuesta.fxml"));
+            Parent panel = loader.load();
+            seleccionMultipleController = loader.getController();
+            this.panelCambiante.getChildren().add(panel);
         }
     }
 
@@ -254,11 +261,11 @@ public class ContenedorGeneralOpcionesRespuesta implements Initializable {
                     break;
 
                 case 2: // Verdadero Falso
-                    //guardarPreguntaVerdaderoFalso(connection);
+                    guardarPreguntaVerdaderoFalso(connection);
                     break;
 
                 case 3: // Respuesta Corta
-                    //guardarPreguntaRespuestaCorta(connection);
+                    guardarPreguntaRespuestaCorta(connection);
                     break;
 
                 case 4: // Emparejar
@@ -281,6 +288,7 @@ public class ContenedorGeneralOpcionesRespuesta implements Initializable {
 
         return true;
     }
+
 
     private void irPanelInicioDocente() {
 
@@ -329,4 +337,40 @@ public class ContenedorGeneralOpcionesRespuesta implements Initializable {
 
         return true;
     }
+
+
+    private void guardarPreguntaVerdaderoFalso(Connection connection) {
+        //si es true es pq la respuesta correcta es verdadero
+        Boolean respuesta = verdaderoFalsoRespuestaController.obtenerRespuestaSeleccionada();
+
+        if (respuesta == null) {
+            mostrarAlerta("Debe seleccionar una opción: Verdadero o Falso.");
+            return;
+        }
+
+        try {
+            if (respuesta == true) {
+                uQuizzes.guardarPreguntaVerdaderoFalsoDocente(true , idPregunta , "Verdadero");
+                uQuizzes.guardarPreguntaVerdaderoFalsoDocente(false , idPregunta , "Falso");
+
+            } else {
+                uQuizzes.guardarPreguntaVerdaderoFalsoDocente(true , idPregunta , "Falso");
+                uQuizzes.guardarPreguntaVerdaderoFalsoDocente(false , idPregunta , "Verdadero");
+            }
+            mostrarAlerta("Pregunta guardada exitosamente");
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarAlerta("Error al guardar: " + e.getMessage());
+        }
+    }
+
+    private void guardarPreguntaRespuestaCorta(Connection connection) {
+
+
+    }
+
+
+
+
+
 }
