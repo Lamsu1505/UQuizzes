@@ -80,28 +80,16 @@ public class RespuestaCortaController {
     }
 
     /**
-     * Validar las respuestas cortas
-     * @return true si las respuestas son válidas, false en caso contrario
-     */
-    public boolean validarRespuestas() {
-        // Limpiar mensaje de error previo
-        mensajeError.setText("");
-
-        // Verificar que haya al menos una respuesta
-        if (listaRespuestas.isEmpty()) {
-            mensajeError.setText("Debe haber al menos una respuesta aceptada");
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * Obtener todas las respuestas
      * @return Lista de respuestas
      */
-    public List<RespuestaCorta> obtenerRespuestas() {
-        return new ArrayList<>(listaRespuestas);
+    public List<String> getListaOpciones() {
+        ArrayList<String> respuestas = new ArrayList<>();
+
+        for (RespuestaCorta respuesta : listaRespuestas) {
+            respuestas.add(respuesta.getTexto());
+        }
+        return respuestas;
     }
 
     /**

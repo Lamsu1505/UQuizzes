@@ -1,11 +1,11 @@
-package org.example.Model;
+package org.example.Model.OpcionesRespuesta;
 
-public class OpcionMultipleUnicaRespuesta {
+public class OpcionMultipleRespuesta {
 
     private String texto;
     private boolean esCorrecta;
 
-    public OpcionMultipleUnicaRespuesta(String texto) {
+    public OpcionMultipleRespuesta(String texto) {
         this.texto = texto;
     }
 

@@ -5,7 +5,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import oracle.jdbc.internal.OracleTypes;
 import org.example.ConexionDB.ConexionOracle;
-import org.example.Model.OpcionMultipleUnicaRespuesta;
+import org.example.Controllers.Paneles.Docente.TiposPregunta.SeleccionMultipleController;
+import org.example.Model.OpcionesRespuesta.OpcionMultipleRespuesta;
 
 import java.sql.*;
 import java.util.*;
@@ -264,7 +265,7 @@ public class DocenteDAO {
         return respuesta;
     }
 
-    public boolean crearPreguntaUnicaRespuestaDocente(OpcionMultipleUnicaRespuesta opcion , int idPregunta) {
+    public boolean crearPreguntaUnicaRespuestaDocente(OpcionMultipleRespuesta opcion , int idPregunta) {
 
 
         boolean respuesta = false;
@@ -362,5 +363,133 @@ public class DocenteDAO {
 
         }
         return retorno;
+    }
+
+    public boolean guardarPreguntaRespuestaCorta(String texto, int idPregunta) {
+        boolean retorno = false;
+
+        String call = "{ ? = call crearOpcion(?, ?, ?)}";
+
+        try (
+                Connection conn = new ConexionOracle().conectar();
+                CallableStatement stmt = conn.prepareCall(call)
+        ) {
+
+
+
+            stmt.registerOutParameter(1, Types.INTEGER);
+            stmt.setInt(2, idPregunta);
+            stmt.setString(3, "S");
+            stmt.setString(4, texto);
+
+            stmt.execute();
+
+            int resultado = stmt.getInt(1);
+
+            System.out.println("Resultado de la insercion de la opcion: " + resultado);
+
+            if(resultado != 0){
+                retorno = true;
+            }
+
+            return retorno;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Optional<ButtonType> buttonType = new Alert(Alert.AlertType.ERROR,
+                    "Error al crear la pregunta:\n" + e.getMessage()).showAndWait();
+
+
+        }
+        return retorno;
+    }
+
+    public boolean guardarPreguntaEmparejarDocente(String elementoA, String elementoB, int idPregunta) {
+        boolean retorno = false;
+        String texto = elementoA + ";" + elementoB;
+
+        String call = "{ ? = call crearOpcion(?, ?, ?)}";
+
+        try (
+                Connection conn = new ConexionOracle().conectar();
+                CallableStatement stmt = conn.prepareCall(call)
+        ) {
+
+            stmt.registerOutParameter(1, Types.INTEGER);
+            stmt.setInt(2, idPregunta);
+            stmt.setString(3, "S");
+            stmt.setString(4, texto);
+
+            stmt.execute();
+
+            int resultado = stmt.getInt(1);
+
+            System.out.println("Resultado de la insercion de la opcion: " + resultado);
+
+            if(resultado != 0){
+                retorno = true;
+            }
+
+            return retorno;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Optional<ButtonType> buttonType = new Alert(Alert.AlertType.ERROR,
+                    "Error al crear la pregunta:\n" + e.getMessage()).showAndWait();
+
+
+        }
+        return retorno;
+    }
+
+    public boolean guardarPreguntaMultipleRespuestaDocente(SeleccionMultipleController.OpcionMultiple opcion, int idPregunta) {
+        boolean respuesta = false;
+
+        String texto = opcion.getTexto();
+        boolean esCorrecta = opcion.isSeleccionada();
+        String isCorrecta ="";
+
+
+        if(esCorrecta){
+            isCorrecta = "S";
+        }
+        else {
+            isCorrecta = "N";
+        }
+
+        String call = "{ ? = call crearOpcion(?, ?, ?)}";
+
+        try (
+                Connection conn = new ConexionOracle().conectar();
+                CallableStatement stmt = conn.prepareCall(call)
+        ) {
+
+
+
+            stmt.registerOutParameter(1, Types.INTEGER);
+            stmt.setInt(2, idPregunta);
+            stmt.setString(3, isCorrecta);
+            stmt.setString(4, texto);
+
+            stmt.execute();
+
+            int resultado = stmt.getInt(1);
+
+            System.out.println("Resultado de la insercion de la opcion: " + resultado);
+
+            if(resultado != 0){
+                respuesta = true;
+            }
+
+            return respuesta;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Optional<ButtonType> buttonType = new Alert(Alert.AlertType.ERROR,
+                    "Error al crear la pregunta:\n" + e.getMessage()).showAndWait();
+
+
+        }
+        return respuesta;
     }
 }

@@ -12,8 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.example.ConexionDB.ConexionOracle;
-import org.example.Controllers.ControladorGlobal;
-import org.example.Controllers.Ventanas.Docente.VentanaPrincipalDocenteController;
 import org.example.Model.UQuizzes;
 
 import java.io.IOException;

@@ -13,7 +13,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.example.ConexionDB.ConexionOracle;
 import org.example.Controllers.Paneles.Docente.TiposPregunta.*;
-import org.example.Model.OpcionMultipleUnicaRespuesta;
+import org.example.Model.OpcionesRespuesta.OpcionMultipleRespuesta;
 import org.example.Model.UQuizzes;
 
 import java.net.URL;
@@ -253,7 +253,7 @@ public class ContenedorGeneralOpcionesRespuesta implements Initializable {
             switch (idTipoPregunta) {
 
                 case 1: // Única Respuesta
-                    if( guardarPreguntaUnicaRespuesta(connection)){
+                    if( guardarPreguntaUnicaRespuesta()){
                         mostrarAlerta("Pregunta creada exitosamente");
                         irPanelInicioDocente();
                         return true;
@@ -261,20 +261,34 @@ public class ContenedorGeneralOpcionesRespuesta implements Initializable {
                     break;
 
                 case 2: // Verdadero Falso
-                    guardarPreguntaVerdaderoFalso(connection);
+                    if( guardarPreguntaVerdaderoFalso()){
+                        mostrarAlerta("Pregunta creada exitosamente");
+                        irPanelInicioDocente();
+                        return true;
+                    };
                     break;
 
                 case 3: // Respuesta Corta
-                    guardarPreguntaRespuestaCorta(connection);
+                    if( guardarPreguntaRespuestaCorta()){
+                        mostrarAlerta("Pregunta creada exitosamente");
+                        irPanelInicioDocente();
+                        return true;
+                    };
                     break;
 
                 case 4: // Emparejar
-                    //guardarPreguntaEmparejar(connection);
-                    break;
+                    if( guardarPreguntaEmparejar()){
+                        mostrarAlerta("Pregunta creada exitosamente");
+                        irPanelInicioDocente();
+                        return true;
+                    };
 
                 case 5: // Múltiple Respuesta
-                    //guardarPreguntaMultipleRespuesta(connection);
-                    break;
+                    if( guardarPreguntaMultipleRespuesta()){
+                        mostrarAlerta("Pregunta creada exitosamente");
+                        irPanelInicioDocente();
+                        return true;
+                    };
 
                 default:
                     throw new IllegalArgumentException("Tipo de pregunta no reconocido");
@@ -304,21 +318,20 @@ public class ContenedorGeneralOpcionesRespuesta implements Initializable {
             stage.setResizable(false);
             stage.show();
 
+            Stage stageActual = (Stage) siguienteButton.getScene().getWindow();
+            stageActual.close();
+
         }catch (Exception e) {e.printStackTrace();}
 
     }
 
 
-    /**
-     * Método para guardar pregunta de Única Respuesta
-     * @param connection Conexión a la base de datos
-     */
-    private boolean guardarPreguntaUnicaRespuesta(Connection connection) throws Exception {
-        List<OpcionMultipleUnicaRespuesta> opciones = unicaRespuestaController.getListaOpciones();
+    private boolean guardarPreguntaUnicaRespuesta() throws Exception {
+        List<OpcionMultipleRespuesta> opciones = unicaRespuestaController.getListaOpciones();
 
 
         System.out.println("");
-        for (OpcionMultipleUnicaRespuesta opcion : opciones) {
+        for (OpcionMultipleRespuesta opcion : opciones) {
 
             try{
                 if(uQuizzes.guardarPreguntaUnicaRespuestaDocente(opcion , idPregunta)){
@@ -339,13 +352,13 @@ public class ContenedorGeneralOpcionesRespuesta implements Initializable {
     }
 
 
-    private void guardarPreguntaVerdaderoFalso(Connection connection) {
+    private boolean guardarPreguntaVerdaderoFalso() {
         //si es true es pq la respuesta correcta es verdadero
         Boolean respuesta = verdaderoFalsoRespuestaController.obtenerRespuestaSeleccionada();
 
         if (respuesta == null) {
             mostrarAlerta("Debe seleccionar una opción: Verdadero o Falso.");
-            return;
+            return false;
         }
 
         try {
@@ -362,11 +375,71 @@ public class ContenedorGeneralOpcionesRespuesta implements Initializable {
             e.printStackTrace();
             mostrarAlerta("Error al guardar: " + e.getMessage());
         }
+        return true;
     }
 
-    private void guardarPreguntaRespuestaCorta(Connection connection) {
+    private boolean guardarPreguntaRespuestaCorta() {
+        List<String> opciones = respuestaCortaController.getListaOpciones();
 
+        for (String opcion : opciones) {
+            try {
+                if (uQuizzes.guardarPreguntaRespuestaCortaDocente(opcion, idPregunta)) {
+                    System.out.println("Se guardo la opcion : " + opcion);
+                } else {
+                    mostrarAlerta("Error al guardar la opcion: " + opcion);
+                    throw new Exception("Error creando las opciones");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
 
+        return true;
+
+    }
+
+    private boolean guardarPreguntaEmparejar() {
+        List<EmparejamientoController.ParElementos> pares = null;
+
+        if (emparejamientoController.validarPares()) {
+            pares = emparejamientoController.obtenerPares();
+            for (EmparejamientoController.ParElementos par : pares) {
+                try {
+                    if (uQuizzes.guardarPreguntaEmparejarDocente(par.getElementoA(), par.getElementoB(), idPregunta)) {
+                        System.out.println("Se guardo el par: " + par.getElementoA() + " - " + par.getElementoB());
+                    } else {
+                        mostrarAlerta("Error al guardar el par: " + par.getElementoA() + " - " + par.getElementoB());
+                        throw new Exception("Error creando los pares");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return false;
+                }
+            }
+        } else {
+            mostrarAlerta("Error: No se pueden guardar pares vacíos o duplicados.");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean guardarPreguntaMultipleRespuesta() {
+        List<SeleccionMultipleController.OpcionMultiple> opciones = seleccionMultipleController.obtenerOpciones();
+
+        for (SeleccionMultipleController.OpcionMultiple opcion : opciones) {
+            try {
+                if (uQuizzes.guardarPreguntaMultipleRespuestaDocente(opcion, idPregunta)) {
+                    System.out.println("Guardando la opcion: " + opcion.getTexto());
+                } else {
+                    mostrarAlerta("Error al guardar la opcion: " + opcion.getTexto());
+                    throw new Exception("Error creando las opciones");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return true;
     }
 
 

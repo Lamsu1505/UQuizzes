@@ -49,54 +49,6 @@ public class EmparejamientoController {
         }
     }
 
-    // Clase interna para manejar cada par de elementos
-    private class ParElementos {
-        private HBox contenedor;
-        private TextField elementoA;
-        private TextField elementoB;
-        private Button eliminarButton;
-
-        public ParElementos() {
-            // Crear contenedor horizontal para el par
-            contenedor = new HBox(10);
-
-            // Crear campos de texto para los elementos A y B
-            elementoA = new TextField();
-            elementoA.setPromptText("Elemento A");
-            elementoA.setMaxWidth(300);
-
-            elementoB = new TextField();
-            elementoB.setPromptText("Elemento B");
-            elementoB.setMaxWidth(300);
-
-            // Crear botón de eliminación
-            eliminarButton = new Button("X");
-            eliminarButton.setStyle("-fx-background-color: red; -fx-text-fill: white;");
-            eliminarButton.setOnAction(e -> eliminarPar());
-
-            // Agregar elementos al contenedor
-            contenedor.getChildren().addAll(elementoA, elementoB, eliminarButton);
-        }
-
-        private void eliminarPar() {
-            // Eliminar este par del contenedor y de la lista
-            parejasContainer.getChildren().remove(contenedor);
-            listaPares.remove(this);
-        }
-
-        public HBox getContenedor() {
-            return contenedor;
-        }
-
-        public String getElementoA() {
-            return elementoA.getText().trim();
-        }
-
-        public String getElementoB() {
-            return elementoB.getText().trim();
-        }
-    }
-
     /**
      * Método para validar los pares de elementos
      * @return true si todos los pares son válidos, false en caso contrario
@@ -150,6 +102,67 @@ public class EmparejamientoController {
      * @return Lista de pares de elementos
      */
     public List<ParElementos> obtenerPares() {
-        return new ArrayList<>(listaPares);
+        if(validarPares()) {
+            // Si los pares son válidos, devolver la lista
+            return new ArrayList<>(listaPares);
+        } else {
+            // Si no son válidos, mostrar un mensaje de error
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error de validación");
+            alert.setHeaderText(null);
+            alert.setContentText(mensajeError.getText());
+            alert.showAndWait();
+        }
+        return null;
     }
+
+    // Clase interna para manejar cada par de elementos
+    public class ParElementos {
+        private HBox contenedor;
+        private TextField elementoA;
+        private TextField elementoB;
+        private Button eliminarButton;
+
+        public ParElementos() {
+            // Crear contenedor horizontal para el par
+            contenedor = new HBox(10);
+
+            // Crear campos de texto para los elementos A y B
+            elementoA = new TextField();
+            elementoA.setPromptText("Elemento A");
+            elementoA.setMaxWidth(300);
+
+            elementoB = new TextField();
+            elementoB.setPromptText("Elemento B");
+            elementoB.setMaxWidth(300);
+
+            // Crear botón de eliminación
+            eliminarButton = new Button("X");
+            eliminarButton.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+            eliminarButton.setOnAction(e -> eliminarPar());
+
+            // Agregar elementos al contenedor
+            contenedor.getChildren().addAll(elementoA, elementoB, eliminarButton);
+        }
+
+        private void eliminarPar() {
+            // Eliminar este par del contenedor y de la lista
+            parejasContainer.getChildren().remove(contenedor);
+            listaPares.remove(this);
+        }
+
+        public HBox getContenedor() {
+            return contenedor;
+        }
+
+        public String getElementoA() {
+            return elementoA.getText().trim();
+        }
+
+        public String getElementoB() {
+            return elementoB.getText().trim();
+        }
+    }
+
+
 }

@@ -103,7 +103,11 @@ public class SeleccionMultipleController {
      * @return Lista de opciones
      */
     public List<OpcionMultiple> obtenerOpciones() {
-        return new ArrayList<>(listaOpciones);
+        ArrayList<OpcionMultiple> respuestas = new ArrayList<>();
+
+        respuestas.addAll(listaOpciones);
+
+        return respuestas;
     }
 
     /**
