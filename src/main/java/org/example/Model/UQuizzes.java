@@ -1,12 +1,11 @@
 package org.example.Model;
 
-import oracle.jdbc.internal.OracleTypes;
 import org.example.ConexionDB.ConexionOracle;
 import org.example.ConexionDB.DAO.DocenteDAO;
+import org.example.Controllers.Paneles.Docente.TiposPregunta.SeleccionMultipleController;
+import org.example.Model.OpcionesRespuesta.OpcionMultipleRespuesta;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -91,12 +90,24 @@ public class UQuizzes {
         return docenteDAO.crearPregunta(idTemaSeleccionado , idTipoPreguntaSeleccionado , idPreguntaPadre , idNivelPreguntaSeleccionado , isPublica, enunciado , peso , tiempoPregunta);
     }
 
-    public boolean guardarPreguntaUnicaRespuestaDocente(OpcionMultipleUnicaRespuesta opcion , int idPregunta) {
+    public boolean guardarPreguntaUnicaRespuestaDocente(OpcionMultipleRespuesta opcion , int idPregunta) {
         return docenteDAO.crearPreguntaUnicaRespuestaDocente(opcion , idPregunta);
     }
 
     public boolean guardarPreguntaVerdaderoFalsoDocente(Boolean respuesta, int idPregunta , String texto) {
         return docenteDAO.crearPreguntaVerdaderoFalsoDocente(respuesta , idPregunta  , texto);
+    }
+
+    public boolean guardarPreguntaRespuestaCortaDocente(String texto, int idPregunta) {
+        return docenteDAO.guardarPreguntaRespuestaCorta(texto , idPregunta);
+    }
+
+    public boolean guardarPreguntaEmparejarDocente(String elementoA, String elementoB, int idPregunta) {
+        return docenteDAO.guardarPreguntaEmparejarDocente(elementoA , elementoB , idPregunta);
+    }
+
+    public boolean guardarPreguntaMultipleRespuestaDocente(SeleccionMultipleController.OpcionMultiple opcion, int idPregunta) {
+        return docenteDAO.guardarPreguntaMultipleRespuestaDocente(opcion , idPregunta);
     }
 }
 
