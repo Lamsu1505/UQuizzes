@@ -492,4 +492,54 @@ public class DocenteDAO {
         }
         return respuesta;
     }
+
+
+    public int crearQuiz(int idDocente, int idGrupo, int idMateria, String nombreQuiz, String fechaInicio, int cantidadPreguntas, int tiempo, String hora, String descripcion, int pesoMateria, String tieneTiempo, double notaMinimaPasar) {
+
+        int respuesta = 0;
+
+
+        String call = "{ ? = call crearExamen(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+
+        try (
+                Connection conn = new ConexionOracle().conectar();
+                CallableStatement stmt = conn.prepareCall(call)
+        ) {
+
+
+            stmt.registerOutParameter(1, Types.INTEGER);
+
+            stmt.setInt(2, idDocente);
+            stmt.setInt(3, idGrupo);
+            stmt.setInt(4, idMateria);
+            stmt.setString(5, nombreQuiz);
+            stmt.setString(6, fechaInicio);
+            stmt.setInt(7, cantidadPreguntas);
+            stmt.setInt(8, tiempo);
+            stmt.setString(9, hora);
+            stmt.setString(10, descripcion);
+            stmt.setInt(11, pesoMateria);
+            stmt.setString(12, tieneTiempo);
+            stmt.setDouble(13, notaMinimaPasar);
+
+
+            stmt.execute();
+            System.out.println("el quiz es el numero " + stmt.getInt(1));
+
+            respuesta = stmt.getInt(1);
+
+            return respuesta;
+
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Optional<ButtonType> buttonType = new Alert(Alert.AlertType.ERROR,
+                    "Error al crear la pregunta:\n" + e.getMessage()).showAndWait();
+
+
+        }
+        return respuesta;
+    }
 }

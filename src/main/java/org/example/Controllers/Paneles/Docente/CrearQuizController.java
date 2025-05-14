@@ -1,104 +1,537 @@
 package org.example.Controllers.Paneles.Docente;
 
-import javafx.event.ActionEvent;
+import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.stage.Stage;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.CheckBoxListCell;
+import org.example.ConexionDB.ConexionOracle;
+import org.example.Model.UQuizzes;
 
-import java.io.IOException;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
 
-public class CrearQuizController {
 
-    @FXML
-    private Button cancelarButton;
-
-    @FXML
-    private Label fechaFinLabel;
-
-    @FXML
-    private TextField fechaFinTextField;
-
-    @FXML
-    private Label fechaInicioLabel;
-
-    @FXML
-    private TextField fechaInicioTextField;
-
-    @FXML
-    private Label intentosLabel;
-
-    @FXML
-    private TextField intentosTextField;
-
-    @FXML
-    private ComboBox<?> materiaComboBox;
-
-    @FXML
-    private Label materiaLabel;
-
-    @FXML
-    private Label nombreQuizLabel;
-
-    @FXML
-    private TextField nombreQuizTextField;
-
-    @FXML
-    private Button siguienteButton;
-
-    @FXML
-    private ComboBox<?> temaComboBox;
-
-    @FXML
-    private Label temaLabel;
-
-    @FXML
-    private Label tiempoLabel;
-
-    @FXML
-    private TextField tiempoTextField;
+public class CrearQuizController implements Initializable {
 
     @FXML
     private Label tituloLabel;
 
     @FXML
-    private ComboBox<?> unidadComboBox;
+    private TextField nombreQuizTextField;
 
     @FXML
-    private Label unidadLabel;
+    private ComboBox<String> materiaComboBox;
 
     @FXML
-    void cancelarEvent(ActionEvent event) {
+    private ComboBox<String> unidadComboBox;
+
+    @FXML
+    private TextField fechaInicioTextField;
+
+    @FXML
+    private TextField fechaFinTextField;
+
+    @FXML
+    private TextField horaTextField;
+
+    @FXML
+    private TextField descripcionTextField;
+
+    @FXML
+    private TextField tiempoTextField;
+
+    @FXML
+    private TextField pesoMateriaTextField;
+
+    @FXML
+    private TextField cantidadPreguntasTextField;
+
+    @FXML
+    private ListView<TemaCheck> temasListView;
+
+    @FXML
+    private ComboBox<String> grupoComboBox;
+
+    @FXML
+    private ComboBox<String> comboBoxAutomaticoManual;
+
+    @FXML
+    private TextField cantidadPreguntasBancoTextField;
+
+    private ObservableList<TemaCheck> temasData = FXCollections.observableArrayList();
+
+    private String idMateriaSeleccionada;
+    private String idUnidadSeleccionada;
+    private String idGrupoSeleccionado;
+
+    List<TemaCheck> temasSeleccionados = new ArrayList<>();
+
+    private UQuizzes uQuizzes = UQuizzes.getInstance();
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // Inicializar componentes
+        configurarListView();
+
+        ObservableList<String> automaticoManual = FXCollections.observableArrayList();
+        automaticoManual.add("Automatico");
+        automaticoManual.add("Manual");
+        comboBoxAutomaticoManual.setItems(automaticoManual);
+
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfaces/Ventanas/ventanaInicioDocente.fxml"));
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
+            cargarMaterias();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
+
+
+        // Listener para cargar unidades cuando se selecciona una materia
+        materiaComboBox.setOnAction(event -> {
+            unidadComboBox.getSelectionModel().clearSelection();
+            unidadComboBox.getItems().clear();
+            temasData.clear();
+            temasListView.getItems().clear();
+
+
+            String nombreMateriaSeleccionada = materiaComboBox.getValue();
+            if (nombreMateriaSeleccionada != null) {
+
+                ConexionOracle conexion = new ConexionOracle();
+
+                if (conexion == null) {
+                    mostrarAlerta("Error de conexion", "Error de conexión con la base de datos.");
+                    return;
+                }
+
+                String sql = "select idmateria " +
+                        "from materia where nombre = '" + nombreMateriaSeleccionada + "'";
+
+                try (Connection connection = conexion.conectar();
+                     PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+                    try (ResultSet rs = stmt.executeQuery()) {
+                        while (rs.next()) {
+                            idMateriaSeleccionada = rs.getString("IDMATERIA");
+                        }
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    cargarGrupos();
+                    cargarUnidades();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    mostrarAlerta("Error" , "Error al cargar grupos en crearPreguntaController: " + e.getMessage());
+                }
+            }
+        });
+
+        // Listener para cargar temas cuando se selecciona una unidad
+        unidadComboBox.setOnAction(event -> {
+            temasListView.getItems().clear();
+            try{
+                String nombreUnidadSeleccionada = unidadComboBox.getValue();
+                if (nombreUnidadSeleccionada != null) {
+                    ConexionOracle conexion = new ConexionOracle();
+                    if (conexion == null) {
+                        mostrarAlerta("Error" , "Error de conexión con la base de datos.");
+                        return;
+                    }
+
+                    String sql = "select idunidad " +
+                            "from unidad where nombre = '" + nombreUnidadSeleccionada + "'";
+
+                    try (Connection connection = conexion.conectar();
+                         PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+                        try (ResultSet rs = stmt.executeQuery()) {
+                            while (rs.next()) {
+                                idUnidadSeleccionada = rs.getString("IDUNIDAD");
+                            }
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                try {
+                    cargarTemas();
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    mostrarAlerta("Error" , "Error al cargar temas en crearPreguntaController: " + e.getMessage());
+                }
+
+
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void configurarListView() {
+        // Configurar el ListView para usar CheckBoxes
+        temasListView.setCellFactory(CheckBoxListCell.forListView(TemaCheck::seleccionadoProperty));
+        // Asignar los datos al ListView
+        //temasListView.setItems(temasData);
+    }
+
+    private void cargarMaterias() throws SQLException {
+        ObservableList<String> materias = FXCollections.observableArrayList();
+        List<Map<String, Object>> listaSQL = uQuizzes.getMateriasDocente(uQuizzes.getUsuarioEnSesion());
+
+        for (int i = 0; i < listaSQL.size(); i++) {
+            String nombreMateria = listaSQL.get(i).get("NOMBRE_MATERIA").toString();
+            materias.add(nombreMateria);
+            System.out.println(nombreMateria);
+        }
+
+        materiaComboBox.setItems(materias);
+    }
+
+    private void cargarUnidades() throws SQLException {
+
+        ObservableList<String> unidades = FXCollections.observableArrayList();
+        List<Map<String, Object>> listaSQL = uQuizzes.getUnidadesDocenteByMateria(idMateriaSeleccionada);
+
+        for(int i =0 ; i < listaSQL.size() ; i++){
+            String nombreGrupo = listaSQL.get(i).get("NOMBRE_UNIDAD").toString();
+            unidades.add(nombreGrupo);
+        }
+        unidadComboBox.setItems(unidades);
+    }
+
+    private void cargarTemas() throws SQLException {
+        temasData.clear();
+        List<Map<String, Object>> listaSQL = uQuizzes.getTemasDocenteByUnidad(idUnidadSeleccionada);
+
+        System.out.println("la lista tiene " + listaSQL.size() + " elementos");
+
+        for (int i = 0; i < listaSQL.size(); i++) {
+            String nombreTema = listaSQL.get(i).get("NOMBRE").toString();
+            int idTema = Integer.parseInt(listaSQL.get(i).get("ID_TEMA").toString());
+            temasData.add(new TemaCheck(idTema, nombreTema, false));
+        }
+
+        temasListView.setItems(temasData);
+
+    }
+
+
+    private void cargarGrupos() throws SQLException {
+        ObservableList<String> grupos = FXCollections.observableArrayList();
+        List<Map<String, Object>> listaSQL = uQuizzes.getGruposDocenteByMateria(uQuizzes.getUsuarioEnSesion() , idMateriaSeleccionada);
+
+        for(int i =0 ; i < listaSQL.size() ; i++){
+            String nombreGrupo = listaSQL.get(i).get("NOMBRE_GRUPO").toString();
+            grupos.add(nombreGrupo);
+        }
+        grupoComboBox.setItems(grupos);
+
+
     }
 
     @FXML
-    void siguienteEvent(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfaces/Paneles/Docente/panelTiposPregunta.fxml"));
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void cancelarEvent() {
+
     }
 
+    @FXML
+    private void siguienteEvent() {
+        // Validar campos
+        if (!validarCampos()) {
+            return;
+        }
+
+        // Obtener temas seleccionados
+        for (TemaCheck tema : temasData) {
+            if (tema.isSeleccionado()) {
+                temasSeleccionados.add(tema);
+            }
+        }
+
+        if (temasSeleccionados.isEmpty()) {
+            mostrarAlerta("Error", "Debe seleccionar al menos un tema.");
+            return;
+        }
+
+        try{
+
+            int idDocente = Integer.parseInt(uQuizzes.getUsuarioEnSesion());
+            int idGrupo = getIdGrupoSeleccionado();
+            int idMateria = Integer.parseInt(idMateriaSeleccionada);
+            String nombreQuiz = nombreQuizTextField.getText();
+            String fechaInicio = fechaInicioTextField.getText();
+            int cantidadPreguntas = Integer.parseInt(cantidadPreguntasTextField.getText());
+            String hora = horaTextField.getText();
+            String descripcion = descripcionTextField.getText();
+            int pesoMateria = Integer.parseInt(pesoMateriaTextField.getText());
+            double notaMinimaPasar=3.0;
+
+            String tieneTiempo;
+            int tiempo;
+            if(tiempoTextField.getText().isEmpty()){
+                tiempo = 0;
+                tieneTiempo="N";
+            }
+            else{
+                tiempo = Integer.parseInt(tiempoTextField.getText());
+                tieneTiempo="S";
+            }
+
+            int idExamenCreado= uQuizzes.crearQuiz(idDocente, idGrupo, idMateria, nombreQuiz, fechaInicio, cantidadPreguntas, tiempo , hora , descripcion , pesoMateria , tieneTiempo , notaMinimaPasar);
+
+            if(idExamenCreado != 0){
+                mostrarInfo("Éxito", "El quiz ha sido creado exitosamente.");
+            } else {
+                mostrarAlerta("Error", "No se pudo crear el quiz.");
+            }
+        }catch (Exception e){
+            mostrarAlerta("Error", "Error al crear el quiz: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+
+        // Guardar datos y proceder a la siguiente pantalla
+        //guardarQuiz(temasSeleccionados);
+    }
+
+    private int getIdGrupoSeleccionado() {
+
+        String nombreGrupoSeleccionado = grupoComboBox.getValue();
+
+        ConexionOracle conexion = new ConexionOracle();
+
+        if (conexion == null) {
+            mostrarAlerta("Error de conexion", "Error de conexión con la base de datos.");
+            return 0;
+        }
+
+        String sql = "select idGrupo " +
+                "from GRUPO where nombre = '" + nombreGrupoSeleccionado + "'";
+
+        try (Connection connection = conexion.conectar();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    idGrupoSeleccionado = rs.getString("IDGRUPO");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Integer.parseInt(idGrupoSeleccionado);
+    }
+
+    private boolean validarCampos() {
+        // Implementar validación de campos
+        if (nombreQuizTextField.getText().isEmpty()) {
+            mostrarAlerta("Error", "Debe ingresar un nombre para el quiz.");
+            return false;
+        }
+
+        if (materiaComboBox.getValue() == null) {
+            mostrarAlerta("Error", "Debe seleccionar una materia.");
+            return false;
+        }
+
+        if (unidadComboBox.getValue() == null) {
+            mostrarAlerta("Error", "Debe seleccionar una unidad.");
+            return false;
+        }
+
+        if (fechaInicioTextField.getText().isEmpty()) {
+            mostrarAlerta("Error", "Debe ingresar una fecha de inicio.");
+            return false;
+        }
+        if(pesoMateriaTextField.getText().isEmpty()) {
+            mostrarAlerta("Error", "Debe ingresar un peso de materia.");
+            return false;
+        }
+
+        if(cantidadPreguntasTextField.getText().isEmpty()) {
+            mostrarAlerta("Error", "Debe ingresar una cantidad de preguntas.");
+            return false;
+        }
+
+        if(cantidadPreguntasBancoTextField.getText().isEmpty()) {
+            mostrarAlerta("Error", "Debe ingresar una cantidad de preguntas en el banco.");
+            return false;
+        }
+
+        // Validar que tiempo sea un número
+        try {
+            Integer.parseInt(tiempoTextField.getText());
+        } catch (NumberFormatException e) {
+            mostrarAlerta("Error", "El tiempo límite debe ser un número.");
+            return false;
+        }
+
+        // Validar que peso materia sea un número
+        if (!pesoMateriaTextField.getText().isEmpty()) {
+            try {
+                Double.parseDouble(pesoMateriaTextField.getText());
+            } catch (NumberFormatException e) {
+                mostrarAlerta("Error", "El peso de la materia debe ser un número.");
+                return false;
+            }
+        }
+
+        // Validar que cantidad de preguntas sea un número
+        if (!cantidadPreguntasTextField.getText().isEmpty()) {
+            try {
+                Integer.parseInt(cantidadPreguntasTextField.getText());
+            } catch (NumberFormatException e) {
+                mostrarAlerta("Error", "La cantidad de preguntas debe ser un número.");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /*private void guardarQuiz(List<TemaCheck> temasSeleccionados) {
+        // Implementar lógica para guardar el quiz y sus temas en la base de datos
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            conn.setAutoCommit(false);
+
+            // Insertar el quiz
+            String queryQuiz = "INSERT INTO QUIZZES (NOMBRE, DESCRIPCION, FECHA_INICIO, FECHA_FIN, TIEMPO_LIMITE, PESO_MATERIA, CANTIDAD_PREGUNTAS) VALUES (?, ?, TO_DATE(?, 'DD-MM-YYYY'), TO_DATE(?, 'DD-MM-YYYY HH24:MI:SS'), ?, ?, ?)";
+            PreparedStatement pstmtQuiz = conn.prepareStatement(queryQuiz, new String[]{"ID"});
+            pstmtQuiz.setString(1, nombreQuizTextField.getText());
+            pstmtQuiz.setString(2, descripcionTextField.getText());
+            pstmtQuiz.setString(3, fechaInicioTextField.getText());
+            pstmtQuiz.setString(4, fechaFinTextField.getText());
+            pstmtQuiz.setInt(5, Integer.parseInt(tiempoTextField.getText()));
+
+            if (!pesoMateriaTextField.getText().isEmpty()) {
+                pstmtQuiz.setDouble(6, Double.parseDouble(pesoMateriaTextField.getText()));
+            } else {
+                pstmtQuiz.setNull(6, java.sql.Types.DOUBLE);
+            }
+
+            if (!cantidadPreguntasTextField.getText().isEmpty()) {
+                pstmtQuiz.setInt(7, Integer.parseInt(cantidadPreguntasTextField.getText()));
+            } else {
+                pstmtQuiz.setNull(7, java.sql.Types.INTEGER);
+            }
+
+            pstmtQuiz.executeUpdate();
+
+            // Obtener el ID del quiz recién insertado
+            ResultSet rs = pstmtQuiz.getGeneratedKeys();
+            int quizId = -1;
+            if (rs.next()) {
+                quizId = rs.getInt(1);
+            }
+
+            // Insertar relación Quiz-Tema para cada tema seleccionado
+            String queryQuizTema = "INSERT INTO QUIZ_TEMAS (ID_QUIZ, ID_TEMA) VALUES (?, ?)";
+            PreparedStatement pstmtQuizTema = conn.prepareStatement(queryQuizTema);
+
+            for (TemaCheck tema : temasSeleccionados) {
+                pstmtQuizTema.setInt(1, quizId);
+                pstmtQuizTema.setInt(2, tema.getId());
+                pstmtQuizTema.addBatch();
+            }
+
+            pstmtQuizTema.executeBatch();
+
+            // Confirmar transacción
+            conn.commit();
+
+            // Mostrar mensaje de éxito y avanzar a la siguiente pantalla
+            mostrarInfo("Quiz creado", "El quiz ha sido creado exitosamente.");
+
+            // Avanzar a la siguiente pantalla
+            // Ejemplo: cambiarPantalla(new PantallaSiguiente());
+
+        } catch (SQLException e) {
+            mostrarAlerta("Error", "No se pudo guardar el quiz: " + e.getMessage());
+        }
+    }*/
+
+    private void mostrarAlerta(String titulo, String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
+
+    private void mostrarInfo(String titulo, String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
+
+
+    public class TemaCheck {
+        private final IntegerProperty id;
+        private final StringProperty nombre;
+        private final BooleanProperty seleccionado;
+
+        public TemaCheck(int id, String nombre, boolean seleccionado) {
+            this.id = new SimpleIntegerProperty(id);
+            this.nombre = new SimpleStringProperty(nombre);
+            this.seleccionado = new SimpleBooleanProperty(seleccionado);
+        }
+
+        public int getId() {
+            return id.get();
+        }
+
+        public void setId(int id) {
+            this.id.set(id);
+        }
+
+        public IntegerProperty idProperty() {
+            return id;
+        }
+
+        public String getNombre() {
+            return nombre.get();
+        }
+
+        public void setNombre(String nombre) {
+            this.nombre.set(nombre);
+        }
+
+        public StringProperty nombreProperty() {
+            return nombre;
+        }
+
+        public boolean isSeleccionado() {
+            return seleccionado.get();
+        }
+
+        public void setSeleccionado(boolean seleccionado) {
+            this.seleccionado.set(seleccionado);
+        }
+
+        public BooleanProperty seleccionadoProperty() {
+            return seleccionado;
+        }
+
+        @Override
+        public String toString() {
+            return nombre.get();
+        }
+    }
 }

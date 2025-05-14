@@ -109,5 +109,10 @@ public class UQuizzes {
     public boolean guardarPreguntaMultipleRespuestaDocente(SeleccionMultipleController.OpcionMultiple opcion, int idPregunta) {
         return docenteDAO.guardarPreguntaMultipleRespuestaDocente(opcion , idPregunta);
     }
+
+
+    public int crearQuiz(int idDocente, int idGrupo, int idMateria, String nombreQuiz, String fechaInicio, int cantidadPreguntas, int tiempo, String hora, String descripcion, int pesoMateria, String tieneTiempo, double notaMinimaPasar) {
+        return docenteDAO.crearQuiz(idDocente , idGrupo , idMateria , nombreQuiz , fechaInicio , cantidadPreguntas , tiempo , hora , descripcion , pesoMateria , tieneTiempo , notaMinimaPasar);
+    }
 }
 

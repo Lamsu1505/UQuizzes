@@ -1,4 +1,4 @@
-package org.example.Controllers.Ventanas.Estudiante.FormatosRespuestas;
+/*package org.example.Controllers.Ventanas.Estudiante.FormatosRespuestas;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -153,4 +153,4 @@ public class FormatoUnicaRespuestaController implements Initializable {
         ponerOpcionCorrecta();
         return listaOpcionesModel;
     }
-}
+}*/
