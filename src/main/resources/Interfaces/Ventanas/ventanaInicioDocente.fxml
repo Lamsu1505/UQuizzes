@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -16,7 +24,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="619.0" prefWidth="1041.0" stylesheets="@../../Estilos/ventanaInicioDocente.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Ventanas.Docente.VentanaPrincipalDocenteController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="619.0" prefWidth="1041.0" stylesheets="@../../Estilos/ventanaInicioDocente.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Ventanas.Docente.VentanaPrincipalDocenteController">
     <left>
         <VBox prefHeight="542.0" prefWidth="220.0" spacing="15.0" styleClass="primary_color" BorderPane.alignment="CENTER">
             <children>
@@ -104,18 +112,7 @@
                 <HBox fx:id="hboxArriba" prefHeight="70.0" prefWidth="811.0" spacing="25.0" BorderPane.alignment="CENTER">
                     <children>
                         <Pane prefHeight="36.0" prefWidth="28.0" />
-                        <HBox alignment="CENTER_RIGHT" prefHeight="29.0" prefWidth="283.0" translateX="6.5" translateY="6.5">
-                            <children>
-                                <SVGPath fx:id="imgBuscar" content="M21.71,20.29,18,16.61A9,9,0,1,0,16.61,18l3.68,3.68a1,1,0,0,0,1.42,0A1,1,0,0,0,21.71,20.29ZM11,18a7,7,0,1,1,7-7A7,7,0,0,1,11,18Z" fill="#009a43" scaleX="0.92" scaleY="0.92" translateX="-4.0" />
-                                <TextField fx:id="txtFIeldBuscar" cacheShape="false" centerShape="false" focusTraversable="false" prefHeight="31.0" prefWidth="224.0" promptText="   Buscar" scaleShape="false" style="-fx-background-color: #dbdbdbff; -fx-border-color: #009a43ff; -fx-border-radius: 10;">
-                           <effect>
-                              <Glow level="0.0" />
-                           </effect>
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font></TextField>
-                            </children>
-                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="29.0" prefWidth="283.0" translateX="6.5" translateY="6.5" />
                         <HBox alignment="CENTER" prefHeight="29.0" prefWidth="90.0" spacing="10.0" translateY="7.0">
                             <children>
                                 <BorderPane fx:id="paneIrAtras" prefHeight="29.0" prefWidth="24.0" />

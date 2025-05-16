@@ -78,13 +78,17 @@ public class LoginController implements Initializable {
 
                 cargarVentana("/Interfaces/Ventanas/ventanaInicioDocente.fxml", actionEvent);
             }
-            else {
+            else{
+                //String idEstudiante = uquizzes.iniciarSesionEstudiante();
+                //TODO hacer el procedimiento para iniciar sesion de estudiante
+            }
+
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Credenciales incorrecas");
                 alert.setHeaderText(null);
                 alert.setContentText("Credenciales incorrectas, por favor verifique su email o su contraseña");
                 alert.showAndWait();
-            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

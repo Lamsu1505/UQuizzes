@@ -542,4 +542,44 @@ public class DocenteDAO {
         }
         return respuesta;
     }
+
+    public int crearBancoPreguntasExamen(int idExamenCreado, int cantidadPreguntasBanco) {
+        int respuesta = 0;
+
+        String call = "{ ? = call crearBancoPreguntasExamen(?, ? , ?)}";
+
+        try (
+                Connection conn = new ConexionOracle().conectar();
+                CallableStatement stmt = conn.prepareCall(call)
+        ) {
+
+            System.out.println(idExamenCreado);
+            System.out.println(cantidadPreguntasBanco);
+
+            stmt.registerOutParameter(1, Types.INTEGER);
+
+            stmt.setInt(2, idExamenCreado);
+            stmt.setInt(3, cantidadPreguntasBanco);
+            stmt.setString(4,"S");
+
+            stmt.execute();
+
+            int resultado = stmt.getInt(1);
+
+            System.out.println("el resultado es " + resultado);
+
+            if(resultado != 0){
+                respuesta = resultado;
+            }
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+            Optional<ButtonType> buttonType = new Alert(Alert.AlertType.ERROR,
+                    "Error al crear la pregunta:\n" + e.getMessage()).showAndWait();
+        }
+
+        return respuesta;
+
+    }
 }

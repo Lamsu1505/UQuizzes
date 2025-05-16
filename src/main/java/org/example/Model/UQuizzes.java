@@ -114,5 +114,9 @@ public class UQuizzes {
     public int crearQuiz(int idDocente, int idGrupo, int idMateria, String nombreQuiz, String fechaInicio, int cantidadPreguntas, int tiempo, String hora, String descripcion, int pesoMateria, String tieneTiempo, double notaMinimaPasar) {
         return docenteDAO.crearQuiz(idDocente , idGrupo , idMateria , nombreQuiz , fechaInicio , cantidadPreguntas , tiempo , hora , descripcion , pesoMateria , tieneTiempo , notaMinimaPasar);
     }
+
+    public int crearBancoPreguntas(int idExamenCreado, int cantidadPreguntasBanco) {
+        return docenteDAO.crearBancoPreguntasExamen(idExamenCreado , cantidadPreguntasBanco);
+    }
 }
 
