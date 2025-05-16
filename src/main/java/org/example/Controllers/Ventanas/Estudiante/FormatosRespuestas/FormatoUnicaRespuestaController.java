@@ -1,4 +1,4 @@
-/*package org.example.Controllers.Ventanas.Estudiante.FormatosRespuestas;
+package org.example.Controllers.Ventanas.Estudiante.FormatosRespuestas;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,8 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import org.example.Model.OpcionMultipleUnicaRespuesta;
-
+import org.example.Model.OpcionesRespuesta.OpcionMultipleRespuesta;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ public class FormatoUnicaRespuestaController implements Initializable {
 
     private ToggleGroup toggleGroup = new ToggleGroup(); // para controlar selección única
     private List<HBox> listaOpciones = new ArrayList<>();
-    private List<OpcionMultipleUnicaRespuesta> listaOpcionesModel = new ArrayList<>();
+    private List<OpcionMultipleRespuesta> listaOpcionesModel = new ArrayList<>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -47,7 +46,7 @@ public class FormatoUnicaRespuestaController implements Initializable {
 
     private void agregarOpcionConTexto(String texto) {
         // Crear modelo
-        OpcionMultipleUnicaRespuesta opcion = new OpcionMultipleUnicaRespuesta(texto);
+        OpcionMultipleRespuesta opcion = new OpcionMultipleRespuesta(texto);
         listaOpcionesModel.add(opcion);
 
         // Crear contenedor visual
@@ -99,7 +98,7 @@ public class FormatoUnicaRespuestaController implements Initializable {
         }
 
         // Eliminar del modelo
-        OpcionMultipleUnicaRespuesta modelo = (OpcionMultipleUnicaRespuesta) opcionHBox.getUserData();
+        OpcionMultipleRespuesta modelo = (OpcionMultipleRespuesta) opcionHBox.getUserData();
         listaOpcionesModel.remove(modelo);
 
         // Deseleccionar si es la opción marcada
@@ -138,7 +137,7 @@ public class FormatoUnicaRespuestaController implements Initializable {
     }
 
     private void ponerOpcionCorrecta() {
-        for (OpcionMultipleUnicaRespuesta op : listaOpcionesModel) {
+        for (OpcionMultipleRespuesta op : listaOpcionesModel) {
             op.setEsCorrecta(false);
         }
         int opcionCorrecta = getOpcionCorrectaVista();
@@ -147,10 +146,10 @@ public class FormatoUnicaRespuestaController implements Initializable {
         }
     }
 
-    public List<OpcionMultipleUnicaRespuesta> getListaOpciones() {
+    public List<OpcionMultipleRespuesta> getListaOpciones() {
 
         System.out.println(listaOpcionesModel.size() + " " + listaOpciones.size());
         ponerOpcionCorrecta();
         return listaOpcionesModel;
     }
-}*/
+}
