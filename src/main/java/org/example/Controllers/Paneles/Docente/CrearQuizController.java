@@ -280,6 +280,7 @@ public class CrearQuizController implements Initializable {
             String descripcion = descripcionTextField.getText();
             int pesoMateria = Integer.parseInt(pesoMateriaTextField.getText());
             double notaMinimaPasar=3.0;
+            int cantidadPreguntasBanco = Integer.parseInt(cantidadPreguntasBancoTextField.getText());
 
             String tieneTiempo;
             int tiempo;
@@ -292,10 +293,20 @@ public class CrearQuizController implements Initializable {
                 tieneTiempo="S";
             }
 
+            //crea el examen sin preguntas
             int idExamenCreado= uQuizzes.crearQuiz(idDocente, idGrupo, idMateria, nombreQuiz, fechaInicio, cantidadPreguntas, tiempo , hora , descripcion , pesoMateria , tieneTiempo , notaMinimaPasar);
 
             if(idExamenCreado != 0){
                 mostrarInfo("Éxito", "El quiz ha sido creado exitosamente.");
+
+                //Crea el banco
+                int idBancoCreado = uQuizzes.crearBancoPreguntas((idExamenCreado + 1), cantidadPreguntasBanco);
+                if(idBancoCreado != 0){
+                    mostrarInfo("Éxito", "El banco de preguntas ha sido creado exitosamente.");
+                }
+                else{
+                    mostrarAlerta("Error", "No se pudo crear el banco de preguntas.");
+                }
             } else {
                 mostrarAlerta("Error", "No se pudo crear el quiz.");
             }
@@ -403,67 +414,6 @@ public class CrearQuizController implements Initializable {
 
         return true;
     }
-
-    /*private void guardarQuiz(List<TemaCheck> temasSeleccionados) {
-        // Implementar lógica para guardar el quiz y sus temas en la base de datos
-        try (Connection conn = DatabaseConnection.getConnection()) {
-            conn.setAutoCommit(false);
-
-            // Insertar el quiz
-            String queryQuiz = "INSERT INTO QUIZZES (NOMBRE, DESCRIPCION, FECHA_INICIO, FECHA_FIN, TIEMPO_LIMITE, PESO_MATERIA, CANTIDAD_PREGUNTAS) VALUES (?, ?, TO_DATE(?, 'DD-MM-YYYY'), TO_DATE(?, 'DD-MM-YYYY HH24:MI:SS'), ?, ?, ?)";
-            PreparedStatement pstmtQuiz = conn.prepareStatement(queryQuiz, new String[]{"ID"});
-            pstmtQuiz.setString(1, nombreQuizTextField.getText());
-            pstmtQuiz.setString(2, descripcionTextField.getText());
-            pstmtQuiz.setString(3, fechaInicioTextField.getText());
-            pstmtQuiz.setString(4, fechaFinTextField.getText());
-            pstmtQuiz.setInt(5, Integer.parseInt(tiempoTextField.getText()));
-
-            if (!pesoMateriaTextField.getText().isEmpty()) {
-                pstmtQuiz.setDouble(6, Double.parseDouble(pesoMateriaTextField.getText()));
-            } else {
-                pstmtQuiz.setNull(6, java.sql.Types.DOUBLE);
-            }
-
-            if (!cantidadPreguntasTextField.getText().isEmpty()) {
-                pstmtQuiz.setInt(7, Integer.parseInt(cantidadPreguntasTextField.getText()));
-            } else {
-                pstmtQuiz.setNull(7, java.sql.Types.INTEGER);
-            }
-
-            pstmtQuiz.executeUpdate();
-
-            // Obtener el ID del quiz recién insertado
-            ResultSet rs = pstmtQuiz.getGeneratedKeys();
-            int quizId = -1;
-            if (rs.next()) {
-                quizId = rs.getInt(1);
-            }
-
-            // Insertar relación Quiz-Tema para cada tema seleccionado
-            String queryQuizTema = "INSERT INTO QUIZ_TEMAS (ID_QUIZ, ID_TEMA) VALUES (?, ?)";
-            PreparedStatement pstmtQuizTema = conn.prepareStatement(queryQuizTema);
-
-            for (TemaCheck tema : temasSeleccionados) {
-                pstmtQuizTema.setInt(1, quizId);
-                pstmtQuizTema.setInt(2, tema.getId());
-                pstmtQuizTema.addBatch();
-            }
-
-            pstmtQuizTema.executeBatch();
-
-            // Confirmar transacción
-            conn.commit();
-
-            // Mostrar mensaje de éxito y avanzar a la siguiente pantalla
-            mostrarInfo("Quiz creado", "El quiz ha sido creado exitosamente.");
-
-            // Avanzar a la siguiente pantalla
-            // Ejemplo: cambiarPantalla(new PantallaSiguiente());
-
-        } catch (SQLException e) {
-            mostrarAlerta("Error", "No se pudo guardar el quiz: " + e.getMessage());
-        }
-    }*/
 
     private void mostrarAlerta(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
