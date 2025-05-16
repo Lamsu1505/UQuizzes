@@ -20,8 +20,6 @@ public class FormatoSeleccionMultipleController {
     @FXML
     private Label mensajeError;
 
-    @FXML
-    private Button agregarOpcionButton;
 
     // Lista para almacenar las opciones
     private List<OpcionMultiple> listaOpciones = new ArrayList<>();
@@ -138,22 +136,10 @@ public class FormatoSeleccionMultipleController {
             textoOpcion = new TextField("Opción " + numero);
             textoOpcion.setMaxWidth(300);
 
-            // Crear botón de eliminación
-            eliminarButton = new Button("X");
-            eliminarButton.setStyle("-fx-background-color: red; -fx-text-fill: white;");
-            eliminarButton.setOnAction(e -> eliminarOpcion());
-
             // Agregar elementos al contenedor
-            contenedor.getChildren().addAll(checkBox, textoOpcion, eliminarButton);
+            contenedor.getChildren().addAll(checkBox, textoOpcion);
         }
 
-        /**
-         * Eliminar esta opción del contenedor y de la lista
-         */
-        private void eliminarOpcion() {
-            opcionesContainer.getChildren().remove(contenedor);
-            listaOpciones.remove(this);
-        }
 
         /**
          * Obtener el contenedor de la opción
