@@ -87,6 +87,26 @@ public class ResponderQuizController {
             }
 
         }
+
+
+        //Tipo 5: emparejamiento
+        else if (tipoPregunta == 5 ) {
+            try {
+                String fxmlRuta = "/Interfaces/Paneles/Estudiante/s/FormatoRespuestasQuiz/FormatoEmparejar.fxml";
+                System.out.println("Cargando FXML: " + fxmlRuta);
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlRuta));
+                Node preguntaPane = loader.load();
+
+                contenedorPreguntas.getChildren().add(preguntaPane);
+                System.out.println("Pregunta cargada y añadida");
+
+            } catch (Exception e) {
+                System.err.println("Error al cargar pregunta: " + e.getMessage());
+                e.printStackTrace();
+            }
+
+        }
     }
 
 
@@ -103,5 +123,7 @@ public class ResponderQuizController {
        verificarTipoPregunta(2);
        verificarTipoPregunta(3);
        verificarTipoPregunta(4);
+       verificarTipoPregunta(5);
+
     }
 }

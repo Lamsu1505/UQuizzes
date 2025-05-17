@@ -35,7 +35,8 @@ public class FormatoUnicaRespuestaController implements Initializable {
         mensajeError.setText("");
         mensajeError.setVisible(false);
         opcionesContainer.setStyle("-fx-background-color: #f8f9fa;");
-
+        agregarOpcionConTexto("A. Se fundo en 1998");
+        agregarOpcionConTexto("B. No se tiene informacion");
 
     }
 
@@ -72,14 +73,10 @@ public class FormatoUnicaRespuestaController implements Initializable {
             opcion.setTexto(newVal);
         });
 
-        // Botón eliminar
-        Button eliminarButton = new Button("Eliminar");
-        eliminarButton.setStyle("-fx-background-color: transparent; -fx-text-fill: #3498db; -fx-font-size: 14px; -fx-cursor: hand;");
-        eliminarButton.setPadding(new Insets(0, 2, 0, 2));
-        eliminarButton.setOnAction(e -> eliminarOpcion(opcionHBox));
+
 
         // Agregar componentes
-        opcionHBox.getChildren().addAll(radioButton, eliminarButton, opcionTextField);
+        opcionHBox.getChildren().addAll(radioButton, opcionTextField);
         opcionHBox.setUserData(opcion); // vincular modelo con vista
 
         // Agregar a listas y vista
