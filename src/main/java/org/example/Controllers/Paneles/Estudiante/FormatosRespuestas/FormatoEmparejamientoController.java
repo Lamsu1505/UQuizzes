@@ -2,6 +2,7 @@ package org.example.Controllers.Paneles.Estudiante.FormatosRespuestas;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -16,9 +17,6 @@ public class FormatoEmparejamientoController {
     private VBox parejasContainer;
 
     @FXML
-    private Button agregarParButton;
-
-    @FXML
     private Label mensajeError;
 
     // Lista para almacenar los pares de elementos
@@ -26,11 +24,13 @@ public class FormatoEmparejamientoController {
 
     @FXML
     private void initialize() {
+        agregarPar();
+        agregarPar();agregarPar();
         agregarPar(); // Agrega un par inicial por defecto
     }
 
-    @FXML
-    private void agregarPar() {
+
+    public void agregarPar() {
         try {
             // Crear un nuevo par de elementos
             ParElementos parElementos = new ParElementos();
@@ -52,7 +52,10 @@ public class FormatoEmparejamientoController {
         private HBox contenedor;
         private TextField elementoA;
         private TextField elementoB;
-        private Button eliminarButton;
+        private ComboBox<String> opcionesRespuestaColA;
+        private ComboBox<String> opcionesRespuestaColB;
+        private Label espaciador;
+
 
         public ParElementos() {
             // Crear contenedor horizontal para el par
@@ -67,13 +70,24 @@ public class FormatoEmparejamientoController {
             elementoB.setPromptText("Elemento B");
             elementoB.setMaxWidth(300);
 
-            // Crear botón de eliminación
-            eliminarButton = new Button("X");
-            eliminarButton.setStyle("-fx-background-color: red; -fx-text-fill: white;");
-            eliminarButton.setOnAction(e -> eliminarPar());
+            // Crear comboBox columna a de opciones de respuesta
+            opcionesRespuestaColA = new ComboBox<>();
+            opcionesRespuestaColA.getItems().addAll("a", "b", "c", "d");
+            opcionesRespuestaColA.setPromptText("a");
+
+            // Crear comboBox columna b de opciones de respuesta
+            opcionesRespuestaColB = new ComboBox<>();
+            opcionesRespuestaColB.getItems().addAll("a", "b", "c", "d");
+            opcionesRespuestaColB.setPromptText("a");
+
+
+            //Crear label espaciador entre elementos para alinear en las columnas
+            espaciador = new Label();
+            espaciador.setPrefWidth(200);
+            espaciador.setVisible(false);
 
             // Agregar elementos al contenedor
-            contenedor.getChildren().addAll(elementoA, elementoB, eliminarButton);
+            contenedor.getChildren().addAll(opcionesRespuestaColA,elementoA,espaciador,  elementoB, opcionesRespuestaColB);
         }
 
         private void eliminarPar() {

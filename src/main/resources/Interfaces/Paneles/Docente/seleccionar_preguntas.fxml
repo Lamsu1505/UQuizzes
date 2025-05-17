@@ -12,7 +12,7 @@
 
 <AnchorPane prefHeight="600" prefWidth="800" style="-fx-background-color: white;" stylesheets="@../../../Estilos/seleccionarPregunta.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Docente.SeleccionarPreguntasController">
    <children>
-      <TableView fx:id="TableViewPregunta" layoutY="157.0" prefHeight="344.0" prefWidth="800.0" style="-fx-table-header-background: #1db954; -fx-text-background-color: white; -fx-font-weight: bold;">  <columns>
+      <TableView fx:id="TableViewPregunta" layoutY="157.0" prefHeight="344.0" prefWidth="800.0" style="-fx-table-header-background: #1db954; -fx-text-background-color: black; -fx-font-weight: bold;">  <columns>
             <TableColumn fx:id="ColumnTipoPregunta" prefWidth="135.0" text="TIpo de pregunta" />
           <TableColumn fx:id="ColumnPregunta" prefWidth="663.0" text="Pregunta" />
         </columns>

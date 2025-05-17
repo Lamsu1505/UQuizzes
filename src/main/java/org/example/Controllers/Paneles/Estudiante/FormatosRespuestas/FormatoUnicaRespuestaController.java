@@ -26,6 +26,10 @@ public class FormatoUnicaRespuestaController implements Initializable {
     @FXML
     private Label mensajeError;
 
+    @FXML
+    private Label enunciadoLabel;
+
+
     private ToggleGroup toggleGroup = new ToggleGroup(); // para controlar selección única
     private List<HBox> listaOpciones = new ArrayList<>();
     private List<OpcionMultipleRespuesta> listaOpcionesModel = new ArrayList<>();
@@ -148,5 +152,22 @@ public class FormatoUnicaRespuestaController implements Initializable {
         System.out.println(listaOpcionesModel.size() + " " + listaOpciones.size());
         ponerOpcionCorrecta();
         return listaOpcionesModel;
+    }
+
+
+
+    public void setOpciones(List<OpcionMultipleRespuesta> opciones) {
+        opcionesContainer.getChildren().clear();
+        listaOpciones.clear();
+        listaOpcionesModel.clear();
+        for (OpcionMultipleRespuesta opcion : opciones) {
+            agregarOpcionConTexto(opcion.getTexto());
+        }
+    }
+
+    public void setEnunciado(String texto) {
+        if (enunciadoLabel != null) {
+            enunciadoLabel.setText(texto);
+        }
     }
 }

@@ -6,6 +6,12 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
+import org.example.Controllers.Paneles.Estudiante.FormatosRespuestas.FormatoUnicaRespuestaController;
+import org.example.Model.OpcionesRespuesta.OpcionMultipleRespuesta;
+import org.example.Model.PruebaPreguntas;
+
+import java.io.IOException;
+import java.util.List;
 
 public class ResponderQuizController {
 
@@ -109,6 +115,47 @@ public class ResponderQuizController {
         }
     }
 
+
+    public void agregarPregunta(PruebaPreguntas pregunta, List<OpcionMultipleRespuesta> opciones) {
+        try {
+            String fxmlRuta = "";
+            FXMLLoader loader;
+
+            switch (pregunta.getIdTipoPregunta()) {
+                case 1:
+                    fxmlRuta = "/Interfaces/Paneles/Estudiante/s/FormatoRespuestasQuiz/FormatoMultipleRespuesta.fxml";
+                    break;
+                case 2:
+                    fxmlRuta = "/Interfaces/Paneles/Estudiante/s/FormatoRespuestasQuiz/FormatoUnicaRespuesta.fxml";
+                    break;
+                case 3:
+                    fxmlRuta = "/Interfaces/Paneles/Estudiante/s/FormatoRespuestasQuiz/FormatoVerdaderoFalso.fxml";
+                    break;
+                case 4:
+                    fxmlRuta = "/Interfaces/Paneles/Estudiante/s/FormatoRespuestasQuiz/FormatoRespuestaCorta.fxml";
+                    break;
+                case 5:
+                    fxmlRuta = "/Interfaces/Paneles/Estudiante/s/FormatoRespuestasQuiz/FormatoEmparejar.fxml";
+                    break;
+                default:
+                    System.err.println("Tipo de pregunta desconocido: " + pregunta.getIdTipoPregunta());
+                    return;
+            }
+
+            loader = new FXMLLoader(getClass().getResource(fxmlRuta));
+            Node preguntaPane = loader.load();
+
+            if (pregunta.getIdTipoPregunta() == 2) {
+                FormatoUnicaRespuestaController controller = loader.getController();
+                controller.setOpciones(opciones);
+                controller.setEnunciado(pregunta.getEnunciado());
+            }
+
+            contenedorPreguntas.getChildren().add(preguntaPane);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     private Button enviarButton;
