@@ -10,7 +10,10 @@ create or replace FUNCTION crearExamen(
     v_descripcion IN VARCHAR2,
     v_pesoMateria IN NUMBER,
     v_tieneLimiteTiempo IN VARCHAR2,
-    v_notaMinimaPasar IN NUMBER
+    v_notaMinimaPasar IN NUMBER,
+    v_fechaLimite IN VARCHAR2,
+    v_horaLimite IN VARCHAR2,
+    v_cantidadBanco IN NUMBER
 
 ) RETURN NUMBER IS
     v_idQuiz NUMBER;
@@ -25,13 +28,16 @@ INSERT INTO Examen (
     Materia_idMateria,
     nombre,
     fecha,
+    hora,
+    fechaLimite,
+    horaLimite,
     cantidadPreguntas,
     tiempoMinutos,
-    hora,
     descripcion,
     pesoMateria,
     tieneLimiteTiempo,
-    notaMinimaPasar
+    notaMinimaPasar,
+    cantidadPreguntasBanco
 
 ) VALUES (
              null,
@@ -40,13 +46,17 @@ INSERT INTO Examen (
              v_idMateria,
              v_nombre,
              v_fecha,
+             v_hora,
+             v_tiempoMinutos,
+             v_fechaLimite,
              v_cantidadPreguntas,
              v_tiempoMinutos,
-             v_hora,
              v_descripcion,
              v_pesoMateria,
              v_tieneLimiteTiempo,
-             v_notaMinimaPasar
+             v_notaMinimaPasar,
+             v_cantidadBanco
+
          );
 
 RETURN v_idQuiz;

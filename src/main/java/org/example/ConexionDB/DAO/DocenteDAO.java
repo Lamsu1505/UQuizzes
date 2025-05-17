@@ -3,13 +3,17 @@ package org.example.ConexionDB.DAO;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import oracle.jdbc.internal.OracleConnection;
 import oracle.jdbc.internal.OracleTypes;
+import oracle.sql.ARRAY;
+import oracle.sql.ArrayDescriptor;
 import org.example.ConexionDB.ConexionOracle;
 import org.example.Controllers.Paneles.Docente.TiposPregunta.SeleccionMultipleController;
 import org.example.Model.OpcionesRespuesta.OpcionMultipleRespuesta;
 
 import java.sql.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class DocenteDAO {
 
@@ -494,12 +498,12 @@ public class DocenteDAO {
     }
 
 
-    public int crearQuiz(int idDocente, int idGrupo, int idMateria, String nombreQuiz, String fechaInicio, int cantidadPreguntas, int tiempo, String hora, String descripcion, int pesoMateria, String tieneTiempo, double notaMinimaPasar) {
+    public int crearQuiz(int idDocente, int idGrupo, int idMateria, String nombreQuiz, String fechaInicio, int cantidadPreguntas, int tiempo, String hora, String descripcion, int pesoMateria, String tieneTiempo, double notaMinimaPasar ,  String fechaLimite , String horaLimite , int cantidadBanco) {
 
         int respuesta = 0;
 
 
-        String call = "{ ? = call crearExamen(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+        String call = "{ ? = call crearExamen(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ? , ?)}";
 
         try (
                 Connection conn = new ConexionOracle().conectar();
@@ -521,6 +525,9 @@ public class DocenteDAO {
             stmt.setInt(11, pesoMateria);
             stmt.setString(12, tieneTiempo);
             stmt.setDouble(13, notaMinimaPasar);
+            stmt.setString(14, fechaLimite);
+            stmt.setString(15, horaLimite);
+            stmt.setInt(16, cantidadBanco);
 
 
             stmt.execute();
@@ -553,9 +560,6 @@ public class DocenteDAO {
                 CallableStatement stmt = conn.prepareCall(call)
         ) {
 
-            System.out.println(idExamenCreado);
-            System.out.println(cantidadPreguntasBanco);
-
             stmt.registerOutParameter(1, Types.INTEGER);
 
             stmt.setInt(2, idExamenCreado);
@@ -581,5 +585,36 @@ public class DocenteDAO {
 
         return respuesta;
 
+    }
+
+    public int agregarPreguntasAlBanco(int idBancoCreado, List<Integer> temasSeleccionados) {
+        int respuesta = 0;
+        String call = "{ ? = call addPreguntasAleatoriasByTemas(?, ?) }";
+
+        try (
+                Connection conn = new ConexionOracle().conectar();
+                CallableStatement stmt = conn.prepareCall(call)
+        ) {
+            // Convertimos la lista a una cadena separada por comas
+            String temasCSV = temasSeleccionados.stream()
+                    .map(String::valueOf)
+                    .collect(Collectors.joining(","));
+
+            stmt.registerOutParameter(1, Types.INTEGER);
+            stmt.setInt(2, idBancoCreado);
+            stmt.setString(3, temasCSV);
+
+            stmt.execute();
+
+            int resultado = stmt.getInt(1);
+            System.out.println("Resultado agregarPreguntasAlBanco: " + resultado);
+            respuesta = resultado;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Error al agregar preguntas al banco:\n" + e.getMessage()).showAndWait();
+        }
+
+        return respuesta;
     }
 }

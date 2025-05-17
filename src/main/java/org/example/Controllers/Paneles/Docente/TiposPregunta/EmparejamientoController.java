@@ -27,7 +27,6 @@ public class EmparejamientoController {
 
     @FXML
     private void initialize() {
-        // Método de inicialización que se llama automáticamente después de cargar el FXML
         agregarPar(); // Agrega un par inicial por defecto
     }
 
@@ -49,10 +48,6 @@ public class EmparejamientoController {
         }
     }
 
-    /**
-     * Método para validar los pares de elementos
-     * @return true si todos los pares son válidos, false en caso contrario
-     */
     public boolean validarPares() {
         // Limpiar mensaje de error previo
         mensajeError.setText("");
@@ -74,10 +69,6 @@ public class EmparejamientoController {
         return true;
     }
 
-    /**
-     * Método para verificar si hay elementos duplicados
-     * @return true si hay elementos duplicados, false en caso contrario
-     */
     private boolean hayElementosDuplicados() {
         List<String> elementosA = new ArrayList<>();
         List<String> elementosB = new ArrayList<>();
@@ -97,10 +88,6 @@ public class EmparejamientoController {
         return false;
     }
 
-    /**
-     * Método para obtener todos los pares de elementos
-     * @return Lista de pares de elementos
-     */
     public List<ParElementos> obtenerPares() {
         if(validarPares()) {
             // Si los pares son válidos, devolver la lista

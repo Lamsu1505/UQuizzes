@@ -1,4 +1,4 @@
-package org.example.Controllers.Ventanas.Estudiante.FormatosRespuestas;
+package org.example.Controllers.Paneles.Estudiante.FormatosRespuestas;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

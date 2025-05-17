@@ -2,6 +2,8 @@ package org.example.Model;
 
 import org.example.ConexionDB.ConexionOracle;
 import org.example.ConexionDB.DAO.DocenteDAO;
+import org.example.ConexionDB.DAO.EstudianteDAO;
+import org.example.Controllers.Paneles.Docente.CrearQuizController;
 import org.example.Controllers.Paneles.Docente.TiposPregunta.SeleccionMultipleController;
 import org.example.Model.OpcionesRespuesta.OpcionMultipleRespuesta;
 
@@ -16,6 +18,7 @@ public class UQuizzes {
     private boolean esDocente;
 
     public DocenteDAO docenteDAO = new DocenteDAO();
+    public EstudianteDAO estudianteDAO = new EstudianteDAO();
 
     private int idPreguntaRecienCreada;
 
@@ -34,10 +37,6 @@ public class UQuizzes {
 
 
     public List<Map<String, Object>> getExamenesDocenteSQL() throws SQLException {
-        ConexionOracle conexionOracle = new ConexionOracle();
-        Connection connection = conexionOracle.conectar();
-
-
         return docenteDAO.getExamenes(getUsuarioEnSesion());
     }
 
@@ -111,12 +110,20 @@ public class UQuizzes {
     }
 
 
-    public int crearQuiz(int idDocente, int idGrupo, int idMateria, String nombreQuiz, String fechaInicio, int cantidadPreguntas, int tiempo, String hora, String descripcion, int pesoMateria, String tieneTiempo, double notaMinimaPasar) {
-        return docenteDAO.crearQuiz(idDocente , idGrupo , idMateria , nombreQuiz , fechaInicio , cantidadPreguntas , tiempo , hora , descripcion , pesoMateria , tieneTiempo , notaMinimaPasar);
+    public int crearQuiz(int idDocente, int idGrupo, int idMateria, String nombreQuiz, String fechaInicio, int cantidadPreguntas, int tiempo, String hora, String descripcion, int pesoMateria, String tieneTiempo, double notaMinimaPasar , String fechaFin , String horaLimite , int cantidadBanco) {
+        return docenteDAO.crearQuiz(idDocente , idGrupo , idMateria , nombreQuiz , fechaInicio , cantidadPreguntas , tiempo , hora , descripcion , pesoMateria , tieneTiempo , notaMinimaPasar , fechaFin , horaLimite ,  cantidadBanco);
     }
 
     public int crearBancoPreguntas(int idExamenCreado, int cantidadPreguntasBanco) {
         return docenteDAO.crearBancoPreguntasExamen(idExamenCreado , cantidadPreguntasBanco);
+    }
+
+    public List<Map<String, Object>> getExamenesEstudianteSQL() {
+        return estudianteDAO.getExamenesEstudianteSQL(getUsuarioEnSesion());
+    }
+
+    public int agregarPreguntasAlBanco(int idBancoCreado, List<Integer> temasSeleccionados) {
+        return docenteDAO.agregarPreguntasAlBanco(idBancoCreado , temasSeleccionados);
     }
 }
 

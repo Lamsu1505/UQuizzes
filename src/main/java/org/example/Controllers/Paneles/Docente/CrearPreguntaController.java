@@ -433,9 +433,6 @@ public class CrearPreguntaController implements Initializable {
                     uQuizzes.setIdPreguntaRecienCreada(idPregunta + 1);
                     limpiarCampos();
 
-
-
-
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfaces/Paneles/Docente/OpcionesRespuesta/contenedorGeneralOpciones.fxml"));
                     Parent root = loader.load();
                     Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();

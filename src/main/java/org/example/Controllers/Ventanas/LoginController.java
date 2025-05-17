@@ -17,6 +17,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import org.example.ConexionDB.ConexionOracle;
 import org.example.ConexionDB.DAO.DocenteDAO;
+import org.example.ConexionDB.DAO.EstudianteDAO;
 import org.example.Model.UQuizzes;
 
 import java.io.IOException;
@@ -39,6 +40,7 @@ public class LoginController implements Initializable {
     private PasswordField passwordField;
 
     private DocenteDAO docenteDAO = new DocenteDAO();
+    private EstudianteDAO estudianteDAO = new EstudianteDAO();
 
 
     @Override
@@ -77,11 +79,21 @@ public class LoginController implements Initializable {
                 uQuizzes.setUsuarioEnSesion(idDocente);
 
                 cargarVentana("/Interfaces/Ventanas/ventanaInicioDocente.fxml", actionEvent);
+                return;
             }
-            else{
-                //String idEstudiante = uquizzes.iniciarSesionEstudiante();
-                //TODO hacer el procedimiento para iniciar sesion de estudiante
+            else {
+                String idEstudiante = estudianteDAO.iniciarSesion(email, contrasenia);
+                if (idEstudiante != null) {
+
+                    UQuizzes uQuizzes = UQuizzes.getInstance();
+                    uQuizzes.setEsDocente(false);
+                    uQuizzes.setUsuarioEnSesion(idEstudiante);
+
+                    cargarVentana("/Interfaces/Ventanas/ventanaInicioEstudiante.fxml", actionEvent);
+                    return;
+                }
             }
+
 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Credenciales incorrecas");

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="153.0" prefWidth="1101.0" style="-fx-border-color: grey; -fx-background-color: #dddddd;" stylesheets="@../../../../Estilos/examenPaginaPrincipal.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Estudiante.ExamenPaginaPrincipalController">
+    <center>
+        <HBox prefHeight="153.0" prefWidth="846.0" spacing="20.0" BorderPane.alignment="CENTER">
+            <children>
+                <VBox prefHeight="131.0" prefWidth="917.0" spacing="30.0">
+                    <children>
+                        <Label fx:id="lblNombreExamen" prefHeight="39.0" prefWidth="559.0" text="NombreExamen">
+                            <font>
+                                <Font name="System Bold" size="31.0" />
+                            </font>
+                        </Label>
+                        <HBox prefHeight="117.0" prefWidth="562.0" spacing="40.0">
+                            <children>
+                                <Label fx:id="lblMateria" prefHeight="30.0" prefWidth="238.0" text="Materia">
+                                    <font>
+                                        <Font size="22.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="lblGrupo" prefHeight="30.0" prefWidth="114.0" text="Grupo">
+                                    <font>
+                                        <Font size="22.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="lblFecha" prefHeight="30.0" prefWidth="112.0" text="Fecha">
+                                    <font>
+                                        <Font size="22.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="lblHora" prefHeight="30.0" prefWidth="103.0" text="Hora">
+                                    <font>
+                                        <Font size="22.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+                <VBox prefHeight="131.0" prefWidth="115.0" />
+                <VBox prefHeight="131.0" prefWidth="197.0">
+                    <children>
+                        <HBox alignment="CENTER" prefHeight="131.0" prefWidth="100.0">
+                            <children>
+                                <Button fx:id="btnEditar1" mnemonicParsing="false" prefHeight="46.0" prefWidth="215.0" text="Empezar" />
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+            </children>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+        </HBox>
+    </center>
+   <padding>
+      <Insets right="20.0" />
+   </padding>
+</BorderPane>

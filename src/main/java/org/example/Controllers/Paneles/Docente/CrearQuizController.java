@@ -68,6 +68,14 @@ public class CrearQuizController implements Initializable {
     @FXML
     private TextField cantidadPreguntasBancoTextField;
 
+    @FXML
+    private TextField fechaLimiteTextField;
+
+    @FXML
+    private TextField horaLimiteTextField;
+
+
+
     private ObservableList<TemaCheck> temasData = FXCollections.observableArrayList();
 
     private String idMateriaSeleccionada;
@@ -281,6 +289,8 @@ public class CrearQuizController implements Initializable {
             int pesoMateria = Integer.parseInt(pesoMateriaTextField.getText());
             double notaMinimaPasar=3.0;
             int cantidadPreguntasBanco = Integer.parseInt(cantidadPreguntasBancoTextField.getText());
+            String fechaFin = fechaLimiteTextField.getText();
+            String horaLimite = horaLimiteTextField.getText();
 
             String tieneTiempo;
             int tiempo;
@@ -294,7 +304,7 @@ public class CrearQuizController implements Initializable {
             }
 
             //crea el examen sin preguntas
-            int idExamenCreado= uQuizzes.crearQuiz(idDocente, idGrupo, idMateria, nombreQuiz, fechaInicio, cantidadPreguntas, tiempo , hora , descripcion , pesoMateria , tieneTiempo , notaMinimaPasar);
+            int idExamenCreado= uQuizzes.crearQuiz(idDocente, idGrupo, idMateria, nombreQuiz, fechaInicio, cantidadPreguntas, tiempo , hora , descripcion , pesoMateria , tieneTiempo , notaMinimaPasar , fechaFin , horaLimite , cantidadPreguntasBanco);
 
             if(idExamenCreado != 0){
                 mostrarInfo("Éxito", "El quiz ha sido creado exitosamente.");
@@ -303,6 +313,16 @@ public class CrearQuizController implements Initializable {
                 int idBancoCreado = uQuizzes.crearBancoPreguntas((idExamenCreado + 1), cantidadPreguntasBanco);
                 if(idBancoCreado != 0){
                     mostrarInfo("Éxito", "El banco de preguntas ha sido creado exitosamente.");
+
+                    ArrayList<Integer> listaIdTemasSeleccionado= new ArrayList<>();
+                    for (TemaCheck tema : temasSeleccionados) {
+                        listaIdTemasSeleccionado.add(tema.getId());
+                    }
+
+                    if (uQuizzes.agregarPreguntasAlBanco(idBancoCreado + 1, listaIdTemasSeleccionado) > 0) {
+                        mostrarInfo("Éxito", "Preguntas añadidas al banco");
+                    }
+
                 }
                 else{
                     mostrarAlerta("Error", "No se pudo crear el banco de preguntas.");

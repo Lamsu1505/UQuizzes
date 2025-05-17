@@ -33,28 +33,37 @@ import java.util.ResourceBundle;
 public class VentanaPrincipalDocenteController implements Initializable {
 
     @FXML
-    private StackPane contenedorCambiante;
-
-    @FXML
     private Label lblNombreApellido;
-
-    @FXML
-    private Label lblStorify;
 
     @FXML
     private BorderPane paneIrAdelante;
 
     @FXML
-    private HBox hboxArriba;
+    private Button btnMisClases;
 
     @FXML
     private Button btnCerrarSesion;
 
     @FXML
-    private Button btnInicio;
+    private Button btnCrearQuiz;
 
     @FXML
-    private TextField txtFIeldBuscar;
+    private StackPane contenedorCambiante;
+
+    @FXML
+    private Button btnCrearPregunta;
+
+    @FXML
+    private Button btnInformes;
+
+    @FXML
+    private HBox hboxArriba;
+
+    @FXML
+    private Label lblUquizzes;
+
+    @FXML
+    private Button btnInicio;
 
     @FXML
     private BorderPane paneIrAtras;
@@ -62,22 +71,11 @@ public class VentanaPrincipalDocenteController implements Initializable {
     @FXML
     private BorderPane panelCentral;
 
-    @FXML
-    private SVGPath imgBuscar;
+    UQuizzes uQuizzes = UQuizzes.getInstance();
 
-    private static VentanaPrincipalDocenteController ventanaPrincipalDocenteController = new VentanaPrincipalDocenteController();
-
-
-    public static VentanaPrincipalDocenteController getInstance()  {
-        if (ventanaPrincipalDocenteController == null){
-            ventanaPrincipalDocenteController = new VentanaPrincipalDocenteController();
-        }
-        return ventanaPrincipalDocenteController;
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        UQuizzes uQuizzes = UQuizzes.getInstance();
         Connection conn = new ConexionOracle().conectar();
 
         try {
@@ -113,7 +111,6 @@ public class VentanaPrincipalDocenteController implements Initializable {
     public void cerrarSesion(javafx.event.ActionEvent actionEvent) {
 
         try {
-            UQuizzes uQuizzes = UQuizzes.getInstance();
             uQuizzes.setUsuarioEnSesion(null);
 
             // 1. Cargar el archivo FXML
@@ -148,6 +145,8 @@ public class VentanaPrincipalDocenteController implements Initializable {
             this.contenedorCambiante.getChildren().clear();
             this.contenedorCambiante.getChildren().addAll(panel);
 
+            reiniciarColoresBotones();
+            btnCrearPregunta.setStyle("-fx-background-color: #004513; -fx-text-fill: white;");
 
         }
         catch (Exception e) {
@@ -155,11 +154,22 @@ public class VentanaPrincipalDocenteController implements Initializable {
         }
     }
 
+    private void reiniciarColoresBotones() {
+        btnCrearPregunta.setStyle("");
+        btnInicio.setStyle("");
+        btnCrearQuiz.setStyle("");
+        btnInformes.setStyle("");
+        btnMisClases.setStyle("");
+    }
+
     public void irPanelInicio(ActionEvent actionEvent) {
         try {
             Parent panel = FXMLLoader.load(getClass().getResource("/Interfaces/Paneles/Docente/panelInicioDocente.fxml"));
             this.contenedorCambiante.getChildren().clear();
             this.contenedorCambiante.getChildren().addAll(panel);
+
+            reiniciarColoresBotones();
+            btnInicio.setStyle("-fx-background-color: #004513; -fx-text-fill: white;");
         }
         catch (Exception e) {
         }
@@ -170,6 +180,9 @@ public class VentanaPrincipalDocenteController implements Initializable {
             Parent panel = FXMLLoader.load(getClass().getResource("/Interfaces/Paneles/Docente/panelCrearQuiz.fxml"));
             this.contenedorCambiante.getChildren().clear();
             this.contenedorCambiante.getChildren().addAll(panel);
+
+            reiniciarColoresBotones();
+            btnCrearQuiz.setStyle("-fx-background-color: #004513; -fx-text-fill: white;");
         }
         catch (Exception e) {
         }
@@ -183,6 +196,8 @@ public class VentanaPrincipalDocenteController implements Initializable {
             this.contenedorCambiante.getChildren().clear();
             this.contenedorCambiante.getChildren().addAll(panel);
 
+            reiniciarColoresBotones();
+            btnInformes.setStyle("-fx-background-color: #004513; -fx-text-fill: white;");
 
         }
         catch (Exception e) {

@@ -8,7 +8,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" stylesheets="" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Ventanas.Estudiante.ExamenesEstudianteController">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" stylesheets="" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Estudiante.ExamenesEstudianteController">
     <children>
         <Button fx:id="homeButton" layoutX="38.0" layoutY="23.0" mnemonicParsing="false" onAction="#homeEvent" prefHeight="37.0" prefWidth="36.0" style="-fx-padding: 10 12 10 12; -fx-background-color: #85ca85; -fx-background-radius: 8;">
             <graphic>

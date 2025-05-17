@@ -1,4 +1,4 @@
-package org.example.Controllers.Ventanas.Estudiante;
+package org.example.Controllers.Paneles.Estudiante;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +17,7 @@ public class ResponderQuizController {
         // Tipo 1: multiple respuesta
         if(tipoPregunta == 1){
             try {
-                String fxmlRuta = "/Interfaces/Paneles.Estudiante/FormatoRespuestasQuiz/FormatoMultipleRespuesta.fxml";
+                String fxmlRuta = "/Interfaces/Paneles/Estudiante/s/FormatoRespuestasQuiz/FormatoMultipleRespuesta.fxml";
                 System.out.println("Cargando FXML: " + fxmlRuta);
 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlRuta));
@@ -34,7 +34,7 @@ public class ResponderQuizController {
             // Tipo 2: unica respuesta
         } else if (tipoPregunta ==2) {
             try {
-                String fxmlRuta = "/Interfaces/Paneles.Estudiante/FormatoRespuestasQuiz/FormatoUnicaRespuesta.fxml";
+                String fxmlRuta = "/Interfaces/Paneles/Estudiante/s/FormatoRespuestasQuiz/FormatoUnicaRespuesta.fxml";
                 System.out.println("Cargando FXML: " + fxmlRuta);
 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlRuta));
@@ -53,7 +53,7 @@ public class ResponderQuizController {
         //Tipo 3: verdader/falso
         else if (tipoPregunta == 3 ) {
             try {
-                String fxmlRuta = "/Interfaces/Paneles.Estudiante/FormatoRespuestasQuiz/FormatoVerdaderoFalso.fxml";
+                String fxmlRuta = "/Interfaces/Paneles/Estudiante/s/FormatoRespuestasQuiz/FormatoVerdaderoFalso.fxml";
                 System.out.println("Cargando FXML: " + fxmlRuta);
 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlRuta));
@@ -72,7 +72,7 @@ public class ResponderQuizController {
             //Tipo 4: respuesta corta
         } else if (tipoPregunta ==4) {
             try {
-                String fxmlRuta = "/Interfaces/Paneles.Estudiante/FormatoRespuestasQuiz/FormatoRespuestaCorta.fxml";
+                String fxmlRuta = "/Interfaces/Paneles/Estudiante/s/FormatoRespuestasQuiz/FormatoRespuestaCorta.fxml";
                 System.out.println("Cargando FXML: " + fxmlRuta);
 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlRuta));

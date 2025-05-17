@@ -15,9 +15,7 @@ public class VerdaderoFalsoController {
     @FXML
     private ToggleGroup respuestaToggleGroup;
 
-    /**
-     * Método de inicialización que se llama automáticamente después de cargar el FXML
-     */
+
     @FXML
     private void initialize() {
 

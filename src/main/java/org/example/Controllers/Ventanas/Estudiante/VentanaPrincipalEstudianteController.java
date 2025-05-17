@@ -3,6 +3,7 @@ package org.example.Controllers.Ventanas.Estudiante;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,11 +15,18 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.SVGPath;
 import javafx.stage.Stage;
+import org.example.ConexionDB.ConexionOracle;
 import org.example.Model.UQuizzes;
 
 import java.io.IOException;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ResourceBundle;
 
-public class VentanaPrincipalEstudianteController {
+public class VentanaPrincipalEstudianteController implements Initializable {
 
     @FXML
     private Button btnCerrarSesion;
@@ -62,8 +70,45 @@ public class VentanaPrincipalEstudianteController {
     @FXML
     private TextField txtFIeldBuscar;
 
+    UQuizzes uQuizzes = UQuizzes.getInstance();
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        Connection conn = new ConexionOracle().conectar();
+
+        try {
+            String sql = "select nombre , apellido from estudiante where idEstudiante = ?";
+            PreparedStatement stm = conn.prepareStatement(sql);
+            stm.setString(1 , uQuizzes.getUsuarioEnSesion());
+
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                String nombre = rs.getString("nombre");
+                String apellido = rs.getString("apellido");
+                lblNombreApellido.setText(nombre + " " + apellido);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            Parent panel = FXMLLoader.load(getClass().getResource("/Interfaces/Paneles/Estudiante/s/panelInicioEstudiante.fxml"));
+            this.contenedorCambiante.getChildren().clear();
+            this.contenedorCambiante.getChildren().addAll(panel);
+
+        }
+        catch (Exception e) {
+        }
+    }
+
+
     @FXML
     void cerrarSesion(javafx.event.ActionEvent event) {
+
+        uQuizzes.setUsuarioEnSesion(null);
+
         try {
             UQuizzes uQuizzes = UQuizzes.getInstance();
             uQuizzes.setUsuarioEnSesion(null);
@@ -96,9 +141,12 @@ public class VentanaPrincipalEstudianteController {
     @FXML
     void irPanelClases(ActionEvent event) {
         try {
-            Parent panel = FXMLLoader.load(getClass().getResource("/Interfaces/Paneles/Docente/estadisticasExamenesPresentados.fxml"));
+            /*Parent panel = FXMLLoader.load(getClass().getResource("/Interfaces/Paneles/Estudiante/s/panelInicioEstudiante.fxml"));
             this.contenedorCambiante.getChildren().clear();
-            this.contenedorCambiante.getChildren().addAll(panel);
+            this.contenedorCambiante.getChildren().addAll(panel);*/
+
+            reiniciarColoresBotones();
+            btnClases.setStyle("-fx-background-color: #004513; -fx-text-fill: white;");
 
 
         }
@@ -107,12 +155,22 @@ public class VentanaPrincipalEstudianteController {
         }
     }
 
+    private void reiniciarColoresBotones() {
+        btnClases.setStyle("");
+        btnInicio.setStyle("");
+        btnExamenes.setStyle("");
+        btnExamenesPendientes.setStyle("");
+    }
+
     @FXML
     void irPanelExamenes(ActionEvent event) {
         try {
-            Parent panel = FXMLLoader.load(getClass().getResource("/Interfaces/Paneles/Docente/estadisticasExamenesPresentados.fxml"));
+            Parent panel = FXMLLoader.load(getClass().getResource("/Interfaces/Paneles/Estudiante/s/examenEstudiantePrincipal.fxml"));
             this.contenedorCambiante.getChildren().clear();
             this.contenedorCambiante.getChildren().addAll(panel);
+
+            reiniciarColoresBotones();
+            btnExamenes.setStyle("-fx-background-color: #004513; -fx-text-fill: white;");
 
 
         }
@@ -124,10 +182,12 @@ public class VentanaPrincipalEstudianteController {
     @FXML
     void irPanelInicio(ActionEvent event) {
         try {
-            Parent panel = FXMLLoader.load(getClass().getResource("/Interfaces/Paneles/Docente/estadisticasExamenesPresentados.fxml"));
+            Parent panel = FXMLLoader.load(getClass().getResource("/Interfaces/Paneles/Estudiante/s/panelInicioEstudiante.fxml"));
             this.contenedorCambiante.getChildren().clear();
             this.contenedorCambiante.getChildren().addAll(panel);
 
+            reiniciarColoresBotones();
+            btnInicio.setStyle("-fx-background-color: #004513; -fx-text-fill: white;");
 
         }
         catch (Exception e) {
@@ -138,9 +198,12 @@ public class VentanaPrincipalEstudianteController {
     @FXML
     void irPanesExamenesProgramados(ActionEvent event) {
         try {
-            Parent panel = FXMLLoader.load(getClass().getResource("/Interfaces/Paneles/Docente/estadisticasExamenesPresentados.fxml"));
+            /*Parent panel = FXMLLoader.load(getClass().getResource("/Interfaces/Paneles/Docente/estadisticasExamenesPresentados.fxml"));
             this.contenedorCambiante.getChildren().clear();
             this.contenedorCambiante.getChildren().addAll(panel);
+
+            reiniciarColoresBotones();
+            btnExamenesPendientes.setStyle("-fx-background-color: #004513; -fx-text-fill: white;");*/
 
 
         }
@@ -148,5 +211,6 @@ public class VentanaPrincipalEstudianteController {
             e.printStackTrace();
         }
     }
+
 
 }
