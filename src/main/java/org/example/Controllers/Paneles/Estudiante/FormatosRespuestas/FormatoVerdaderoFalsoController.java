@@ -1,4 +1,4 @@
-package org.example.Controllers.Ventanas.Estudiante.FormatosRespuestas;
+package org.example.Controllers.Paneles.Estudiante.FormatosRespuestas;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
@@ -15,9 +15,6 @@ public class FormatoVerdaderoFalsoController {
     @FXML
     private ToggleGroup respuestaToggleGroup;
 
-    /**
-     * Método de inicialización que se llama automáticamente después de cargar el FXML
-     */
     @FXML
     private void initialize() {
 

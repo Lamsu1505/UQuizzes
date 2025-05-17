@@ -1,4 +1,4 @@
-package org.example.Controllers.Ventanas.Estudiante.FormatosRespuestas;
+package org.example.Controllers.Paneles.Estudiante.FormatosRespuestas;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -6,7 +6,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import org.example.Controllers.Paneles.Docente.TiposPregunta.RespuestaCortaController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,11 +141,7 @@ public class FormatoRespuestaCortaController {
         }
     }
 
-    /**
-     * Método para verificar si una respuesta dada coincide con alguna de las respuestas aceptadas
-     * @param respuestaUsuario Respuesta a verificar
-     * @return true si la respuesta coincide con alguna respuesta aceptada, false en caso contrario
-     */
+
     public boolean verificarRespuesta(String respuestaUsuario) {
         if (respuestaUsuario == null || respuestaUsuario.trim().isEmpty()) {
             return false;
@@ -156,10 +151,6 @@ public class FormatoRespuestaCortaController {
                 .anyMatch(r -> r.getTexto().trim().equalsIgnoreCase(respuestaUsuario.trim()));
     }
 
-    /**
-     * Método para agregar múltiples respuestas de una vez
-     * @param respuestas Lista de respuestas a agregar
-     */
     public void agregarRespuestas(List<String> respuestas) {
         respuestas.forEach(respuesta -> {
             if (!existeRespuesta(respuesta)) {

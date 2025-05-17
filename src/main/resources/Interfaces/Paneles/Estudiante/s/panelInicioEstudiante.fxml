@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane prefHeight="699.0" prefWidth="926.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Estudiante.panelInicioEstudianteController">
+
+    <padding>
+        <Insets bottom="2.0" left="10.0" right="10.0" top="25.0" />
+    </padding>
+
+    <!-- HEADER SUPERIOR -->
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="128.0" prefWidth="906.0" spacing="25.0" BorderPane.alignment="TOP_CENTER">
+            <children>
+                <VBox prefHeight="184.0" prefWidth="906.0" spacing="15.0" styleClass="BottonBorder" HBox.hgrow="ALWAYS">
+                    <children>
+                        <BorderPane prefHeight="109.0" prefWidth="906.0" styleClass="greenColor">
+                            <center>
+                                <HBox alignment="CENTER" prefHeight="152.0" prefWidth="906.0" spacing="75.0" BorderPane.alignment="CENTER">
+                                    <children>
+                                        <Label fx:id="lblBienvenido" alignment="CENTER" prefHeight="102.0" prefWidth="889.0" text="Bienvenido nombre (Estudiante)" textAlignment="CENTER">
+                                            <font>
+                                                <Font name="System Bold" size="37.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                            </center>
+                        </BorderPane>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </top>
+
+    <!-- CENTRO: Lista de Exámenes -->
+    <center>
+        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label fx:id="lblExamenesRecientes" alignment="CENTER" prefHeight="39.0" prefWidth="1026.0" text="                           Examenes Proximos" textAlignment="CENTER">
+                    <font>
+                        <Font size="27.0" />
+                    </font>
+                </Label>
+
+                <ScrollPane fx:id="scrollPane" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
+                    <padding>
+                        <Insets />
+                    </padding>
+                    <content>
+                        <StackPane alignment="TOP_CENTER" prefHeight="988.0" prefWidth="875.0">
+                            <children>
+                                <VBox fx:id="VBoxContenedorExamenes" alignment="TOP_CENTER" prefWidth="400" spacing="20.0">
+                                    <padding>
+                                        <Insets top="15.0" />
+                                    </padding>
+                                </VBox>
+                            </children>
+                        </StackPane>
+                    </content>
+                </ScrollPane>
+            </children>
+        </VBox>
+    </center>
+</BorderPane>

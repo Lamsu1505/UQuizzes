@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.example.Controllers.Ventanas.Estudiante.ResponderQuizController"
+            fx:controller="org.example.Controllers.Paneles.Estudiante.ResponderQuizController"
             prefWidth="800" prefHeight="600">
 
     <children>

@@ -17,8 +17,10 @@ module UQuizzes {
     opens org.example.Controllers.Ventanas to javafx.fxml;
     exports org.example.Controllers.Ventanas.Estudiante to javafx.fxml;
     opens org.example.Controllers.Ventanas.Estudiante to javafx.fxml;
-    exports org.example.Controllers.Ventanas.Estudiante.FormatosRespuestas to javafx.fxml;
-    opens org.example.Controllers.Ventanas.Estudiante.FormatosRespuestas to javafx.fxml;
+    exports org.example.Controllers.Paneles.Estudiante to javafx.fxml;
+    opens org.example.Controllers.Paneles.Estudiante to javafx.fxml;
 
     exports org.example.Main;
+    exports org.example.Controllers.Paneles.Estudiante.FormatosRespuestas to javafx.fxml;
+    opens org.example.Controllers.Paneles.Estudiante.FormatosRespuestas to javafx.fxml;
 }

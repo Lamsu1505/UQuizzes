@@ -1,4 +1,4 @@
-package org.example.Controllers.Ventanas.Estudiante.FormatosRespuestas;
+package org.example.Controllers.Paneles.Estudiante.FormatosRespuestas;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -6,7 +6,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.Alert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +26,6 @@ public class FormatoEmparejamientoController {
 
     @FXML
     private void initialize() {
-        // Método de inicialización que se llama automáticamente después de cargar el FXML
         agregarPar(); // Agrega un par inicial por defecto
     }
 
@@ -97,10 +95,6 @@ public class FormatoEmparejamientoController {
         }
     }
 
-    /**
-     * Método para validar los pares de elementos
-     * @return true si todos los pares son válidos, false en caso contrario
-     */
     public boolean validarPares() {
         // Limpiar mensaje de error previo
         mensajeError.setText("");
@@ -122,10 +116,7 @@ public class FormatoEmparejamientoController {
         return true;
     }
 
-    /**
-     * Método para verificar si hay elementos duplicados
-     * @return true si hay elementos duplicados, false en caso contrario
-     */
+
     private boolean hayElementosDuplicados() {
         List<String> elementosA = new ArrayList<>();
         List<String> elementosB = new ArrayList<>();
@@ -145,10 +136,6 @@ public class FormatoEmparejamientoController {
         return false;
     }
 
-    /**
-     * Método para obtener todos los pares de elementos
-     * @return Lista de pares de elementos
-     */
     public List<ParElementos> obtenerPares() {
         return new ArrayList<>(listaPares);
     }

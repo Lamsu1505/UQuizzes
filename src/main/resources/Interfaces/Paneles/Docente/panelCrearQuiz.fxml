@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane prefHeight="704.0" prefWidth="1053.0" stylesheets="@../../../Estilos/crearPregunta.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Docente.CrearQuizController">
+<StackPane prefHeight="752.0" prefWidth="1157.0" stylesheets="@../../../Estilos/crearPregunta.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Docente.CrearQuizController">
     <children>
         <VBox alignment="CENTER" maxWidth="1000.0" spacing="40.0">
             <padding>
@@ -39,17 +40,17 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="150.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="160.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
                         <Label fx:id="nombreQuizLabel" text="Nombre del quiz" />
                         <TextField fx:id="nombreQuizTextField" prefHeight="35.0" prefWidth="357.0" promptText="Nombre" GridPane.columnIndex="1" />
 
-                        <Label fx:id="materiaLabel" text="Materia" GridPane.columnIndex="2" />
-                        <ComboBox fx:id="materiaComboBox" prefWidth="200.0" promptText="Seleccionar" GridPane.columnIndex="3" />
+                        <Label fx:id="materiaLabel" text="Materia" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="materiaComboBox" prefWidth="200.0" promptText="Seleccionar" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                        <Label fx:id="unidadLabel" text="Unidad" GridPane.rowIndex="1" />
-                        <ComboBox fx:id="unidadComboBox" prefWidth="200.0" promptText="Seleccionar" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="unidadLabel" text="Unidad" GridPane.columnIndex="2" />
+                        <ComboBox fx:id="unidadComboBox" prefWidth="200.0" promptText="Seleccionar" GridPane.columnIndex="3" />
 
                         <Label fx:id="temaLabel" text="Temas" GridPane.rowIndex="5" GridPane.valignment="TOP">
                             <GridPane.margin>
@@ -58,7 +59,7 @@
                         </Label>
 
                         <!-- ListView para seleccionar temas con checkboxes -->
-                        <ListView fx:id="temasListView" prefHeight="150.0" prefWidth="275.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <ListView fx:id="temasListView" prefHeight="472.0" prefWidth="354.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
                         <Label fx:id="fechaInicioLabel" text="Fecha inicio" GridPane.rowIndex="2" />
                         <TextField fx:id="fechaInicioTextField" promptText="DD-MM-YYYY" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -77,9 +78,11 @@
                   <ComboBox fx:id="grupoComboBox" prefWidth="200.0" promptText="Seleccionar" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                   <Label fx:id="dificultadLbl" text="Dificultad" GridPane.rowIndex="3" />
                   <ComboBox fx:id="dificultadComboBox" prefWidth="200.0" promptText="Seleccionar" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="30.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
                      <children>
                         <Label text="Banco Automatico?" />
+                        <Label fx:id="tiempoLabel1" text="Fecha limite" />
+                        <Label fx:id="tiempoLabel11" text="Hora limite" />
                      </children>
                      <opaqueInsets>
                         <Insets />
@@ -88,15 +91,17 @@
                         <Insets />
                      </GridPane.margin>
                      <padding>
-                        <Insets top="20.0" />
+                        <Insets top="15.0" />
                      </padding>
                   </VBox>
-                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="13.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
                      <padding>
                         <Insets top="10.0" />
                      </padding>
                      <children>
                         <ComboBox fx:id="comboBoxAutomaticoManual" prefHeight="41.0" prefWidth="208.0" />
+                        <TextField fx:id="fechaLimiteTextField" prefWidth="100.0" promptText="Tiempo" />
+                        <TextField fx:id="horaLimiteTextField" prefWidth="100.0" promptText="Tiempo" />
                      </children>
                   </VBox>
                     </children>

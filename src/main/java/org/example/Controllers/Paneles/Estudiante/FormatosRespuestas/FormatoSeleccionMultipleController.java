@@ -1,4 +1,4 @@
-package org.example.Controllers.Ventanas.Estudiante.FormatosRespuestas;
+package org.example.Controllers.Paneles.Estudiante.FormatosRespuestas;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -7,7 +7,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import org.example.Controllers.Paneles.Docente.TiposPregunta.SeleccionMultipleController;
 
 import java.util.ArrayList;
 import java.util.List;
