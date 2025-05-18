@@ -5,6 +5,7 @@ import org.example.ConexionDB.DAO.DocenteDAO;
 import org.example.ConexionDB.DAO.EstudianteDAO;
 import org.example.Controllers.Paneles.Docente.CrearQuizController;
 import org.example.Controllers.Paneles.Docente.TiposPregunta.SeleccionMultipleController;
+import org.example.Model.Docente.EstudianteExamenInfo;
 import org.example.Model.OpcionesRespuesta.OpcionMultipleRespuesta;
 
 import java.sql.*;
@@ -124,6 +125,10 @@ public class UQuizzes {
 
     public int agregarPreguntasAlBanco(int idBancoCreado, List<Integer> temasSeleccionados) {
         return docenteDAO.agregarPreguntasAlBanco(idBancoCreado , temasSeleccionados);
+    }
+
+    public List<EstudianteExamenInfo> obtenerResultados(int idGrupo, int idExamen){
+        return docenteDAO.obtenerResultados(idGrupo, idExamen);
     }
 }
 

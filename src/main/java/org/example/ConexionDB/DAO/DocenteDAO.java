@@ -3,14 +3,15 @@ package org.example.ConexionDB.DAO;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import oracle.jdbc.internal.OracleConnection;
 import oracle.jdbc.internal.OracleTypes;
-import oracle.sql.ARRAY;
-import oracle.sql.ArrayDescriptor;
 import org.example.ConexionDB.ConexionOracle;
 import org.example.Controllers.Paneles.Docente.TiposPregunta.SeleccionMultipleController;
+import org.example.Model.Docente.EstudianteExamenInfo;
+import org.example.Model.Docente.ExamenDTO;
+import org.example.Model.Docente.GrupoDTO;
 import org.example.Model.OpcionesRespuesta.OpcionMultipleRespuesta;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -617,4 +618,90 @@ public class DocenteDAO {
 
         return respuesta;
     }
+
+    public List<EstudianteExamenInfo> obtenerResultados(int idGrupo, int idExamen) {
+        List<EstudianteExamenInfo> lista = new ArrayList<>();
+
+        try {
+            Connection conn = new ConexionOracle().conectar();
+            CallableStatement cs = conn.prepareCall("{ ? = call obtener_estudiantes_examen(?, ?) }");
+            cs.registerOutParameter(1, OracleTypes.ARRAY, "ESTUDIANTEEXAMENINFOTABLE");
+            cs.setInt(2, idGrupo);
+            cs.setInt(3, idExamen);
+            cs.execute();
+
+            Array array = cs.getArray(1);
+            Object[] datos = (Object[]) array.getArray();
+
+            for (Object o : datos) {
+                Struct struct = (Struct) o;
+                Object[] attrs = struct.getAttributes();
+
+                String fecha = (String) attrs[0];
+                String codigo = (String) attrs[1];
+                String nombre = (String) attrs[2];
+                String apellido = (String) attrs[3];
+                double notaFinal = ((BigDecimal) attrs[4]).doubleValue();
+                int tiempo = ((BigDecimal) attrs[5]).intValue();
+
+                lista.add(new EstudianteExamenInfo(fecha, codigo, nombre, apellido, notaFinal, tiempo));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lista;
+    }
+
+
+    public List<GrupoDTO> obtenerGruposPorDocente(int idDocente) {
+        List<GrupoDTO> grupos = new ArrayList<>();
+        try {
+            Connection conn = new ConexionOracle().conectar();
+            CallableStatement cs = conn.prepareCall("{ ? = call buscar_grupos_por_idDocente(?) }");
+            cs.registerOutParameter(1, OracleTypes.ARRAY, "GRUPODTOLIST");
+            cs.setInt(2, idDocente);
+            cs.execute();
+
+            Array array = cs.getArray(1);
+            Object[] datos = (Object[]) array.getArray();
+            for (Object o : datos) {
+                Struct struct = (Struct) o;
+                Object[] attrs = struct.getAttributes();
+                int idGrupo = ((BigDecimal) attrs[0]).intValue();
+                String nombre = (String) attrs[1];
+                grupos.add(new GrupoDTO(idGrupo, nombre));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return grupos;
+    }
+
+    public List<ExamenDTO> obtenerExamenesPorGrupoYDocente(int idGrupo, int idDocente) {
+        List<ExamenDTO> examenes = new ArrayList<>();
+        try {
+            Connection conn = new ConexionOracle().conectar();
+            CallableStatement cs = conn.prepareCall("{ ? = call obtener_examen_por_grupo_y_docente(?, ?) }");
+            cs.registerOutParameter(1, OracleTypes.ARRAY, "EXAMENDTOLIST");
+            cs.setInt(2, idGrupo);
+            cs.setInt(3, idDocente);
+            cs.execute();
+
+            Array array = cs.getArray(1);
+            Object[] datos = (Object[]) array.getArray();
+            for (Object o : datos) {
+                Struct struct = (Struct) o;
+                Object[] attrs = struct.getAttributes();
+                int idExamen = ((BigDecimal) attrs[0]).intValue();
+                String nombre = (String) attrs[1];
+                examenes.add(new ExamenDTO(idExamen, nombre));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return examenes;
+    }
+
 }
