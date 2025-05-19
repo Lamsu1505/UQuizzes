@@ -1,14 +1,3 @@
--- Tipo para devolver un examen
-CREATE OR REPLACE TYPE ExamenDTO AS OBJECT (
-    idExamen NUMBER,
-    nombre VARCHAR2(100)
-);
-
-/
--- Tabla de tipo ExamenDTO
-CREATE OR REPLACE TYPE ExamenDTOList AS TABLE OF ExamenDTO;
-/
-
 CREATE OR REPLACE FUNCTION obtenerExamenesPorGrupoYDocente(
     p_idGrupo IN GRUPO.idgrupo%TYPE,
     p_idDocente IN DOCENTE.idDocente%TYPE

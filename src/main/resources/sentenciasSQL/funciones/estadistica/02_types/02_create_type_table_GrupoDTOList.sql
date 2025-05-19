@@ -1,0 +1,2 @@
+-- Tabla de tipo GrupoDTO
+CREATE OR REPLACE TYPE GrupoDTOList AS TABLE OF GrupoDTO;

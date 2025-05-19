@@ -1,13 +1,3 @@
--- Tipo para devolver un grupo
-CREATE OR REPLACE TYPE GrupoDTO AS OBJECT (
-    idGrupo NUMBER,
-    nombre VARCHAR2(100)
-);
-/
--- Tabla de tipo GrupoDTO
-CREATE OR REPLACE TYPE GrupoDTOList AS TABLE OF GrupoDTO;
-/
-
 CREATE OR REPLACE FUNCTION obtenerGruposPorDocente(
     p_idDocente IN GRUPO.docente_idDocente%TYPE
 ) RETURN GrupoDTOList

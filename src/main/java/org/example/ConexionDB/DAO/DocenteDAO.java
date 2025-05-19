@@ -619,42 +619,6 @@ public class DocenteDAO {
         return respuesta;
     }
 
-    public List<EstudianteExamenInfo> obtenerResultados(int idGrupo, int idExamen) {
-        List<EstudianteExamenInfo> lista = new ArrayList<>();
-
-        try {
-            Connection conn = new ConexionOracle().conectar();
-            CallableStatement cs = conn.prepareCall("{ ? = call obtener_estudiantes_examen(?, ?) }");
-            cs.registerOutParameter(1, OracleTypes.ARRAY, "ESTUDIANTEEXAMENINFOTABLE");
-            cs.setInt(2, idGrupo);
-            cs.setInt(3, idExamen);
-            cs.execute();
-
-            Array array = cs.getArray(1);
-            Object[] datos = (Object[]) array.getArray();
-
-            for (Object o : datos) {
-                Struct struct = (Struct) o;
-                Object[] attrs = struct.getAttributes();
-
-                String fecha = (String) attrs[0];
-                String codigo = (String) attrs[1];
-                String nombre = (String) attrs[2];
-                String apellido = (String) attrs[3];
-                double notaFinal = ((BigDecimal) attrs[4]).doubleValue();
-                int tiempo = ((BigDecimal) attrs[5]).intValue();
-
-                lista.add(new EstudianteExamenInfo(fecha, codigo, nombre, apellido, notaFinal, tiempo));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return lista;
-    }
-
-
     public List<GrupoDTO> obtenerGruposPorDocente(int idDocente) {
         List<GrupoDTO> grupos = new ArrayList<>();
         try {
@@ -702,6 +666,39 @@ public class DocenteDAO {
             e.printStackTrace();
         }
         return examenes;
+    }
+
+    public List<EstudianteExamenInfo> obtenerEstudiantesPorExamen(int idExamen) {
+        List<EstudianteExamenInfo> lista = new ArrayList<>();
+
+        try {
+            Connection conn = new ConexionOracle().conectar();
+            CallableStatement stmt = conn.prepareCall("{ call get_estudiantes_examen(?, ?) }");
+            stmt.setInt(1, idExamen);
+            stmt.registerOutParameter(2, OracleTypes.CURSOR);
+
+            stmt.execute();
+
+            ResultSet rs = (ResultSet) stmt.getObject(2);
+            while (rs.next()) {
+                EstudianteExamenInfo dto = new EstudianteExamenInfo();
+                dto.setFechaInicio(rs.getString("fechaInicio"));
+                dto.setHoraInicio(rs.getString("horaInicio"));;
+                dto.setCodigo(rs.getString("codigo"));
+                dto.setNombre(rs.getString("nombre"));
+                dto.setApellido(rs.getString("apellido"));
+                dto.setNotaFinal(rs.getDouble("notaFinal"));
+
+                lista.add(dto);
+            }
+
+            rs.close();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lista;
     }
 
 }

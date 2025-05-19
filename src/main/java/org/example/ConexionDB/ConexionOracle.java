@@ -9,9 +9,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class ConexionOracle {
-    private static final String URL = "jdbc:oracle:thin:@localhost:1521:XE";
+    private static final String URL = "jdbc:oracle:thin:@localhost:1522:XE";
     private static final String USUARIO = "SYSTEM";
-    private static final String CONTRASENA = "pipe0106andres2015";
+    private static final String CONTRASENA = "oracle";
 
     private static final long TIMEOUT = 3; // tiempo en segundos
 

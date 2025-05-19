@@ -1,0 +1,1 @@
+DROP FUNCTION obtener_estudiantes_examen;

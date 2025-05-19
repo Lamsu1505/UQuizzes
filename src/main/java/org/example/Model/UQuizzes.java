@@ -6,6 +6,8 @@ import org.example.ConexionDB.DAO.EstudianteDAO;
 import org.example.Controllers.Paneles.Docente.CrearQuizController;
 import org.example.Controllers.Paneles.Docente.TiposPregunta.SeleccionMultipleController;
 import org.example.Model.Docente.EstudianteExamenInfo;
+import org.example.Model.Docente.ExamenDTO;
+import org.example.Model.Docente.GrupoDTO;
 import org.example.Model.OpcionesRespuesta.OpcionMultipleRespuesta;
 
 import java.sql.*;
@@ -127,8 +129,16 @@ public class UQuizzes {
         return docenteDAO.agregarPreguntasAlBanco(idBancoCreado , temasSeleccionados);
     }
 
-    public List<EstudianteExamenInfo> obtenerResultados(int idGrupo, int idExamen){
-        return docenteDAO.obtenerResultados(idGrupo, idExamen);
+    public List<GrupoDTO> obtenerGruposPorDocente(int idDocente){
+        return docenteDAO.obtenerGruposPorDocente(idDocente);
+    }
+
+    public List<ExamenDTO> obtenerExamenesPorGrupoYDocente(int idGrupo, int idDocente){
+        return docenteDAO.obtenerExamenesPorGrupoYDocente(idGrupo, idDocente);
+    }
+
+    public List<EstudianteExamenInfo> obtenerEstudiantesPorExamen(int idExamen) {
+        return docenteDAO.obtenerEstudiantesPorExamen(idExamen);
     }
 }
 

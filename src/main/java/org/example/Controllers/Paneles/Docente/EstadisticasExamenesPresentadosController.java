@@ -1,5 +1,6 @@
 package org.example.Controllers.Paneles.Docente;
 
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,43 +15,50 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import org.example.Model.Docente.EstudianteExamenInfo;
+import org.example.Model.Docente.ExamenDTO;
+import org.example.Model.Docente.GrupoDTO;
 import org.example.Model.UQuizzes;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class EstadisticasExamenesPresentadosController implements Initializable {
 
     @FXML
-    private TableColumn<?, ?> ColumnApellido;
+    private TableView<EstudianteExamenInfo> TableViewReporte;
 
     @FXML
-    private TableColumn<?, ?> ColumnFecha;
+    private TableColumn<EstudianteExamenInfo, String> ColumnFecha;
 
     @FXML
-    private TableColumn<?, ?> ColumnPrimerNombre;
+    private TableColumn<EstudianteExamenInfo, String> columnHoraInicio;
 
     @FXML
-    private TableColumn<?, ?> ColumnPuntaje;
+    private TableColumn<EstudianteExamenInfo, String> columnCodigo;
 
     @FXML
-    private TableColumn<?, ?> ColumnReporte;
+    private TableColumn<EstudianteExamenInfo, String> ColumnPrimerNombre;
 
     @FXML
-    private TableColumn<?, ?> ColumnTiempoTomado;
+    private TableColumn<EstudianteExamenInfo, String> ColumnApellido;
 
     @FXML
-    private TableView<?> TableViewReporte;
+    private TableColumn<EstudianteExamenInfo, Double> ColumnPuntaje;
 
     @FXML
-    private TableColumn<?, ?> columnCodigo;
+    private TableColumn<EstudianteExamenInfo, String> ColumnTiempoTomado;
 
     @FXML
-    private ComboBox<?> comboBoxExamen;
+    private TableColumn<?,?> ColumnReporte;
 
     @FXML
-    private ComboBox<?> comboBoxGrupos;
+    private ComboBox<ExamenDTO> comboBoxExamen;
+
+    @FXML
+    private ComboBox<GrupoDTO> comboBoxGrupos;
 
     @FXML
     private Button homeButton;
@@ -65,16 +73,28 @@ public class EstadisticasExamenesPresentadosController implements Initializable 
 
     private UQuizzes uQuizzes = UQuizzes.getInstance();
 
+    private int idDocente = Integer.parseInt(uQuizzes.getUsuarioEnSesion());
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ColumnFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
+
+        cargarGrupos();
+
+        ColumnFecha.setCellValueFactory(new PropertyValueFactory<>("fechaInicio"));
+        columnHoraInicio.setCellValueFactory(new PropertyValueFactory<>("horaInicio"));
         columnCodigo.setCellValueFactory(new PropertyValueFactory<>("codigo"));
         ColumnPrimerNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         ColumnApellido.setCellValueFactory(new PropertyValueFactory<>("apellido"));
         ColumnPuntaje.setCellValueFactory(new PropertyValueFactory<>("notaFinal"));
         ColumnTiempoTomado.setCellValueFactory(new PropertyValueFactory<>("tiempoTomado"));
     }
+
+    private void cargarGrupos() {
+        List<GrupoDTO> grupos = uQuizzes.obtenerGruposPorDocente(idDocente);
+        comboBoxGrupos.setItems(FXCollections.observableArrayList(grupos));
+    }
+
 
     @FXML
     void homeEvent(ActionEvent event) {
@@ -102,12 +122,26 @@ public class EstadisticasExamenesPresentadosController implements Initializable 
 
     @FXML
     void seleccionarExamen(ActionEvent event) {
+        ExamenDTO examenSeleccionado = comboBoxExamen.getSelectionModel().getSelectedItem();
 
+        if (examenSeleccionado != null) {
+            int idExamen = examenSeleccionado.getIdExamen();
+
+            // Obtener estudiantes desde DAO
+            List<EstudianteExamenInfo> estudiantes = uQuizzes.obtenerEstudiantesPorExamen(idExamen);
+
+            // Cargar en TableView
+            TableViewReporte.setItems(FXCollections.observableArrayList(estudiantes));
+        }
     }
 
     @FXML
     void seleccionarGrupo(ActionEvent event) {
-
+        GrupoDTO grupoSeleccionado = comboBoxGrupos.getSelectionModel().getSelectedItem();
+        if (grupoSeleccionado != null) {
+            List<ExamenDTO> examenes = uQuizzes.obtenerExamenesPorGrupoYDocente(grupoSeleccionado.getIdGrupo(), idDocente);
+            comboBoxExamen.setItems(FXCollections.observableArrayList(examenes));
+        }
     }
 
 }

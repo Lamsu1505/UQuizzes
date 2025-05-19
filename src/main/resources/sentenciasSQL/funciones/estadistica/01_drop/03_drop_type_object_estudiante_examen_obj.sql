@@ -1,0 +1,1 @@
+DROP TYPE estudiante_examen_obj;
