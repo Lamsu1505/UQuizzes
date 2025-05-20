@@ -1,5 +1,4 @@
 CREATE OR REPLACE FUNCTION obtener_estudiantes_examen(
-  p_idGrupo IN NUMBER,
   p_idExamen IN NUMBER
 ) RETURN estudiante_examen_tab
 AS

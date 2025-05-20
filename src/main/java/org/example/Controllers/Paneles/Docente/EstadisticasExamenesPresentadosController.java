@@ -127,7 +127,7 @@ public class EstadisticasExamenesPresentadosController implements Initializable 
         if (examenSeleccionado != null) {
             int idExamen = examenSeleccionado.getIdExamen();
 
-            // Obtener estudiantes desde DAO
+
             List<EstudianteExamenInfo> estudiantes = uQuizzes.obtenerEstudiantesPorExamen(idExamen);
 
             // Cargar en TableView

@@ -328,11 +328,7 @@ public class ContenedorGeneralOpcionesRespuesta implements Initializable {
 
     private boolean guardarPreguntaUnicaRespuesta() throws Exception {
         List<OpcionMultipleRespuesta> opciones = unicaRespuestaController.getListaOpciones();
-
-
-        System.out.println("");
         for (OpcionMultipleRespuesta opcion : opciones) {
-
             try{
                 if(uQuizzes.guardarPreguntaUnicaRespuestaDocente(opcion , idPregunta)){
                     System.out.println("Guardando la opcion: " + opcion.getTexto());
