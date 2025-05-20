@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION obtenerGruposPorDocente(
+CREATE OR REPLACE FUNCTION obtenerGruposPorDocenteYMateria(
     p_idDocente IN GRUPO.docente_idDocente%TYPE,
     p_idMateria IN GRUPO.materia_idMateria%TYPE
 ) RETURN GrupoDTOList

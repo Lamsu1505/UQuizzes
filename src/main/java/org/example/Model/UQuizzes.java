@@ -130,16 +130,8 @@ public class UQuizzes {
         return docenteDAO.agregarPreguntasAlBanco(idBancoCreado , temasSeleccionados);
     }
 
-    public List<MateriaDTO> obtenerMateriaPorDocente(int idDocente){
-        return docenteDAO.obtenerMateriaPorDocente(idDocente);
-    }
-
-    public List<GrupoDTO> obtenerGruposPorDocenteYMateria(int idDocente, int idMateria){
-        return docenteDAO.obtenerGruposPorDocenteYMateria(idDocente, idMateria);
-    }
-
-    public List<ExamenDTO> obtenerExamenesPorGrupoYDocente(int idGrupo, int idDocente){
-        return docenteDAO.obtenerExamenesPorGrupoYDocente(idGrupo, idDocente);
+    public List<Map<String, Object>> get_examen_by_grupo (String idGrupo) throws SQLException {
+        return docenteDAO.get_examen_by_grupo(idGrupo);
     }
 
     public List<EstudianteExamenInfo> obtenerEstudiantesPorExamen(int idExamen) {
