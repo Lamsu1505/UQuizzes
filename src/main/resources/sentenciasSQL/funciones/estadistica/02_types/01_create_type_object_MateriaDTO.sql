@@ -1,0 +1,4 @@
+CREATE OR REPLACE TYPE MateriaDTO AS OBJECT (
+    idMateria NUMBER,
+    nombre VARCHAR2(100)
+);

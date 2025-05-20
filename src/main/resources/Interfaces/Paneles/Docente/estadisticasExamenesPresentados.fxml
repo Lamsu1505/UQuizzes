@@ -34,9 +34,11 @@
          <font>
             <Font name="System Bold" size="13.0" />
          </font></Button>
-      <ComboBox fx:id="comboBoxGrupos" layoutX="38.0" layoutY="105.0" onAction="#seleccionarGrupo" prefWidth="150.0" promptText="Grupos" style="-fx-padding: 10 8 10 8; -fx-background-color: #85ca85; -fx-background-radius: 8;" />
-      <ComboBox fx:id="comboBoxExamen" layoutX="251.0" layoutY="105.0" onAction="#seleccionarExamen" prefWidth="150.0" promptText="Examenes" style="-fx-padding: 10 8 10 8; -fx-background-color: #85ca85; -fx-background-radius: 8;" />
-      <Label layoutX="38.0" layoutY="80.0" text="Grupo" />
-      <Label layoutX="251.0" layoutY="80.0" text="Exámen" />
+      <ComboBox fx:id="comboBoxGrupos" layoutX="234.0" layoutY="105.0" onAction="#seleccionarGrupo" prefWidth="150.0" promptText="Grupos" style="-fx-padding: 10 8 10 8; -fx-background-color: #85ca85; -fx-background-radius: 8;" />
+      <ComboBox fx:id="comboBoxExamen" layoutX="428.0" layoutY="105.0" onAction="#seleccionarExamen" prefWidth="150.0" promptText="Examenes" style="-fx-padding: 10 8 10 8; -fx-background-color: #85ca85; -fx-background-radius: 8;" />
+      <Label layoutX="234.0" layoutY="80.0" text="Grupo" />
+      <Label layoutX="428.0" layoutY="80.0" text="Exámen" />
+      <ComboBox fx:id="comboBoxMateria" layoutX="38.0" layoutY="105.0" onAction="#seleccionarMateria" prefWidth="150.0" promptText="Materia" style="-fx-padding: 10 8 10 8; -fx-background-color: #85ca85; -fx-background-radius: 8;" />
+      <Label layoutX="38.0" layoutY="80.0" text="Materia" />
    </children>
 </AnchorPane>

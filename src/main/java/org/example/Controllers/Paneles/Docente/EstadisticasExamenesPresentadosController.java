@@ -1,6 +1,7 @@
 package org.example.Controllers.Paneles.Docente;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,21 +9,24 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import org.example.ConexionDB.ConexionOracle;
 import org.example.Model.Docente.EstudianteExamenInfo;
 import org.example.Model.Docente.ExamenDTO;
 import org.example.Model.Docente.GrupoDTO;
+import org.example.Model.Docente.MateriaDTO;
 import org.example.Model.UQuizzes;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class EstadisticasExamenesPresentadosController implements Initializable {
@@ -55,10 +59,13 @@ public class EstadisticasExamenesPresentadosController implements Initializable 
     private TableColumn<?,?> ColumnReporte;
 
     @FXML
-    private ComboBox<ExamenDTO> comboBoxExamen;
+    private ComboBox<String> comboBoxMateria;
 
     @FXML
-    private ComboBox<GrupoDTO> comboBoxGrupos;
+    private ComboBox<String> comboBoxExamen;
+
+    @FXML
+    private ComboBox<String> comboBoxGrupos;
 
     @FXML
     private Button homeButton;
@@ -72,14 +79,18 @@ public class EstadisticasExamenesPresentadosController implements Initializable 
 
 
     private UQuizzes uQuizzes = UQuizzes.getInstance();
-
-    private int idDocente = Integer.parseInt(uQuizzes.getUsuarioEnSesion());
+    private String idMateriaSeleccionada;
+    private String idGrupoSeleccionado;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        cargarGrupos();
+        try {
+            cargarMaterias();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
         ColumnFecha.setCellValueFactory(new PropertyValueFactory<>("fechaInicio"));
         columnHoraInicio.setCellValueFactory(new PropertyValueFactory<>("horaInicio"));
@@ -90,11 +101,19 @@ public class EstadisticasExamenesPresentadosController implements Initializable 
         ColumnTiempoTomado.setCellValueFactory(new PropertyValueFactory<>("tiempoTomado"));
     }
 
-    private void cargarGrupos() {
-        List<GrupoDTO> grupos = uQuizzes.obtenerGruposPorDocente(idDocente);
-        comboBoxGrupos.setItems(FXCollections.observableArrayList(grupos));
-    }
 
+    private void cargarMaterias() throws SQLException {
+        ObservableList<String> materias = FXCollections.observableArrayList();
+        List<Map<String, Object>> listaSQL = uQuizzes.getMateriasDocente(uQuizzes.getUsuarioEnSesion());
+
+        for (int i = 0; i < listaSQL.size(); i++) {
+            String nombreMateria = listaSQL.get(i).get("NOMBRE_MATERIA").toString();
+            materias.add(nombreMateria);
+            System.out.println(nombreMateria);
+        }
+
+        comboBoxMateria.setItems(materias);
+    }
 
     @FXML
     void homeEvent(ActionEvent event) {
@@ -122,7 +141,7 @@ public class EstadisticasExamenesPresentadosController implements Initializable 
 
     @FXML
     void seleccionarExamen(ActionEvent event) {
-        ExamenDTO examenSeleccionado = comboBoxExamen.getSelectionModel().getSelectedItem();
+        /*ExamenDTO examenSeleccionado = comboBoxExamen.getSelectionModel().getSelectedItem();
 
         if (examenSeleccionado != null) {
             int idExamen = examenSeleccionado.getIdExamen();
@@ -132,16 +151,112 @@ public class EstadisticasExamenesPresentadosController implements Initializable 
 
             // Cargar en TableView
             TableViewReporte.setItems(FXCollections.observableArrayList(estudiantes));
-        }
+        }*/
     }
 
     @FXML
     void seleccionarGrupo(ActionEvent event) {
-        GrupoDTO grupoSeleccionado = comboBoxGrupos.getSelectionModel().getSelectedItem();
-        if (grupoSeleccionado != null) {
-            List<ExamenDTO> examenes = uQuizzes.obtenerExamenesPorGrupoYDocente(grupoSeleccionado.getIdGrupo(), idDocente);
-            comboBoxExamen.setItems(FXCollections.observableArrayList(examenes));
+        String nombreGrupoSeleccionada = comboBoxGrupos.getValue();
+        if (nombreGrupoSeleccionada != null) {
+
+            ConexionOracle conexion = new ConexionOracle();
+
+            if (conexion == null) {
+                mostrarAlerta("Error de conexion", "Error de conexión con la base de datos.");
+                return;
+            }
+
+            String sql = "select idgrupo " +
+                    "from grupo where nombre = '" + nombreGrupoSeleccionada + "'";
+
+            try (Connection connection = conexion.conectar();
+                 PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+                try (ResultSet rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        idGrupoSeleccionado = rs.getString("IDGRUPO");
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                cargarExamenes();
+            }catch (SQLException e) {
+                e.printStackTrace();
+                mostrarAlerta("Error" , "Error al cargar grupos en crearPreguntaController: " + e.getMessage());
+            }
         }
     }
 
+    private void cargarExamenes() throws SQLException {
+        ObservableList<String> examenes = FXCollections.observableArrayList();
+        List<Map<String, Object>> listaSQL = uQuizzes.get_examen_by_grupo(idGrupoSeleccionado);
+
+        for(int i =0 ; i < listaSQL.size() ; i++){
+            String nombreGrupo = listaSQL.get(i).get("NOMBRE_EXAMEN").toString();
+            examenes.add(nombreGrupo);
+        }
+        comboBoxGrupos.setItems(examenes);
+
+
+    }
+
+    @FXML
+    void seleccionarMateria(ActionEvent event) {
+        String nombreMateriaSeleccionada = comboBoxMateria.getValue();
+        if (nombreMateriaSeleccionada != null) {
+
+            ConexionOracle conexion = new ConexionOracle();
+
+            if (conexion == null) {
+                mostrarAlerta("Error de conexion", "Error de conexión con la base de datos.");
+                return;
+            }
+
+            String sql = "select idmateria " +
+                    "from materia where nombre = '" + nombreMateriaSeleccionada + "'";
+
+            try (Connection connection = conexion.conectar();
+                 PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+                try (ResultSet rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        idMateriaSeleccionada = rs.getString("IDMATERIA");
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                cargarGrupos();
+            }catch (SQLException e) {
+                e.printStackTrace();
+                mostrarAlerta("Error" , "Error al cargar grupos en crearPreguntaController: " + e.getMessage());
+            }
+        }
+    }
+
+    private void cargarGrupos() throws SQLException {
+        ObservableList<String> grupos = FXCollections.observableArrayList();
+        List<Map<String, Object>> listaSQL = uQuizzes.getGruposDocenteByMateria(uQuizzes.getUsuarioEnSesion() , idMateriaSeleccionada);
+
+        for(int i =0 ; i < listaSQL.size() ; i++){
+            String nombreGrupo = listaSQL.get(i).get("NOMBRE_GRUPO").toString();
+            grupos.add(nombreGrupo);
+        }
+        comboBoxGrupos.setItems(grupos);
+
+
+    }
+
+    private void mostrarAlerta(String titulo, String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
 }

@@ -9,6 +9,7 @@ import org.example.Controllers.Paneles.Docente.TiposPregunta.SeleccionMultipleCo
 import org.example.Model.Docente.EstudianteExamenInfo;
 import org.example.Model.Docente.ExamenDTO;
 import org.example.Model.Docente.GrupoDTO;
+import org.example.Model.Docente.MateriaDTO;
 import org.example.Model.OpcionesRespuesta.OpcionMultipleRespuesta;
 
 import java.math.BigDecimal;
@@ -622,53 +623,33 @@ public class DocenteDAO {
         return respuesta;
     }
 
-    public List<GrupoDTO> obtenerGruposPorDocente(int idDocente) {
-        List<GrupoDTO> grupos = new ArrayList<>();
-        try {
-            Connection conn = new ConexionOracle().conectar();
-            CallableStatement cs = conn.prepareCall("{ ? = call obtenerGruposPorDocente(?) }");
-            cs.registerOutParameter(1, OracleTypes.ARRAY, "GRUPODTOLIST");
-            cs.setInt(2, idDocente);
-            cs.execute();
+    public List<Map<String, Object>> get_examen_by_grupo(String idGrupo) throws SQLException {
+        String call = "{ ? = call get_examen_by_grupo(?) }";
 
-            Array array = cs.getArray(1);
-            Object[] datos = (Object[]) array.getArray();
-            for (Object o : datos) {
-                Struct struct = (Struct) o;
-                Object[] attrs = struct.getAttributes();
-                int idGrupo = ((BigDecimal) attrs[0]).intValue();
-                String nombre = (String) attrs[1];
-                grupos.add(new GrupoDTO(idGrupo, nombre));
+        List<Map<String, Object>> listaExamenes = new ArrayList<>();
+
+        try (
+                Connection conn = new ConexionOracle().conectar();
+                CallableStatement stmt = conn.prepareCall(call)
+        ) {
+            stmt.registerOutParameter(1, OracleTypes.CURSOR);
+            stmt.setString(2, idGrupo);
+            stmt.execute();
+
+            try (ResultSet rs = (ResultSet) stmt.getObject(1)) {
+                ResultSetMetaData md = rs.getMetaData();
+                int cols = md.getColumnCount();
+
+                while (rs.next()) {
+                    Map<String, Object> fila = new HashMap<>();
+                    for (int i = 1; i <= cols; i++) {
+                        fila.put(md.getColumnLabel(i), rs.getObject(i));
+                    }
+                    listaExamenes.add(fila);
+                }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return grupos;
-    }
-
-    public List<ExamenDTO> obtenerExamenesPorGrupoYDocente(int idGrupo, int idDocente) {
-        List<ExamenDTO> examenes = new ArrayList<>();
-        try {
-            Connection conn = new ConexionOracle().conectar();
-            CallableStatement cs = conn.prepareCall("{ ? = call get_examen_by_grupo_docente(?, ?) }");
-            cs.registerOutParameter(1, OracleTypes.ARRAY, "EXAMENDTOLIST");
-            cs.setInt(2, idGrupo);
-            cs.setInt(3, idDocente);
-            cs.execute();
-
-            Array array = cs.getArray(1);
-            Object[] datos = (Object[]) array.getArray();
-            for (Object o : datos) {
-                Struct struct = (Struct) o;
-                Object[] attrs = struct.getAttributes();
-                int idExamen = ((BigDecimal) attrs[0]).intValue();
-                String nombre = (String) attrs[1];
-                examenes.add(new ExamenDTO(idExamen, nombre));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return examenes;
+        return listaExamenes;
     }
 
     public List<EstudianteExamenInfo> obtenerEstudiantesPorExamen(int idExamen) {
