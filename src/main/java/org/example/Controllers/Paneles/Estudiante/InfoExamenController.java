@@ -64,6 +64,8 @@ public class InfoExamenController {
         stage.show();
 
         ResponderQuizController controller = loader.getController();
+
+        //Carga preguntas del examen
         controller.setIdExamen(idExamen);
 
     }

@@ -7,8 +7,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.example.Model.OpcionesRespuesta.OpcionMultipleRespuesta;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class FormatoEmparejamientoController {
@@ -18,6 +20,10 @@ public class FormatoEmparejamientoController {
 
     @FXML
     private Label mensajeError;
+
+    @FXML
+    private Label lblEnunciado;
+
 
     // Lista para almacenar los pares de elementos
     private List<ParElementos> listaPares = new ArrayList<>();
@@ -44,6 +50,48 @@ public class FormatoEmparejamientoController {
         } catch (Exception e) {
             // Mostrar mensaje de error si hay algún problema
             mensajeError.setText("Error al agregar par: " + e.getMessage());
+        }
+    }
+
+    public void setEnunciado(String enunciado) {
+        lblEnunciado.setText(enunciado);
+    }
+
+    public void setOpciones(List<OpcionMultipleRespuesta> opciones) {
+        // Limpiar vista previa
+        parejasContainer.getChildren().clear();
+        listaPares.clear();
+
+        List<String> listaA = new ArrayList<>();
+        List<String> listaB = new ArrayList<>();
+
+        // Extraer lados A y B de cada opción
+        for (OpcionMultipleRespuesta opcion : opciones) {
+            String texto = opcion.getTexto();
+            if (texto.contains(";")) {
+                String[] partes = texto.split(";", 2);
+                listaA.add(partes[0].trim());
+                listaB.add(partes[1].trim());
+            }
+        }
+
+        // Desordenar ambas listas de forma independiente
+        Collections.shuffle(listaA);
+        Collections.shuffle(listaB);
+
+        int cantidad = Math.min(listaA.size(), listaB.size());
+
+        for (int i = 0; i < cantidad; i++) {
+            ParElementos par = new ParElementos();
+            par.elementoA.setText(listaA.get(i));
+            par.elementoB.setText(listaB.get(i));
+
+            // Opcional: desactivar edición si es solo para responder
+            par.elementoA.setEditable(false);
+            par.elementoB.setEditable(false);
+
+            parejasContainer.getChildren().add(par.getContenedor());
+            listaPares.add(par);
         }
     }
 
