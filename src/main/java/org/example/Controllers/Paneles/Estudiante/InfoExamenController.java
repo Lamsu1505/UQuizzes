@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import org.example.ConexionDB.ConexionOracle;
 import org.example.Controllers.Paneles.Docente.ExamenPaginaPrincipalController;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -48,12 +49,15 @@ public class InfoExamenController {
     private Label nombreExamenT;
 
 
-    public void iniciarExamen(ActionEvent actionEvent) throws SQLException {
-
-
-
-
-
+    public void iniciarExamen(ActionEvent actionEvent) throws SQLException, IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfaces/Paneles/Estudiante/s/ResponderQuiz.fxml"));
+        Parent root = loader.load();
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.setWidth(900);
+        stage.setHeight(650);
+        stage.centerOnScreen();
+        stage.show();
 
     }
 

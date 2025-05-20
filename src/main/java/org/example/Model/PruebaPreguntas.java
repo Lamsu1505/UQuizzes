@@ -10,6 +10,9 @@ public class PruebaPreguntas {
     private String respuestaCorrecta;
     private String temaComplementario;
 
+    public PruebaPreguntas() {
+
+    }
     // Constructor completo
     public PruebaPreguntas(int idPregunta, int idTema, int idTipoPregunta, Integer idPreguntaPadre,
                     String enunciado, String respuestaEstudiante, String respuestaCorrecta,

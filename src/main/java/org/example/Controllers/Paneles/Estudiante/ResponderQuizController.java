@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
+import org.example.ConexionDB.DAO.PreguntaDAO;
 import org.example.Controllers.Paneles.Estudiante.FormatosRespuestas.FormatoSeleccionMultipleController;
 import org.example.Controllers.Paneles.Estudiante.FormatosRespuestas.FormatoUnicaRespuestaController;
 import org.example.Model.OpcionesRespuesta.OpcionMultipleRespuesta;
@@ -13,6 +14,7 @@ import org.example.Model.PruebaPreguntas;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public class ResponderQuizController {
 
@@ -117,6 +119,18 @@ public class ResponderQuizController {
     }
 
 
+    public void cargarPreguntasDelExamen(int idExamen) {
+        PreguntaDAO dao = new PreguntaDAO();
+        Map<PruebaPreguntas, List<OpcionMultipleRespuesta>> preguntasMap = dao.obtenerPreguntasPorExamen(idExamen);
+
+        for (Map.Entry<PruebaPreguntas, List<OpcionMultipleRespuesta>> entry : preguntasMap.entrySet()) {
+            PruebaPreguntas pregunta = entry.getKey();
+            List<OpcionMultipleRespuesta> opciones = entry.getValue();
+            pregunta.setIdTipoPregunta(1);
+            agregarPregunta(pregunta, opciones);
+        }
+    }
+
     public void agregarPregunta(PruebaPreguntas pregunta, List<OpcionMultipleRespuesta> opciones) {
         try {
             String fxmlRuta = "";
@@ -124,10 +138,10 @@ public class ResponderQuizController {
 
             switch (pregunta.getIdTipoPregunta()) {
                 case 1:
-                    fxmlRuta = "/Interfaces/Paneles/Estudiante/s/FormatoRespuestasQuiz/FormatoMultipleRespuesta.fxml";
+                    fxmlRuta = "/Interfaces/Paneles/Estudiante/s/FormatoRespuestasQuiz/FormatoUnicaRespuesta.fxml";
                     break;
                 case 2:
-                    fxmlRuta = "/Interfaces/Paneles/Estudiante/s/FormatoRespuestasQuiz/FormatoUnicaRespuesta.fxml";
+                    fxmlRuta = "/Interfaces/Paneles/Estudiante/s/FormatoRespuestasQuiz/FormatoMultipleRespuesta.fxml";
                     break;
                 case 3:
                     fxmlRuta = "/Interfaces/Paneles/Estudiante/s/FormatoRespuestasQuiz/FormatoVerdaderoFalso.fxml";
@@ -147,8 +161,11 @@ public class ResponderQuizController {
             Node preguntaPane = loader.load();
 
             if (pregunta.getIdTipoPregunta() == 1) {
-                FormatoSeleccionMultipleController controller = loader.getController();
+                System.out.println("entro a la condicion para setear info de opciones");
+
+                FormatoUnicaRespuestaController controller = loader.getController();
                 controller.setOpciones(opciones);
+                controller.setEnunciado(pregunta.getEnunciado());
 
             }
 
@@ -172,7 +189,8 @@ public class ResponderQuizController {
 
     @FXML
     public void initialize() {
-        // Aquí llamas a tu método para cargar la interfaz de la pregunta
+        int idExamen = 10;
+        cargarPreguntasDelExamen(idExamen);
 
     }
 }

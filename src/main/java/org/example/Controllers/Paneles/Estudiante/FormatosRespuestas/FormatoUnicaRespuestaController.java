@@ -29,6 +29,9 @@ public class FormatoUnicaRespuestaController implements Initializable {
     @FXML
     private Label enunciadoLabel;
 
+    @FXML
+    private Label lblEnunciado;
+
 
     private ToggleGroup toggleGroup = new ToggleGroup(); // para controlar selección única
     private List<HBox> listaOpciones = new ArrayList<>();
@@ -166,8 +169,6 @@ public class FormatoUnicaRespuestaController implements Initializable {
     }
 
     public void setEnunciado(String texto) {
-        if (enunciadoLabel != null) {
-            enunciadoLabel.setText(texto);
-        }
+        lblEnunciado.setText(texto);
     }
 }

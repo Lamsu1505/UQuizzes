@@ -26,25 +26,23 @@ public class FormatoSeleccionMultipleController {
     private List<OpcionMultipleRespuesta> listaOpcionesModel = new ArrayList<>();
 
 
-    private int contadorOpciones = 1;
+
 
     @FXML
     private void initialize() {
         // Agregar una opción por defecto
-        agregarOpcion();
+        agregarOpcion(null);
     }
 
     @FXML
-    private void agregarOpcion() {
+    private void agregarOpcion(String opcion) {
         try {
             // Crear una nueva opción con texto editable
-            OpcionMultiple nuevaOpcion = new OpcionMultiple(contadorOpciones);
+            OpcionMultiple nuevaOpcion = new OpcionMultiple();
 
             // Agregar al contenedor y a la lista de opciones
             opcionesContainer.getChildren().add(nuevaOpcion.getContenedor());
             listaOpciones.add(nuevaOpcion);
-
-            contadorOpciones++;
 
             // Limpiar cualquier mensaje de error previo
             mensajeError.setText("");
@@ -126,7 +124,7 @@ public class FormatoSeleccionMultipleController {
         private TextField textoOpcion;
         private Button eliminarButton;
 
-        public OpcionMultiple(int numero) {
+        public OpcionMultiple() {
             // Crear contenedor horizontal
             contenedor = new HBox(10);
 
@@ -135,7 +133,7 @@ public class FormatoSeleccionMultipleController {
             checkBox.getStyleClass().add("opcion-check");
 
             // Crear campo de texto
-            textoOpcion = new TextField("Marzo " + numero);
+            textoOpcion = new TextField("");
             textoOpcion.setMaxWidth(300);
 
             // Agregar elementos al contenedor
@@ -182,7 +180,7 @@ public class FormatoSeleccionMultipleController {
         listaOpciones.clear();
         listaOpcionesModel.clear();
         for (OpcionMultipleRespuesta opcion : opciones) {
-            agregarOpcion();
+            agregarOpcion(opcion.getTexto());
         }
     }
 
