@@ -1,0 +1,1 @@
+DROP FUNCTION obtener_materias_by_idDocente;

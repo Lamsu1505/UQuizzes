@@ -4,13 +4,14 @@ CREATE OR REPLACE PROCEDURE get_estudiantes_examen (
 ) AS
 BEGIN
 OPEN p_cursor FOR
-SELECT
-    s.fechaInicio,
-    s.horaInicio,
-    e.codigo,
-    e.nombre,
-    e.apellido,
-    s.notaFinal
+SELECT estudiante_examen_obj(
+               s.fechaInicio,
+               s.horaInicio,
+               e.codigo,
+               e.nombre,
+               e.apellido,
+               s.notaFinal
+       )
 FROM
     SolucionExamenEstudiante s
         JOIN

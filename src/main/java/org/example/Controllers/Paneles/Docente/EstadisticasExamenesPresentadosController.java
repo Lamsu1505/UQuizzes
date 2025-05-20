@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import org.example.Model.Docente.EstudianteExamenInfo;
 import org.example.Model.Docente.ExamenDTO;
 import org.example.Model.Docente.GrupoDTO;
+import org.example.Model.Docente.MateriaDTO;
 import org.example.Model.UQuizzes;
 
 import java.io.IOException;
@@ -55,6 +56,9 @@ public class EstadisticasExamenesPresentadosController implements Initializable 
     private TableColumn<?,?> ColumnReporte;
 
     @FXML
+    private ComboBox<MateriaDTO> comboBoxMateria;
+
+    @FXML
     private ComboBox<ExamenDTO> comboBoxExamen;
 
     @FXML
@@ -79,7 +83,7 @@ public class EstadisticasExamenesPresentadosController implements Initializable 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        cargarGrupos();
+        cargarMaterias();
 
         ColumnFecha.setCellValueFactory(new PropertyValueFactory<>("fechaInicio"));
         columnHoraInicio.setCellValueFactory(new PropertyValueFactory<>("horaInicio"));
@@ -90,11 +94,11 @@ public class EstadisticasExamenesPresentadosController implements Initializable 
         ColumnTiempoTomado.setCellValueFactory(new PropertyValueFactory<>("tiempoTomado"));
     }
 
-    private void cargarGrupos() {
-        List<GrupoDTO> grupos = uQuizzes.obtenerGruposPorDocente(idDocente);
-        comboBoxGrupos.setItems(FXCollections.observableArrayList(grupos));
-    }
 
+    private void cargarMaterias(){
+        List<MateriaDTO> materias = uQuizzes.obtenerMateriaPorDocente(idDocente);
+        comboBoxMateria.setItems(FXCollections.observableArrayList(materias));
+    }
 
     @FXML
     void homeEvent(ActionEvent event) {
@@ -144,4 +148,15 @@ public class EstadisticasExamenesPresentadosController implements Initializable 
         }
     }
 
+    @FXML
+    void seleccionarMateria(ActionEvent event) {
+        MateriaDTO materiaSeleccionada = comboBoxMateria.getSelectionModel().getSelectedItem();
+
+        if (materiaSeleccionada != null) {
+            int idMateria = materiaSeleccionada.getIdMateria();
+
+
+            List<GrupoDTO> grupos = uQuizzes.obtenerGruposPorDocenteYMateria(idDocente, idMateria);
+        }
+    }
 }
