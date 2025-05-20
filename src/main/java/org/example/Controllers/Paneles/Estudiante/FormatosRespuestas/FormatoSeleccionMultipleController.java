@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.example.Model.OpcionesRespuesta.OpcionMultipleRespuesta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,8 @@ public class FormatoSeleccionMultipleController {
 
     // Lista para almacenar las opciones
     private List<OpcionMultiple> listaOpciones = new ArrayList<>();
+    private List<OpcionMultipleRespuesta> listaOpcionesModel = new ArrayList<>();
+
 
     private int contadorOpciones = 1;
 
@@ -132,7 +135,7 @@ public class FormatoSeleccionMultipleController {
             checkBox.getStyleClass().add("opcion-check");
 
             // Crear campo de texto
-            textoOpcion = new TextField("Opción " + numero);
+            textoOpcion = new TextField("Marzo " + numero);
             textoOpcion.setMaxWidth(300);
 
             // Agregar elementos al contenedor
@@ -172,4 +175,16 @@ public class FormatoSeleccionMultipleController {
             checkBox.setSelected(seleccionada);
         }
     }
+
+
+    public void setOpciones(List<OpcionMultipleRespuesta> opciones) {
+        opcionesContainer.getChildren().clear();
+        listaOpciones.clear();
+        listaOpcionesModel.clear();
+        for (OpcionMultipleRespuesta opcion : opciones) {
+            agregarOpcion();
+        }
+    }
+
+
 }

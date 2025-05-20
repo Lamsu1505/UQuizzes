@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
+import org.example.Controllers.Paneles.Estudiante.FormatosRespuestas.FormatoSeleccionMultipleController;
 import org.example.Controllers.Paneles.Estudiante.FormatosRespuestas.FormatoUnicaRespuestaController;
 import org.example.Model.OpcionesRespuesta.OpcionMultipleRespuesta;
 import org.example.Model.PruebaPreguntas;
@@ -145,7 +146,13 @@ public class ResponderQuizController {
             loader = new FXMLLoader(getClass().getResource(fxmlRuta));
             Node preguntaPane = loader.load();
 
-            if (pregunta.getIdTipoPregunta() == 2) {
+            if (pregunta.getIdTipoPregunta() == 1) {
+                FormatoSeleccionMultipleController controller = loader.getController();
+                controller.setOpciones(opciones);
+
+            }
+
+            else if (pregunta.getIdTipoPregunta() == 2) {
                 FormatoUnicaRespuestaController controller = loader.getController();
                 controller.setOpciones(opciones);
                 controller.setEnunciado(pregunta.getEnunciado());
@@ -166,11 +173,6 @@ public class ResponderQuizController {
     @FXML
     public void initialize() {
         // Aquí llamas a tu método para cargar la interfaz de la pregunta
-       verificarTipoPregunta(1);
-       verificarTipoPregunta(2);
-       verificarTipoPregunta(3);
-       verificarTipoPregunta(4);
-       verificarTipoPregunta(5);
 
     }
 }
