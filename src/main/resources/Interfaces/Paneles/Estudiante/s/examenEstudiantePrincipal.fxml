@@ -21,7 +21,7 @@
                 <TableColumn fx:id="ColumnMateriaQuiz" prefWidth="161.0" text="Materia" />
                 <TableColumn fx:id="ColumnUnidadQuiz" prefWidth="151.0" text="Unidad" />
                 <TableColumn fx:id="ColumnTemaQuiz" prefWidth="147.0" text="Tema" />
-                <TableColumn fx:id="ColumnFechaFinQuiz" prefWidth="147.0" text="Fecha Fin " />
+                <TableColumn fx:id="ColumnNotaQuiz" prefWidth="147.0" text="Nota" />
             </columns>
         </TableView>
         <TextField fx:id="searchField" layoutX="309.0" layoutY="30.0" onAction="#searchFieldEvent" promptText="Nombre del quiz" />
