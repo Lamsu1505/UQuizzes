@@ -1,8 +1,11 @@
 package org.example.Controllers.Paneles.Docente;
 
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -22,8 +25,21 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javafx.scene.control.cell.PropertyValueFactory;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class SeleccionarPreguntasController {
+public class SeleccionarPreguntasController implements Initializable {
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        List<Pregunta> preguntas = obtenerPreguntasConNivel();
+        TableViewPregunta.setItems(FXCollections.observableArrayList(preguntas));
+
+        ColumnPregunta.setCellValueFactory(cellData ->
+                new ReadOnlyStringWrapper(cellData.getValue().getEnunciado()));
+        ColumnDificultadPregunta.setCellValueFactory(cellData ->
+                new ReadOnlyStringWrapper(cellData.getValue().getNivel()));
+    }
 
     @FXML
     private Button AgregarButton;
@@ -68,15 +84,6 @@ public class SeleccionarPreguntasController {
     }
 
 
-    @FXML
-    public void initialize() {
-        List<Pregunta> preguntas = obtenerPreguntasConNivel();
-        TableViewPregunta.getItems().addAll(preguntas);
-
-        ColumnPregunta.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getEnunciado()));
-        ColumnDificultadPregunta.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNivel()));
-    }
-
 
     public List<Pregunta> obtenerPreguntasConNivel() {
         String query = "SELECT p.idpregunta, p.enunciado, n.nivel " +
@@ -90,11 +97,11 @@ public class SeleccionarPreguntasController {
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                Integer idpregunta = rs.getInt("idpregunta");
+                int id = rs.getInt("idpregunta");
                 String enunciado = rs.getString("enunciado");
                 String nivel = rs.getString("nivel");
 
-                Pregunta pregunta = new Pregunta(idpregunta,  enunciado, nivel);
+                Pregunta pregunta = new Pregunta(id, enunciado, nivel);
                 listaPreguntas.add(pregunta);
             }
 
