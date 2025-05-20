@@ -48,8 +48,12 @@ public class InfoExamenController {
     @FXML
     private Label nombreExamenT;
 
+    private int idExamen;
+
 
     public void iniciarExamen(ActionEvent actionEvent) throws SQLException, IOException {
+
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfaces/Paneles/Estudiante/s/ResponderQuiz.fxml"));
         Parent root = loader.load();
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -59,11 +63,14 @@ public class InfoExamenController {
         stage.centerOnScreen();
         stage.show();
 
+        ResponderQuizController controller = loader.getController();
+        controller.setIdExamen(idExamen);
+
     }
 
     public void getInfoExamen(int idExamen) throws SQLException {
     ConexionOracle conn = new ConexionOracle();
-
+    this.idExamen = idExamen;
         String sql =
                 "SELECT " +
                         "e.nombre AS nombreExamen, " +

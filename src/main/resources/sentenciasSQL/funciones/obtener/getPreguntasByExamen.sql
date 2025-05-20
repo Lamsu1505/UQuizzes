@@ -10,7 +10,8 @@ OPEN c_preguntas FOR
 SELECT DISTINCT p.idPregunta as idPregunta,
         p.enunciado as enunciado,
         o.descripcionopcion as descripcion,
-        o.esCorrecta as esCorrecta
+        o.esCorrecta as esCorrecta,
+        p.tipoPregunta_idtipo as idTipoPregunta
 FROM Examen e
          JOIN Bancopreguntasexamen bc ON e.idExamen = bc.examen_idexamen
          JOIN preguntasBanco pb ON bc.idBanco = pb.bancoex_idbanco

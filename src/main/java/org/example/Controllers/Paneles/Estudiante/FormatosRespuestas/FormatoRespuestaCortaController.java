@@ -21,6 +21,9 @@ public class FormatoRespuestaCortaController {
     private Button agregarRespuestaButton;
 
     @FXML
+    private Label lblEnunciado;
+
+    @FXML
     private Label mensajeError;
 
     // Lista para almacenar las respuestas aceptadas
@@ -89,6 +92,10 @@ public class FormatoRespuestaCortaController {
             respuestas.add(respuesta.getTexto());
         }
         return respuestas;
+    }
+
+    public void setEnunciado(String enunciado) {
+        lblEnunciado.setText(enunciado);
     }
 
     /**

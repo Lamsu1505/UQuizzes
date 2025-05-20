@@ -70,10 +70,13 @@ public class FormatoUnicaRespuestaController implements Initializable {
 
         // Campo de texto
         TextField opcionTextField = new TextField(texto);
+        opcionTextField.setEditable(false);
+        opcionTextField.setFocusTraversable(false);
         opcionTextField.setPromptText("Ingrese el texto de la opción");
         opcionTextField.getStyleClass().add("text-field");
         opcionTextField.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
         HBox.setHgrow(opcionTextField, Priority.ALWAYS);
+
 
         // Sincroniza texto del modelo con el campo
         opcionTextField.textProperty().addListener((obs, oldVal, newVal) -> {

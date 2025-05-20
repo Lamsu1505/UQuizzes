@@ -4,11 +4,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import org.example.ConexionDB.DAO.PreguntaDAO;
-import org.example.Controllers.Paneles.Estudiante.FormatosRespuestas.FormatoSeleccionMultipleController;
-import org.example.Controllers.Paneles.Estudiante.FormatosRespuestas.FormatoUnicaRespuestaController;
+import org.example.Controllers.Paneles.Estudiante.FormatosRespuestas.*;
 import org.example.Model.OpcionesRespuesta.OpcionMultipleRespuesta;
 import org.example.Model.PruebaPreguntas;
 
@@ -20,6 +20,23 @@ public class ResponderQuizController {
 
     @FXML
     private VBox contenedorPreguntas;
+
+    @FXML
+    private int idExamen;
+
+    @FXML
+    private Button enviarButton;
+
+    @FXML
+    private ScrollPane scrollPane;
+
+    @FXML
+    private Label lblIdExamen;
+
+    @FXML
+    public void initialize() {
+
+    }
 
 
     public void verificarTipoPregunta (int tipoPregunta){
@@ -124,9 +141,9 @@ public class ResponderQuizController {
         Map<PruebaPreguntas, List<OpcionMultipleRespuesta>> preguntasMap = dao.obtenerPreguntasPorExamen(idExamen);
 
         for (Map.Entry<PruebaPreguntas, List<OpcionMultipleRespuesta>> entry : preguntasMap.entrySet()) {
+
             PruebaPreguntas pregunta = entry.getKey();
             List<OpcionMultipleRespuesta> opciones = entry.getValue();
-            pregunta.setIdTipoPregunta(1);
             agregarPregunta(pregunta, opciones);
         }
     }
@@ -141,16 +158,16 @@ public class ResponderQuizController {
                     fxmlRuta = "/Interfaces/Paneles/Estudiante/s/FormatoRespuestasQuiz/FormatoUnicaRespuesta.fxml";
                     break;
                 case 2:
-                    fxmlRuta = "/Interfaces/Paneles/Estudiante/s/FormatoRespuestasQuiz/FormatoMultipleRespuesta.fxml";
-                    break;
-                case 3:
                     fxmlRuta = "/Interfaces/Paneles/Estudiante/s/FormatoRespuestasQuiz/FormatoVerdaderoFalso.fxml";
                     break;
-                case 4:
+                case 3:
                     fxmlRuta = "/Interfaces/Paneles/Estudiante/s/FormatoRespuestasQuiz/FormatoRespuestaCorta.fxml";
                     break;
-                case 5:
+                case 4:
                     fxmlRuta = "/Interfaces/Paneles/Estudiante/s/FormatoRespuestasQuiz/FormatoEmparejar.fxml";
+                    break;
+                case 5:
+                    fxmlRuta = "/Interfaces/Paneles/Estudiante/s/FormatoRespuestasQuiz/FormatoMultipleRespuesta.fxml";
                     break;
                 default:
                     System.err.println("Tipo de pregunta desconocido: " + pregunta.getIdTipoPregunta());
@@ -170,8 +187,12 @@ public class ResponderQuizController {
             }
 
             else if (pregunta.getIdTipoPregunta() == 2) {
-                FormatoUnicaRespuestaController controller = loader.getController();
-                controller.setOpciones(opciones);
+                FormatoVerdaderoFalsoController controller = loader.getController();
+                controller.setEnunciado(pregunta.getEnunciado());
+            }
+
+            else if (pregunta.getIdTipoPregunta() == 3) {
+                FormatoRespuestaCortaController controller = loader.getController();
                 controller.setEnunciado(pregunta.getEnunciado());
             }
 
@@ -181,16 +202,15 @@ public class ResponderQuizController {
         }
     }
 
-    @FXML
-    private Button enviarButton;
 
-    @FXML
-    private ScrollPane scrollPane;
 
-    @FXML
-    public void initialize() {
-        int idExamen = 10;
+    public void setIdExamen(int idExamen) {
+        this.idExamen = idExamen;
+        lblIdExamen.setText("Examen " + idExamen);
+        cargarPreguntas();
+    }
+
+    public void cargarPreguntas() {
         cargarPreguntasDelExamen(idExamen);
-
     }
 }

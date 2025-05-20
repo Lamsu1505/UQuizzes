@@ -34,6 +34,7 @@ public class PreguntaDAO {
                 if (!preguntasPorId.containsKey(idPregunta)) {
                     pregunta.setIdPregunta(idPregunta);
                     pregunta.setEnunciado(rs.getString("enunciado"));
+                    pregunta.setIdTipoPregunta(rs.getInt("idTipoPregunta"));
 
                     preguntasPorId.put(idPregunta, pregunta);
 
