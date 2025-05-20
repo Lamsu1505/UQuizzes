@@ -66,34 +66,71 @@ public class panelInicioEstudianteController implements Initializable {
 
 
     private void cargarExamenes() throws SQLException {
-
         List<Map<String, Object>> lista = uQuizzes.getExamenesEstudianteSQL();
+        boolean hayExamenesDisponibles = false;
+
         try {
-            for (Map<String,Object> fila : lista) {
+            for (Map<String, Object> fila : lista) {
+                if (!presentoExamen(fila)) {
+                    continue;
+                }
 
                 FXMLLoader loader = new FXMLLoader(
                         getClass().getResource("/Interfaces/Paneles/Estudiante/s/examenPaginaPrincipal.fxml")
                 );
                 Node examenNode = loader.load();
 
-                // 2) Obtén el controller y pásale los datos
                 ExamenPaginaPrincipalController ctrl = loader.getController();
 
                 ctrl.setNombreExamen("" + fila.get("NOMBRE_EXAMEN"));
-                ctrl.setMateria      ("" + fila.get("NOMBRE_MATERIA"));
-                ctrl.setGrupo        ("" + fila.get("NOMBRE_GRUPO"));
+                ctrl.setMateria("" + fila.get("NOMBRE_MATERIA"));
+                ctrl.setGrupo("" + fila.get("NOMBRE_GRUPO"));
                 ctrl.setFecha(("" + fila.get("FECHA")).substring(0, 10));
                 ctrl.setHora(("" + fila.get("HORA")).toString());
 
-                // 3) Añádelo al VBox
                 VBoxContenedorExamenes.getChildren().add(examenNode);
+                hayExamenesDisponibles = true;
             }
 
+            if (!hayExamenesDisponibles) {
+                Label mensaje = new Label("No tienes exámenes disponibles.");
+                VBoxContenedorExamenes.getChildren().add(mensaje);
+            }
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
+
+
+    private boolean presentoExamen(Map<String, Object> examen) throws SQLException {
+        int idExamen = Integer.parseInt(examen.get("IDEXAMEN").toString()); // Asegúrate que la clave sea IDEXAMEN (todo mayúsculas)
+        String idEstudiante = uQuizzes.getUsuarioEnSesion();
+
+        String sql = "SELECT COUNT(*) " +
+                "FROM examen e " +
+                "JOIN solucionexamenestudiante se ON e.idExamen = se.examen_idexamen " +
+                "WHERE e.idExamen = ? AND se.estudiante_idestudiante = ?";
+
+        ConexionOracle conexion = new ConexionOracle();
+
+        try (Connection connection = conexion.conectar();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setInt(1, idExamen);
+            stmt.setString(2, idEstudiante);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
 
 }

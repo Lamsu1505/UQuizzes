@@ -633,7 +633,7 @@ public class DocenteDAO {
                 CallableStatement stmt = conn.prepareCall(call)
         ) {
             stmt.registerOutParameter(1, OracleTypes.CURSOR);
-            stmt.setString(2, idGrupo);
+            stmt.setInt(2, Integer.parseInt(idGrupo));
             stmt.execute();
 
             try (ResultSet rs = (ResultSet) stmt.getObject(1)) {
