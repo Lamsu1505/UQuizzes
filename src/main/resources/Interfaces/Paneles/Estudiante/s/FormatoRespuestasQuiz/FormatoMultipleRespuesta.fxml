@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox fx:id="seleccionMultiplePanel" prefWidth="710.0" spacing="15.0" styleClass="pregunta-panel" stylesheets="@../../../../../Estilos/MultipleUnicaRespuesa.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Estudiante.FormatosRespuestas.FormatoSeleccionMultipleController">
+<VBox fx:id="seleccionMultiplePanel" prefWidth="710.0" spacing="15.0" styleClass="pregunta-panel" stylesheets="@../../../../../Estilos/MultipleUnicaRespuesa.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Estudiante.FormatosRespuestas.FormatoSeleccionMultipleController">
     <padding>
         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
     </padding>
     <children>
-        <Label styleClass="section-title" text="Opciones de Respuesta (Seleccione todas las correctas)">
+        <Label fx:id="lblEnunciado" styleClass="section-title" text="Opciones de Respuesta (Seleccione todas las correctas)">
             <font>
                 <Font name="System Bold" size="14.0" />
             </font>

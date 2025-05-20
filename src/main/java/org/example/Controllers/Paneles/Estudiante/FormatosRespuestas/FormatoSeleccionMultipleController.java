@@ -20,6 +20,9 @@ public class FormatoSeleccionMultipleController {
     @FXML
     private Label mensajeError;
 
+    @FXML
+    private Label lblEnunciado;
+
 
     // Lista para almacenar las opciones
     private List<OpcionMultiple> listaOpciones = new ArrayList<>();
@@ -39,6 +42,7 @@ public class FormatoSeleccionMultipleController {
         try {
             // Crear una nueva opción con texto editable
             OpcionMultiple nuevaOpcion = new OpcionMultiple();
+            nuevaOpcion.setTexto(opcion);
 
             // Agregar al contenedor y a la lista de opciones
             opcionesContainer.getChildren().add(nuevaOpcion.getContenedor());
@@ -115,6 +119,10 @@ public class FormatoSeleccionMultipleController {
                 .collect(Collectors.toList());
     }
 
+    public void setEnunciado(String enunciado) {
+        lblEnunciado.setText(enunciado);
+    }
+
     /**
      * Clase interna para manejar cada opción de selección múltiple
      */
@@ -163,6 +171,10 @@ public class FormatoSeleccionMultipleController {
          */
         public boolean isSeleccionada() {
             return checkBox.isSelected();
+        }
+
+        public void setTexto(String texto) {
+            textoOpcion.setText(texto);
         }
 
         /**
