@@ -276,8 +276,11 @@ public class DocenteDAO {
         boolean respuesta = false;
 
         String texto = opcion.getTexto();
+        System.out.println(texto);
         boolean esCorrecta = opcion.isEsCorrecta();
-        String isCorrecta ="";
+        System.out.println(esCorrecta);
+
+        String isCorrecta ;
 
 
         if(esCorrecta){
@@ -623,7 +626,7 @@ public class DocenteDAO {
         List<GrupoDTO> grupos = new ArrayList<>();
         try {
             Connection conn = new ConexionOracle().conectar();
-            CallableStatement cs = conn.prepareCall("{ ? = call buscar_grupos_por_idDocente(?) }");
+            CallableStatement cs = conn.prepareCall("{ ? = call obtenerGruposPorDocente(?) }");
             cs.registerOutParameter(1, OracleTypes.ARRAY, "GRUPODTOLIST");
             cs.setInt(2, idDocente);
             cs.execute();
@@ -673,9 +676,10 @@ public class DocenteDAO {
 
         try {
             Connection conn = new ConexionOracle().conectar();
-            CallableStatement stmt = conn.prepareCall("{ call get_estudiantes_examen(?, ?) }");
-            stmt.setInt(1, idExamen);
-            stmt.registerOutParameter(2, OracleTypes.CURSOR);
+            CallableStatement stmt = conn.prepareCall("{? = call obtener_estudiantes_examen(?) }");
+
+            stmt.registerOutParameter(1, OracleTypes.ARRAY, "ESTUDIANTEEXAMENINFO");
+            stmt.setInt(2, idExamen);
 
             stmt.execute();
 
