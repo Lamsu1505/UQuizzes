@@ -156,6 +156,7 @@ public class EstadisticasExamenesPresentadosController implements Initializable 
 
     @FXML
     void seleccionarGrupo(ActionEvent event) {
+        System.out.println("entro a seleccionar grupo");
         String nombreGrupoSeleccionada = comboBoxGrupos.getValue();
         if (nombreGrupoSeleccionada != null) {
 
@@ -185,7 +186,6 @@ public class EstadisticasExamenesPresentadosController implements Initializable 
                 cargarExamenes();
             }catch (SQLException e) {
                 e.printStackTrace();
-                mostrarAlerta("Error" , "Error al cargar grupos en crearPreguntaController: " + e.getMessage());
             }
         }
     }
@@ -195,10 +195,10 @@ public class EstadisticasExamenesPresentadosController implements Initializable 
         List<Map<String, Object>> listaSQL = uQuizzes.get_examen_by_grupo(idGrupoSeleccionado);
 
         for(int i =0 ; i < listaSQL.size() ; i++){
-            String nombreGrupo = listaSQL.get(i).get("NOMBRE_EXAMEN").toString();
+            String nombreGrupo = listaSQL.get(i).get(("NOMBRE").toString()).toString();
             examenes.add(nombreGrupo);
         }
-        comboBoxGrupos.setItems(examenes);
+        comboBoxExamen.setItems(examenes);
 
 
     }

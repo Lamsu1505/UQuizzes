@@ -6,6 +6,7 @@ IS
 BEGIN
 OPEN c_examenes FOR
 SELECT
+    e.idExamen AS idExamen,
     e.nombre As nombre_examen,
     m.nombre AS nombre_materia,
     g.nombre AS nombre_grupo,

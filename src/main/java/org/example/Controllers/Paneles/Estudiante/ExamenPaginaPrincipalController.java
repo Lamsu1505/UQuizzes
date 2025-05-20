@@ -64,7 +64,6 @@ public class ExamenPaginaPrincipalController {
     public void empezarQuiz(ActionEvent actionEvent) {
 
         try {
-
             ConexionOracle conn = new ConexionOracle();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfaces/Paneles/Estudiante/s/infoExamen.fxml"));
             Parent root = loader.load();

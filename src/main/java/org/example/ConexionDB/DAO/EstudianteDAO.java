@@ -57,10 +57,12 @@ public class EstudianteDAO {
             try (ResultSet rs = (ResultSet) stmt.getObject(1)) {
                 List<Map<String, Object>> lista = new ArrayList<>();
                 ResultSetMetaData md = rs.getMetaData();
+
                 int cols = md.getColumnCount();
 
                 while (rs.next()) {
                     Map<String,Object> fila = new HashMap<>();
+
                     for (int i = 1; i <= cols; i++) {
                         fila.put(md.getColumnLabel(i), rs.getObject(i));
                     }
