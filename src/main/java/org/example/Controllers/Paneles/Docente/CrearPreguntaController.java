@@ -243,6 +243,7 @@ public class CrearPreguntaController implements Initializable {
                             try (ResultSet rs = stmt.executeQuery()) {
                                 while (rs.next()) {
                                     idTipoPreguntaSeleccionado = rs.getString("IDTIPOPREGUNTA");
+                                    System.out.println("se seteo el idTipoPreguntaSeleccionado: " + idTipoPreguntaSeleccionado);
                                 }
                             }
                         } catch (SQLException e) {
@@ -410,9 +411,6 @@ public class CrearPreguntaController implements Initializable {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
-
-
-
 
 
     public void crearPregunta(ActionEvent actionEvent) throws IOException {

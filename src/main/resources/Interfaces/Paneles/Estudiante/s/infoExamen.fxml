@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="404.0" prefWidth="415.0" stylesheets="@../../../../Estilos/infoExamen.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Estudiante.InfoExamenController">
+    <center>
+        <VBox alignment="CENTER" prefHeight="308.0" prefWidth="522.0" BorderPane.alignment="CENTER">
+           <children>
+               <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Detalles del Examen" translateY="-20.0" />
+   
+               <GridPane hgap="10" vgap="15">
+                   <columnConstraints>
+                       <ColumnConstraints halignment="RIGHT" />
+                       <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
+                   </columnConstraints>
+   
+                   <rowConstraints>
+                       <RowConstraints />
+                       <RowConstraints />
+                       <RowConstraints />
+                       <RowConstraints />
+                       <RowConstraints />
+                   </rowConstraints>
+      <children>
+      
+                      <Label text="Nombre del Examen:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                      <Label fx:id="lblNombreExamen" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+      
+                      <Label text="Materia:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                      <Label fx:id="lblMateria" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      
+                      <Label text="Unidad:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                      <Label fx:id="lblUnidad" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      
+                      <Label text="Preguntas:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                      <Label fx:id="lblCantidadPreguntas" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      
+                      <Label text="Tiempo (minutos):" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                      <Label fx:id="lblTiempo" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <Label fx:id="nombreExamenT" GridPane.columnIndex="1" />
+                  <Label fx:id="nombreMateriaT" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="nombreUnidadT" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label fx:id="cantidadPreguntasT" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label fx:id="tiempoT" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      </children>
+               </GridPane>
+           </children>
+        </VBox>
+    </center>
+   <bottom>
+
+            <Button onAction="#iniciarExamen" style="-fx-font-size: 14px;" text="Iniciar Examen" translateY="-20.0" BorderPane.alignment="CENTER" />
+   </bottom>
+</BorderPane>

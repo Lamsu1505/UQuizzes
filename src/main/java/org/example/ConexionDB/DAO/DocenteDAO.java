@@ -251,7 +251,7 @@ public class DocenteDAO {
             stmt.setInt(10, iTiempoPregunta);
 
             stmt.execute();
-            System.out.println(stmt.getInt(1));
+            System.out.println(" EL RESULTADO DE INSERTAR PREGUNTA ES " +stmt.getInt(1));
 
             respuesta = stmt.getInt(1);
 
@@ -647,7 +647,7 @@ public class DocenteDAO {
         List<ExamenDTO> examenes = new ArrayList<>();
         try {
             Connection conn = new ConexionOracle().conectar();
-            CallableStatement cs = conn.prepareCall("{ ? = call obtener_examen_por_grupo_y_docente(?, ?) }");
+            CallableStatement cs = conn.prepareCall("{ ? = call get_examen_by_grupo_docente(?, ?) }");
             cs.registerOutParameter(1, OracleTypes.ARRAY, "EXAMENDTOLIST");
             cs.setInt(2, idGrupo);
             cs.setInt(3, idDocente);

@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION obtenerExamenesPorGrupoYDocente(
+CREATE OR REPLACE FUNCTION get_examen_by_grupo_docente(
     p_idGrupo IN GRUPO.idgrupo%TYPE,
     p_idDocente IN DOCENTE.idDocente%TYPE
 ) RETURN ExamenDTOList

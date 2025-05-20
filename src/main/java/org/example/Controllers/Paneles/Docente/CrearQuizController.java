@@ -4,9 +4,14 @@ import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxListCell;
+import javafx.stage.Stage;
 import org.example.ConexionDB.ConexionOracle;
 import org.example.Model.UQuizzes;
 
@@ -254,7 +259,7 @@ public class CrearQuizController implements Initializable {
 
     @FXML
     private void cancelarEvent() {
-
+            limpiarCampos();
     }
 
     @FXML
@@ -317,10 +322,14 @@ public class CrearQuizController implements Initializable {
                     ArrayList<Integer> listaIdTemasSeleccionado= new ArrayList<>();
                     for (TemaCheck tema : temasSeleccionados) {
                         listaIdTemasSeleccionado.add(tema.getId());
+                        System.out.println("Tema agregado a la lista " + tema.getId());
                     }
+
 
                     if (uQuizzes.agregarPreguntasAlBanco(idBancoCreado + 1, listaIdTemasSeleccionado) > 0) {
                         mostrarInfo("Éxito", "Preguntas añadidas al banco");
+
+                        limpiarCampos();
                     }
 
                 }
@@ -338,6 +347,27 @@ public class CrearQuizController implements Initializable {
 
         // Guardar datos y proceder a la siguiente pantalla
         //guardarQuiz(temasSeleccionados);
+    }
+
+    private void limpiarCampos() {
+        descripcionTextField.setText("");
+        cantidadPreguntasTextField.setText("");
+        cantidadPreguntasBancoTextField.setText("");
+        tiempoTextField.setText("");
+        fechaInicioTextField.setText("");
+        fechaLimiteTextField.setText("");
+        horaTextField.setText("");
+        horaLimiteTextField.setText("");
+        nombreQuizTextField.setText("");
+        unidadComboBox.getSelectionModel().clearSelection();
+        unidadComboBox.getItems().clear();
+        temasData.clear();
+        temasListView.getItems().clear();
+        grupoComboBox.getSelectionModel().clearSelection();
+        grupoComboBox.getItems().clear();
+        materiaComboBox.getSelectionModel().clearSelection();
+        materiaComboBox.getItems().clear();
+        temasSeleccionados.clear();
     }
 
     private int getIdGrupoSeleccionado() {
