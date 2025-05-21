@@ -1,9 +1,12 @@
 package org.example.Controllers.Paneles.Estudiante;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
@@ -33,12 +36,21 @@ public class panelInicioEstudianteController implements Initializable {
 
     @FXML private VBox VBoxContenedorExamenes;
 
+    @FXML private ComboBox<String> comboBoxMateria;
+
     UQuizzes uQuizzes = UQuizzes.getInstance();
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Connection conn = new ConexionOracle().conectar();
+        System.out.println("se iniciando el panel de inicio estudiante");
+        try {
+            cargarMateriasComboBox();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
 
         try {
             String sql = "select nombre , apellido from estudiante where idEstudiante = ?";
@@ -62,6 +74,19 @@ public class panelInicioEstudianteController implements Initializable {
             throw new RuntimeException(e);
         }
 
+    }
+
+    private void cargarMateriasComboBox() throws SQLException {
+        ObservableList<String> materias = FXCollections.observableArrayList();
+        List<Map<String, Object>> listaSQL = uQuizzes.getMateriasEstudiante(uQuizzes.getUsuarioEnSesion());
+
+        for(int i =0 ; i < listaSQL.size() ; i++){
+            String nombreMateria = listaSQL.get(i).get("NOMBREMATERIA").toString();
+            materias.add(nombreMateria);
+            System.out.println("materia " + nombreMateria);
+        }
+
+        comboBoxMateria.setItems(materias);
     }
 
 

@@ -1,5 +1,6 @@
 package org.example.Controllers.Paneles.Estudiante.FormatosRespuestas;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -123,6 +124,9 @@ public class FormatoSeleccionMultipleController {
         lblEnunciado.setText(enunciado);
     }
 
+    public void registrarRespuesta(ActionEvent actionEvent) {
+    }
+
     /**
      * Clase interna para manejar cada opción de selección múltiple
      */
@@ -143,6 +147,8 @@ public class FormatoSeleccionMultipleController {
             // Crear campo de texto
             textoOpcion = new TextField("");
             textoOpcion.setMaxWidth(300);
+
+
 
             // Agregar elementos al contenedor
             contenedor.getChildren().addAll(checkBox, textoOpcion);

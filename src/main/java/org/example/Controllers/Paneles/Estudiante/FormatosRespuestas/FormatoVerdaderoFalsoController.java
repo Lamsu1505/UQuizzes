@@ -1,5 +1,6 @@
 package org.example.Controllers.Paneles.Estudiante.FormatosRespuestas;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -41,5 +42,9 @@ public class FormatoVerdaderoFalsoController {
 
     public void setEnunciado(String enunciado) {
         lblEnunciado.setText(enunciado);
+    }
+
+    public void registrarRespuesta(ActionEvent actionEvent) {
+
     }
 }

@@ -29,6 +29,7 @@
         <HBox alignment="CENTER_LEFT" spacing="10.0">
             <children>
                 <Label fx:id="mensajeError" styleClass="error-message" textFill="RED" />
+            <Button fx:id="btnValidarRespuesta" mnemonicParsing="false" onAction="#registrarRespuesta" text="Validar" />
             </children>
         </HBox>
 

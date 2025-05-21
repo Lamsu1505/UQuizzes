@@ -31,5 +31,6 @@
         </VBox>
 
         <VBox spacing="10.0" />
+      <Button fx:id="btnValidarRespuesta" mnemonicParsing="false" onAction="#registrarRespuesta" text="Validar" />
     </children>
 </VBox>

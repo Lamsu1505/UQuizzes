@@ -1,5 +1,6 @@
 package org.example.Controllers.Paneles.Estudiante.FormatosRespuestas;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -96,6 +97,10 @@ public class FormatoRespuestaCortaController {
 
     public void setEnunciado(String enunciado) {
         lblEnunciado.setText(enunciado);
+    }
+
+    public void registrarRespuesta(ActionEvent actionEvent) {
+
     }
 
     /**

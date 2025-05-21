@@ -46,103 +46,6 @@ public class ResponderQuizController {
     }
 
 
-    public void verificarTipoPregunta (int tipoPregunta){
-        // Tipo 1: multiple respuesta
-        if(tipoPregunta == 1){
-            try {
-                String fxmlRuta = "/Interfaces/Paneles/Estudiante/s/FormatoRespuestasQuiz/FormatoMultipleRespuesta.fxml";
-                System.out.println("Cargando FXML: " + fxmlRuta);
-
-                FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlRuta));
-                Node preguntaPane = loader.load();
-
-                contenedorPreguntas.getChildren().add(preguntaPane);
-                System.out.println("Pregunta cargada y añadida");
-
-            } catch (Exception e) {
-                System.err.println("Error al cargar pregunta: " + e.getMessage());
-                e.printStackTrace();
-            }
-
-            // Tipo 2: unica respuesta
-        } else if (tipoPregunta ==2) {
-            try {
-                String fxmlRuta = "/Interfaces/Paneles/Estudiante/s/FormatoRespuestasQuiz/FormatoUnicaRespuesta.fxml";
-                System.out.println("Cargando FXML: " + fxmlRuta);
-
-                FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlRuta));
-                Node preguntaPane = loader.load();
-
-                contenedorPreguntas.getChildren().add(preguntaPane);
-                System.out.println("Pregunta cargada y añadida");
-
-            } catch (Exception e) {
-                System.err.println("Error al cargar pregunta: " + e.getMessage());
-                e.printStackTrace();
-            }
-        }
-
-
-        //Tipo 3: verdader/falso
-        else if (tipoPregunta == 3 ) {
-            try {
-                String fxmlRuta = "/Interfaces/Paneles/Estudiante/s/FormatoRespuestasQuiz/FormatoVerdaderoFalso.fxml";
-                System.out.println("Cargando FXML: " + fxmlRuta);
-
-                FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlRuta));
-                Node preguntaPane = loader.load();
-
-                contenedorPreguntas.getChildren().add(preguntaPane);
-                System.out.println("Pregunta cargada y añadida");
-
-            } catch (Exception e) {
-                System.err.println("Error al cargar pregunta: " + e.getMessage());
-                e.printStackTrace();
-            }
-
-
-
-            //Tipo 4: respuesta corta
-        } else if (tipoPregunta ==4) {
-            try {
-                String fxmlRuta = "/Interfaces/Paneles/Estudiante/s/FormatoRespuestasQuiz/FormatoRespuestaCorta.fxml";
-                System.out.println("Cargando FXML: " + fxmlRuta);
-
-                FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlRuta));
-                Node preguntaPane = loader.load();
-
-                contenedorPreguntas.getChildren().add(preguntaPane);
-                System.out.println("Pregunta cargada y añadida");
-
-            } catch (Exception e) {
-                System.err.println("Error al cargar pregunta: " + e.getMessage());
-                e.printStackTrace();
-            }
-
-        }
-
-
-        //Tipo 5: emparejamiento
-        else if (tipoPregunta == 5 ) {
-            try {
-                String fxmlRuta = "/Interfaces/Paneles/Estudiante/s/FormatoRespuestasQuiz/FormatoEmparejar.fxml";
-                System.out.println("Cargando FXML: " + fxmlRuta);
-
-                FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlRuta));
-                Node preguntaPane = loader.load();
-
-                contenedorPreguntas.getChildren().add(preguntaPane);
-                System.out.println("Pregunta cargada y añadida");
-
-            } catch (Exception e) {
-                System.err.println("Error al cargar pregunta: " + e.getMessage());
-                e.printStackTrace();
-            }
-
-        }
-    }
-
-
     public void cargarPreguntasDelExamen(int idExamen , int cantidadPreguntasBanco , int cantidadPreguntasGeneral) {
         PreguntaDAO dao = new PreguntaDAO();
         Map<PruebaPreguntas, List<OpcionMultipleRespuesta>> preguntasMap = dao.obtenerPreguntasPorExamen(idExamen);
@@ -170,6 +73,7 @@ public class ResponderQuizController {
 
             switch (pregunta.getIdTipoPregunta()) {
                 case 1:
+                    System.out.println("Pregunta de tipo unica respuesta: " + pregunta.getEnunciado());
                     fxmlRuta = "/Interfaces/Paneles/Estudiante/s/FormatoRespuestasQuiz/FormatoUnicaRespuesta.fxml";
                     break;
                 case 2:

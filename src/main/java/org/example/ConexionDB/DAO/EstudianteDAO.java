@@ -74,4 +74,40 @@ public class EstudianteDAO {
             throw new RuntimeException(e);
         }
     }
+
+    public List<Map<String, Object>> getMateriasEstudiante(String usuarioEnSesion) {
+        String call = "{ ? = call obtenerMateriasEstudiante(?) }";
+
+        try (
+                Connection conn = new ConexionOracle().conectar();
+                CallableStatement stmt = conn.prepareCall(call)
+        ) {
+
+            stmt.registerOutParameter(1, OracleTypes.CURSOR);
+
+            stmt.setString(2, usuarioEnSesion);
+
+            stmt.execute();
+
+            // 4) Obtener el ResultSet del cursor
+            try (ResultSet rs = (ResultSet) stmt.getObject(1)) {
+                List<Map<String, Object>> lista = new ArrayList<>();
+                ResultSetMetaData md = rs.getMetaData();
+
+                int cols = md.getColumnCount();
+
+                while (rs.next()) {
+                    Map<String,Object> fila = new HashMap<>();
+
+                    for (int i = 1; i <= cols; i++) {
+                        fila.put(md.getColumnLabel(i), rs.getObject(i));
+                    }
+                    lista.add(fila);
+                }
+                return lista;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="600" prefWidth="800" stylesheets="@../../../../Estilos/seleccionarPregunta.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Estudiante.ResponderQuizController">
+<AnchorPane prefHeight="600" prefWidth="800" stylesheets="@../../../../Estilos/seleccionarPregunta.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Estudiante.ResponderQuizController">
 
     <children>
         <!-- Scrollable area where all the questions will be loaded -->
@@ -15,7 +14,7 @@
         </ScrollPane>
 
         <!-- Button to submit the quiz -->
-        <Button fx:id="enviarButton" layoutX="650" layoutY="550" prefHeight="30" prefWidth="120" styleClass="boton-seleccionar" text="Enviar" />
+        <Button fx:id="enviarButton" layoutX="638.0" layoutY="550" prefHeight="30" prefWidth="132.0" styleClass="boton-seleccionar" text="Terminar intento" />
       <Label fx:id="lblIdExamen" layoutX="65.0" layoutY="555.0" text="Id Examen:" />
     </children>
 </AnchorPane>

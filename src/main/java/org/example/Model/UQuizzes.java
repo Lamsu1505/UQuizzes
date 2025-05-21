@@ -137,5 +137,9 @@ public class UQuizzes {
     public List<EstudianteExamenInfo> obtenerEstudiantesPorExamen(int idExamen) {
         return docenteDAO.obtenerEstudiantesPorExamen(idExamen);
     }
+
+    public List<Map<String, Object>> getMateriasEstudiante(String usuarioEnSesion) {
+        return estudianteDAO.getMateriasEstudiante(usuarioEnSesion);
+    }
 }
 

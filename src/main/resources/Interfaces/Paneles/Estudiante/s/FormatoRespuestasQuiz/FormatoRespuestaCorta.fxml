@@ -33,6 +33,7 @@
                 <Label fx:id="mensajeError" styleClass="error-message" textFill="RED" />
             </children>
         </HBox>
+      <Button fx:id="btnValidarRespuesta" mnemonicParsing="false" onAction="#registrarRespuesta" text="Validar" />
 
         <VBox spacing="10.0" />
     </children>

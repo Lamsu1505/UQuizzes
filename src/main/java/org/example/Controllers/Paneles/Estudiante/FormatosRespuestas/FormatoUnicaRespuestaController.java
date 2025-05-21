@@ -49,7 +49,7 @@ public class FormatoUnicaRespuestaController implements Initializable {
 
     @FXML
     void agregarOpcion(ActionEvent event) {
-        agregarOpcionConTexto("t7uyfguj");
+        agregarOpcionConTexto("");
     }
 
     private void agregarOpcionConTexto(String texto) {
@@ -166,12 +166,15 @@ public class FormatoUnicaRespuestaController implements Initializable {
         opcionesContainer.getChildren().clear();
         listaOpciones.clear();
         listaOpcionesModel.clear();
-        for (OpcionMultipleRespuesta opcion : opciones) {
-            agregarOpcionConTexto(opcion.getTexto());
+        for (OpcionMultipleRespuesta opcionMultipleRespuesta : opciones) {
+            agregarOpcionConTexto(opcionMultipleRespuesta.getTexto());
         }
     }
 
     public void setEnunciado(String texto) {
         lblEnunciado.setText(texto);
+    }
+
+    public void registrarRespuesta(ActionEvent actionEvent) {
     }
 }

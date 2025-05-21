@@ -1,5 +1,6 @@
 package org.example.Controllers.Paneles.Estudiante.FormatosRespuestas;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -23,6 +24,9 @@ public class FormatoEmparejamientoController {
 
     @FXML
     private Label lblEnunciado;
+
+    @FXML
+    private Button btnValidarRespuesta;
 
 
     // Lista para almacenar los pares de elementos
@@ -93,6 +97,10 @@ public class FormatoEmparejamientoController {
             parejasContainer.getChildren().add(par.getContenedor());
             listaPares.add(par);
         }
+    }
+
+    public void registrarRespuesta(ActionEvent actionEvent) {
+
     }
 
     // Clase interna para manejar cada par de elementos
