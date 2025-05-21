@@ -71,8 +71,9 @@ public class panelInicioEstudianteController implements Initializable {
 
         try {
             for (Map<String, Object> fila : lista) {
-                if (!presentoExamen(fila)) {
-                    continue;
+
+                if(presentoExamen(fila)) {
+                    continue; // Si ya presentó el examen, no lo agregues a la lista
                 }
 
                 FXMLLoader loader = new FXMLLoader(
@@ -96,10 +97,11 @@ public class panelInicioEstudianteController implements Initializable {
                 Label mensaje = new Label("No tienes exámenes disponibles.");
                 VBoxContenedorExamenes.getChildren().add(mensaje);
             }
-
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.err.println("Error al cargar el archivo FXML: " + e.getMessage());
+            e.printStackTrace();
         }
+
     }
 
 

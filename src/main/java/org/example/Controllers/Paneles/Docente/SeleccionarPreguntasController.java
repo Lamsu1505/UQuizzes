@@ -45,7 +45,7 @@ public class SeleccionarPreguntasController implements Initializable {
     private Button AgregarButton;
 
     @FXML
-    private TableColumn<PruebaPreguntas, String> ColumnPregunta;
+    private TableColumn<Pregunta, String> ColumnPregunta;
 
     @FXML
     private TableColumn<Pregunta, String> ColumnDificultadPregunta;
