@@ -119,7 +119,7 @@ public class ResponderQuizController {
             else if (pregunta.getIdTipoPregunta() == 4) {
                 FormatoEmparejamientoController controller = loader.getController();
                 controller.setEnunciado(pregunta.getEnunciado());
-                controller.setOpciones(opciones);
+                controller.setOpciones(opciones , pregunta.getIdPregunta());
             }
 
             else if (pregunta.getIdTipoPregunta() == 5) {

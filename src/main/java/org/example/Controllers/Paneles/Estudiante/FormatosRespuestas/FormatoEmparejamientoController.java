@@ -8,7 +8,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
 import org.example.Model.OpcionesRespuesta.OpcionMultipleRespuesta;
+import org.example.Model.UQuizzes;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,6 +29,10 @@ public class FormatoEmparejamientoController {
 
     @FXML
     private Button btnValidarRespuesta;
+
+    private UQuizzes uQuizzes = UQuizzes.getInstance();
+
+    private int idPregunta;
 
 
     // Lista para almacenar los pares de elementos
@@ -61,8 +67,10 @@ public class FormatoEmparejamientoController {
         lblEnunciado.setText(enunciado);
     }
 
-    public void setOpciones(List<OpcionMultipleRespuesta> opciones) {
+    public void setOpciones(List<OpcionMultipleRespuesta> opciones , int idPregunta) {
         // Limpiar vista previa
+
+        this.idPregunta = idPregunta;
         parejasContainer.getChildren().clear();
         listaPares.clear();
 
@@ -99,9 +107,64 @@ public class FormatoEmparejamientoController {
         }
     }
 
+
+
     public void registrarRespuesta(ActionEvent actionEvent) {
+        mensajeError.setText("");
+        mensajeError.setVisible(false);
+
+        List<String> respuestasUsuario = new ArrayList<>();
+
+        for (ParElementos par : listaPares) {
+
+            String letraSeleccionadaA = par.opcionesRespuestaColA.getValue();
+            if (letraSeleccionadaA == null || letraSeleccionadaA.isEmpty()) {
+                mensajeError.setText("Falta seleccionar una letra en un campo del lado A.");
+                mensajeError.setVisible(true);
+                return;
+            }
+
+            // Buscar en la lista de pares dónde está esa letra en las opcionesRespuestaColB
+            ParElementos parBEncontrado = null;
+            for (ParElementos posibleParB : listaPares) {
+                String letraSeleccionadaB = posibleParB.opcionesRespuestaColB.getValue();
+                if (letraSeleccionadaB != null && letraSeleccionadaB.equals(letraSeleccionadaA)) {
+                    parBEncontrado = posibleParB;
+                    break;
+                }
+            }
+
+            if (parBEncontrado == null) {
+                mensajeError.setText("No se encontró emparejamiento para la letra: " + letraSeleccionadaA);
+                mensajeError.setVisible(true);
+                return;
+            }
+
+            String ladoA = par.getElementoA();
+            String ladoB = parBEncontrado.getElementoB();
+
+            respuestasUsuario.add(ladoA + ";" + ladoB);
+
+            if(uQuizzes.validarRespuestaEmparejar(respuestasUsuario, idPregunta)){
+                mensajeError.setText("Respuesta correcta");
+                mensajeError.setTextFill(Paint.valueOf("green"));
+                mensajeError.setVisible(true);
+            }
+            else{
+                mensajeError.setText("Respuesta incorrecta");
+                mensajeError.setTextFill(Paint.valueOf("red"));
+                mensajeError.setVisible(true);
+            }
+        }
+
+        // Mostrar respuestas (solo para prueba)
+        System.out.println("Respuestas emparejadas del usuario:");
+        for (String r : respuestasUsuario) {
+            System.out.println(r);
+        }
 
     }
+
 
     // Clase interna para manejar cada par de elementos
     private class ParElementos {
