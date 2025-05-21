@@ -125,7 +125,7 @@ public class ResponderQuizController {
             else if (pregunta.getIdTipoPregunta() == 5) {
                 FormatoSeleccionMultipleController controller = loader.getController();
                 controller.setEnunciado(pregunta.getEnunciado());
-                controller.setOpciones(opciones);
+                controller.setOpciones(opciones , pregunta.getIdPregunta());
 
             }
 

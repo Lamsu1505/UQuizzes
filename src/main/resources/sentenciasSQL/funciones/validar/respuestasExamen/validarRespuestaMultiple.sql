@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION validarRespuestaUnicaRespuesta (
+CREATE OR REPLACE FUNCTION validarRespuestaMultiple (
     p_idPregunta  IN pregunta.idpregunta%TYPE,
     p_respuesta   IN VARCHAR2
 ) RETURN NUMBER
@@ -16,5 +16,5 @@ RETURN v_retorno;
 EXCEPTION
     WHEN OTHERS THEN
         RETURN 0; -- En caso de error, devuelve 0 (opcionalmente puedes loguear el error)
-END validarRespuestaUnicaRespuesta;
+END validarRespuestaMultiple;
 /

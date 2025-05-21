@@ -154,5 +154,9 @@ public class UQuizzes {
     public boolean validarRespuestaCorta(int idPregunta, List<String> listaOpciones) {
         return PreguntaDAO.validarRespuestaCorta(idPregunta, listaOpciones);
     }
+
+    public boolean validarRespuestaMultiple(int idPregunta, List<OpcionMultipleRespuesta> opcionesSeleccionadas) {
+        return PreguntaDAO.validarRespuestaMultiple(idPregunta, opcionesSeleccionadas);
+    }
 }
 

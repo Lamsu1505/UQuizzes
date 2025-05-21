@@ -94,6 +94,68 @@ public class PreguntaDAO {
         return false;
     }
 
+    public static boolean validarRespuestaMultiple(int idPregunta, List<OpcionMultipleRespuesta> opcionesSeleccionadas) {
+        System.out.println("en validarRespuestaMultiple idPregunta: " + idPregunta);
+        System.out.println("en validarRespuestaMultiple respuesta: " + opcionesSeleccionadas);
+
+        int cantidadOpcionesCorrectas = getCantidadCorrectasPorPregunta(idPregunta);
+
+        int auxiliar=0;
+
+        String call = "{ ? = call validarRespuestaMultiple(?, ?) }";
+
+        for(OpcionMultipleRespuesta opcion :opcionesSeleccionadas){
+
+            try (Connection conn = ConexionOracle.conectar();
+                 CallableStatement stmt = conn.prepareCall(call)) {
+
+                stmt.registerOutParameter(1, Types.INTEGER);
+                stmt.setInt(2, idPregunta);
+                stmt.setString(3, opcion.getTexto());
+
+                stmt.execute();
+
+                int resultado = stmt.getInt(1);
+
+                if(resultado == 1){
+                    auxiliar++;
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if(auxiliar==cantidadOpcionesCorrectas && auxiliar == opcionesSeleccionadas.size()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    private static int getCantidadCorrectasPorPregunta(int idPregunta) {
+        String call = "{ ? = call getCantidadCorrectasPorPregunta(?) }";
+
+        try (Connection conn = ConexionOracle.conectar();
+             CallableStatement stmt = conn.prepareCall(call)) {
+
+            stmt.registerOutParameter(1, OracleTypes.INTEGER);
+            stmt.setInt(2, idPregunta);
+
+            stmt.execute();
+
+            int respuesta = stmt.getInt(1);
+
+            return respuesta;
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
+    }
+
     public Map<PruebaPreguntas, List<OpcionMultipleRespuesta>> obtenerPreguntasPorExamen(int idExamen) {
         Map<PruebaPreguntas, List<OpcionMultipleRespuesta>> preguntasMap = new LinkedHashMap<>();
 

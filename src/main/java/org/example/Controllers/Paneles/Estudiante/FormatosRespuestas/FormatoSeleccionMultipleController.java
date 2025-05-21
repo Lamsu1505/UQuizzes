@@ -8,7 +8,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
 import org.example.Model.OpcionesRespuesta.OpcionMultipleRespuesta;
+import org.example.Model.UQuizzes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +26,14 @@ public class FormatoSeleccionMultipleController {
     @FXML
     private Label lblEnunciado;
 
+    private int idPregunta;
+
+    private UQuizzes uQuizzes = UQuizzes.getInstance();
+
 
     // Lista para almacenar las opciones
     private List<OpcionMultiple> listaOpciones = new ArrayList<>();
     private List<OpcionMultipleRespuesta> listaOpcionesModel = new ArrayList<>();
-
-
 
 
     @FXML
@@ -125,11 +129,48 @@ public class FormatoSeleccionMultipleController {
     }
 
     public void registrarRespuesta(ActionEvent actionEvent) {
+        List<OpcionMultipleRespuesta> opcionesSeleccionadas = new ArrayList<>();
+
+        for (OpcionMultiple opcion : obtenerOpcionesSeleccionadas()) {
+            OpcionMultipleRespuesta opcionRespuesta = new OpcionMultipleRespuesta(opcion.getTexto());
+            opcionRespuesta.setIdPregunta(idPregunta);
+            opcionRespuesta.setTexto(opcion.getTexto());
+            opcionesSeleccionadas.add(opcionRespuesta);
+        }
+
+        int indiceSeleccionado = opcionesSeleccionadas.size();
+
+        if (indiceSeleccionado == -1) {
+            mensajeError.setText("Debe seleccionar al menos una opción .");
+            mensajeError.setVisible(true);
+            return;
+        }
+        mensajeError.setVisible(false);
+
+
+        if(uQuizzes.validarRespuestaMultiple(idPregunta , opcionesSeleccionadas)){
+            mensajeError.setText("Respuesta correcta");
+            mensajeError.setTextFill(Paint.valueOf("green"));
+            mensajeError.setVisible(true);
+        }
+        else {
+            mensajeError.setText("Respuesta incorrecta");
+            mensajeError.setTextFill(Paint.valueOf("red"));
+            mensajeError.setVisible(true);
+        }
     }
 
-    /**
-     * Clase interna para manejar cada opción de selección múltiple
-     */
+    public void setOpciones(List<OpcionMultipleRespuesta> opciones , int idPregunta) {
+        opcionesContainer.getChildren().clear();
+        this.idPregunta = idPregunta;
+        listaOpciones.clear();
+        listaOpcionesModel.clear();
+        for (OpcionMultipleRespuesta opcion : opciones) {
+            agregarOpcion(opcion.getTexto());
+        }
+    }
+
+
     public class OpcionMultiple {
         private HBox contenedor;
         private CheckBox checkBox;
@@ -191,16 +232,11 @@ public class FormatoSeleccionMultipleController {
             checkBox.setSelected(seleccionada);
         }
     }
-
-
-    public void setOpciones(List<OpcionMultipleRespuesta> opciones) {
-        opcionesContainer.getChildren().clear();
-        listaOpciones.clear();
-        listaOpcionesModel.clear();
-        for (OpcionMultipleRespuesta opcion : opciones) {
-            agregarOpcion(opcion.getTexto());
-        }
-    }
-
-
 }
+
+
+
+
+
+
+
