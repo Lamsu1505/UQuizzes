@@ -315,6 +315,7 @@ public class CrearQuizController implements Initializable {
                 mostrarInfo("Éxito", "El quiz ha sido creado exitosamente.");
 
                 //Crea el banco
+                System.out.println("la cantidad de preguntasBanco es "+cantidadPreguntasBanco);
                 int idBancoCreado = uQuizzes.crearBancoPreguntas((idExamenCreado + 1), cantidadPreguntasBanco);
                 if(idBancoCreado != 0){
                     mostrarInfo("Éxito", "El banco de preguntas ha sido creado exitosamente.");

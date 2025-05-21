@@ -9,7 +9,10 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
 import org.example.Model.OpcionesRespuesta.OpcionMultipleRespuesta;
+import org.example.Model.UQuizzes;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +34,8 @@ public class FormatoUnicaRespuestaController implements Initializable {
 
     @FXML
     private Label lblEnunciado;
+
+    private UQuizzes uQuizzes = UQuizzes.getInstance();
 
 
     private ToggleGroup toggleGroup = new ToggleGroup(); // para controlar selección única
@@ -98,32 +103,6 @@ public class FormatoUnicaRespuestaController implements Initializable {
         opcionHBox.setOnMouseExited(e -> opcionHBox.setStyle("-fx-background-color: #f8f9fa; -fx-border-radius: 5;"));
     }
 
-    private void eliminarOpcion(HBox opcionHBox) {
-        if (listaOpciones.size() == 2) {
-            mostrarMensajeError("No se pueden dejar menos de dos opciones.");
-            return;
-        }
-
-        // Eliminar del modelo
-        OpcionMultipleRespuesta modelo = (OpcionMultipleRespuesta) opcionHBox.getUserData();
-        listaOpcionesModel.remove(modelo);
-
-        // Deseleccionar si es la opción marcada
-        RadioButton rb = (RadioButton) opcionHBox.getChildren().get(0);
-        if (rb.isSelected()) {
-            toggleGroup.selectToggle(null);
-        }
-
-        // Eliminar visualmente
-        opcionesContainer.getChildren().remove(opcionHBox);
-        listaOpciones.remove(opcionHBox);
-    }
-
-    private void mostrarMensajeError(String mensaje) {
-        mensajeError.setText(mensaje);
-        mensajeError.setVisible(true);
-    }
-
     public List<String> getOpciones() {
         List<String> opciones = new ArrayList<>();
         for (HBox opcionHBox : listaOpciones) {
@@ -143,11 +122,12 @@ public class FormatoUnicaRespuestaController implements Initializable {
         return -1;
     }
 
-    private void ponerOpcionCorrecta() {
+    private void ponerOpcionSeleccionada() {
         for (OpcionMultipleRespuesta op : listaOpcionesModel) {
             op.setEsCorrecta(false);
         }
         int opcionCorrecta = getOpcionCorrectaVista();
+
         if (opcionCorrecta >= 0 && opcionCorrecta < listaOpcionesModel.size()) {
             listaOpcionesModel.get(opcionCorrecta).setEsCorrecta(true);
         }
@@ -156,17 +136,21 @@ public class FormatoUnicaRespuestaController implements Initializable {
     public List<OpcionMultipleRespuesta> getListaOpciones() {
 
         System.out.println(listaOpcionesModel.size() + " " + listaOpciones.size());
-        ponerOpcionCorrecta();
+        ponerOpcionSeleccionada();
         return listaOpcionesModel;
     }
 
 
 
-    public void setOpciones(List<OpcionMultipleRespuesta> opciones) {
+    public void setOpciones(List<OpcionMultipleRespuesta> opciones , int idPregunta) {
+        System.out.println("laaaaaaaaaaaaaaaaaa pregunta es " + idPregunta);
         opcionesContainer.getChildren().clear();
         listaOpciones.clear();
         listaOpcionesModel.clear();
         for (OpcionMultipleRespuesta opcionMultipleRespuesta : opciones) {
+
+            opcionMultipleRespuesta.setIdPregunta(idPregunta);
+            listaOpcionesModel.add(opcionMultipleRespuesta);
             agregarOpcionConTexto(opcionMultipleRespuesta.getTexto());
         }
     }
@@ -175,6 +159,44 @@ public class FormatoUnicaRespuestaController implements Initializable {
         lblEnunciado.setText(texto);
     }
 
+
+
     public void registrarRespuesta(ActionEvent actionEvent) {
+        int indiceSeleccionado = getOpcionCorrectaVista();
+
+        if (indiceSeleccionado == -1) {
+            mensajeError.setText("Debe seleccionar al menos una opción .");
+            mensajeError.setVisible(true);
+            return;
+        }
+
+        mensajeError.setVisible(false);
+
+        // Limpia cualquier selección previa en el modelo
+        for (OpcionMultipleRespuesta op : listaOpcionesModel) {
+            op.setEsCorrecta(false);
+        }
+
+        // Marca la opción seleccionada como correcta
+        listaOpcionesModel.get(indiceSeleccionado).setEsCorrecta(true); //setEsCorrecta es "seleccionada" para el caso de estudiante
+
+        int idPregunta= listaOpcionesModel.get(indiceSeleccionado).getIdPregunta();
+        String respuesta = listaOpcionesModel.get(indiceSeleccionado).getTexto();
+
+        System.out.println("Respuesta seleccionada: " + respuesta);
+
+        if(uQuizzes.validarRespuestaUnicaRespuesta(idPregunta , respuesta)){
+            mensajeError.setText("Respuesta correcta");
+            mensajeError.setTextFill(Paint.valueOf("green"));
+            mensajeError.setVisible(true);
+        }
+        else {
+            mensajeError.setText("Respuesta incorrecta");
+            mensajeError.setTextFill(Paint.valueOf("red"));
+            mensajeError.setVisible(true);
+        }
+
+        System.out.println("Respuesta registrada: " + listaOpcionesModel.get(indiceSeleccionado).getTexto());
     }
+
 }

@@ -2,8 +2,10 @@ package org.example.Model.OpcionesRespuesta;
 
 public class OpcionMultipleRespuesta {
 
+    private int idPreguntaa;
     private String texto;
     private boolean esCorrecta;
+
 
     public OpcionMultipleRespuesta(String texto) {
         this.texto = texto;
@@ -16,6 +18,11 @@ public class OpcionMultipleRespuesta {
     public boolean isEsCorrecta() {
         return esCorrecta;
     }
+
+    public int getIdPregunta() {return idPreguntaa;}
+
+    public void setIdPregunta(int idPregunta) {this.idPreguntaa = idPregunta;
+        System.out.println("se cambio el idPregunta por " + this.idPreguntaa);}
 
     public void setEsCorrecta(boolean esCorrecta) {
         this.esCorrecta = esCorrecta;

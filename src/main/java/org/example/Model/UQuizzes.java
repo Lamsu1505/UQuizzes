@@ -3,6 +3,7 @@ package org.example.Model;
 import org.example.ConexionDB.ConexionOracle;
 import org.example.ConexionDB.DAO.DocenteDAO;
 import org.example.ConexionDB.DAO.EstudianteDAO;
+import org.example.ConexionDB.DAO.PreguntaDAO;
 import org.example.Controllers.Paneles.Docente.CrearQuizController;
 import org.example.Controllers.Paneles.Docente.TiposPregunta.SeleccionMultipleController;
 import org.example.Model.Docente.EstudianteExamenInfo;
@@ -140,6 +141,14 @@ public class UQuizzes {
 
     public List<Map<String, Object>> getMateriasEstudiante(String usuarioEnSesion) {
         return estudianteDAO.getMateriasEstudiante(usuarioEnSesion);
+    }
+
+    public boolean validarRespuestaUnicaRespuesta(int idPregunta, String respuesta) {
+        return PreguntaDAO.validarRespuestaUnicaRespuesta(idPregunta, respuesta);
+    }
+
+    public boolean validarRespuestaVerdaderoFalso(int idPregunta, String respuesta) {
+        return PreguntaDAO.validarRespuestaVerdaderoFalso(idPregunta, respuesta);
     }
 }
 

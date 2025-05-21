@@ -10,6 +10,61 @@ import java.util.*;
 
 public class PreguntaDAO {
 
+    public static boolean validarRespuestaUnicaRespuesta(int idPregunta, String respuesta) {
+
+        System.out.println("en validarRespuestaUnicaRespuesta idPregunta: " + idPregunta);
+        System.out.println("en validarRespuestaUnicaRespuesta respuesta: " + respuesta);
+
+        String call = "{ ? = call validarRespuestaUnicaRespuesta(?, ?) }";
+
+        try (Connection conn = ConexionOracle.conectar();
+             CallableStatement stmt = conn.prepareCall(call)) {
+
+            stmt.registerOutParameter(1, Types.INTEGER);
+            stmt.setInt(2, idPregunta);
+            stmt.setString(3, respuesta);
+
+            stmt.execute();
+
+            int resultado = stmt.getInt(1);
+
+            if(resultado == 1){
+                return true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean validarRespuestaVerdaderoFalso(int idPregunta, String respuesta) {
+        System.out.println("en validarRespuestaVerdaderoFalso idPregunta: " + idPregunta);
+        System.out.println("en validarRespuestaVerdaderoFalso respuesta: " + respuesta);
+
+        String call = "{ ? = call validarRespuestaVerdaderoFalso(?, ?) }";
+
+        try (Connection conn = ConexionOracle.conectar();
+             CallableStatement stmt = conn.prepareCall(call)) {
+
+            stmt.registerOutParameter(1, Types.INTEGER);
+            stmt.setInt(2, idPregunta);
+            stmt.setString(3, respuesta);
+
+            stmt.execute();
+
+            int resultado = stmt.getInt(1);
+
+            if(resultado == 1){
+                return true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public Map<PruebaPreguntas, List<OpcionMultipleRespuesta>> obtenerPreguntasPorExamen(int idExamen) {
         Map<PruebaPreguntas, List<OpcionMultipleRespuesta>> preguntasMap = new LinkedHashMap<>();
 
