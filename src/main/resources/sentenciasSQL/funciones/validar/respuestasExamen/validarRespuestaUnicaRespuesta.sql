@@ -1,20 +1,21 @@
-CREATE OR REPLACE FUNCTION validarRespuestaUnicaRespuesta (
-    p_idPregunta  IN pregunta.idpregunta%TYPE,
-    p_respuesta   IN VARCHAR2
-) RETURN NUMBER
-AS
-    v_retorno NUMBER := 0;
+create or replace NONEDITIONABLE FUNCTION validarRespuestaCorta(
+    p_idPregunta pregunta.idpregunta%type,
+    p_respuestaEstudiante VARCHAR2 --ENTRA UNA DE LAS OPCIONES, HAY QUE VERIFICAR SI ESA CONCUERDA CON ALGUNA DE LAS ALMACENADAS
+)
+RETURN NUMBER IS
+    v_retorno NUMBER :=0;
+
 BEGIN
 SELECT COUNT(*)
 INTO v_retorno
 FROM opciones
-WHERE pregunta_idPregunta = p_idPregunta
+WHERE pregunta_idPregunta = p_idpregunta
   AND esCorrecta = 'S'
-  AND descripcionopcion = p_respuesta;
+  AND descripcionOpcion = p_respuestaEstudiante;
 
-RETURN v_retorno;
+return v_retorno;
 EXCEPTION
     WHEN OTHERS THEN
-        RETURN 0; -- En caso de error, devuelve 0 (opcionalmente puedes loguear el error)
-END validarRespuestaUnicaRespuesta;
+        RETURN 0;
+end validarRespuestaCorta;
 /

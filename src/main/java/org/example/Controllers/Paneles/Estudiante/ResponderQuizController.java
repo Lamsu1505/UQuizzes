@@ -113,6 +113,7 @@ public class ResponderQuizController {
             else if (pregunta.getIdTipoPregunta() == 3) {
                 FormatoRespuestaCortaController controller = loader.getController();
                 controller.setEnunciado(pregunta.getEnunciado());
+                controller.setIdPregunta(pregunta.getIdPregunta());
             }
 
             else if (pregunta.getIdTipoPregunta() == 4) {

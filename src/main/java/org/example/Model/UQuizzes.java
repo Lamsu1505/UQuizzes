@@ -150,5 +150,9 @@ public class UQuizzes {
     public boolean validarRespuestaVerdaderoFalso(int idPregunta, String respuesta) {
         return PreguntaDAO.validarRespuestaVerdaderoFalso(idPregunta, respuesta);
     }
+
+    public boolean validarRespuestaCorta(int idPregunta, List<String> listaOpciones) {
+        return PreguntaDAO.validarRespuestaCorta(idPregunta, listaOpciones);
+    }
 }
 

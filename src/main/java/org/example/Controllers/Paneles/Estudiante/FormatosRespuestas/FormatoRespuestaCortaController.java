@@ -7,6 +7,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
+import org.example.Model.OpcionesRespuesta.OpcionMultipleRespuesta;
+import org.example.Model.UQuizzes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +29,9 @@ public class FormatoRespuestaCortaController {
 
     @FXML
     private Label mensajeError;
+
+    private int idPregunta;
+    private UQuizzes uQuizzes = UQuizzes.getInstance();
 
     // Lista para almacenar las respuestas aceptadas
     private List<RespuestaCorta> listaRespuestas = new ArrayList<>();
@@ -100,7 +106,29 @@ public class FormatoRespuestaCortaController {
     }
 
     public void registrarRespuesta(ActionEvent actionEvent) {
+        int idPregunta = getIdPregunta();
 
+        if(uQuizzes.validarRespuestaCorta(idPregunta, getListaOpciones())){
+            mensajeError.setText("Respuesta correcta");
+            mensajeError.setTextFill(Paint.valueOf("green"));
+        } else {
+            mensajeError.setText("Respuesta incorrecta");
+            mensajeError.setTextFill(Paint.valueOf("red"));
+        }
+
+        mensajeError.setVisible(true);
+
+
+    }
+
+
+
+    public int getIdPregunta() {
+        return idPregunta;
+    }
+
+    public void setIdPregunta(int idPregunta) {
+        this.idPregunta = idPregunta;
     }
 
     /**
