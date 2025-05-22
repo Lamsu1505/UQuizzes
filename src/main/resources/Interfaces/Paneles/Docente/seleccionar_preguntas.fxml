@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="600" prefWidth="800" style="-fx-background-color: white;" stylesheets="@../../../Estilos/seleccionarPregunta.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Docente.SeleccionarPreguntasController">
+<AnchorPane prefHeight="600" prefWidth="800" style="-fx-background-color: white;" stylesheets="@../../../Estilos/seleccionarPregunta.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Docente.SeleccionarPreguntasController">
    <children>
       <TableView fx:id="TableViewPregunta" layoutY="157.0" prefHeight="344.0" prefWidth="800.0" style="-fx-table-header-background: #1db954; -fx-text-background-color: black; -fx-font-weight: bold;">  <columns>
             <TableColumn fx:id="columnaTema" prefWidth="231.0" text="Tema" />
@@ -26,7 +25,7 @@
             <Image url="@../../../Images/logoUQuizzes.png" />
          </image>
       </ImageView>
-      <Button fx:id="AgregarButton1" layoutX="606.0" layoutY="525.0" mnemonicParsing="false" onAction="#agregarButton" prefHeight="31.0" prefWidth="100.0" styleClass="boton-seleccionar" text="Finalizar" />
+      <Button fx:id="btnFinalizar" layoutX="606.0" layoutY="525.0" mnemonicParsing="false" onAction="#crearExamen" prefHeight="31.0" prefWidth="100.0" styleClass="boton-seleccionar" text="Finalizar" />
       <Label fx:id="lblExamen" layoutX="49.0" layoutY="98.0" text="Examen" />
       <Label fx:id="lblCantidadBanco" layoutX="256.0" layoutY="98.0" text="Cantidad Banco:" />
       <Label fx:id="lblDificultad" layoutX="478.0" layoutY="98.0" text="Dificultad:" />

@@ -162,5 +162,13 @@ public class UQuizzes {
     public boolean validarRespuestaEmparejar(List<String> respuestasUsuario, int idPregunta) {
         return PreguntaDAO.validarRespuestaEmparejar(respuestasUsuario, idPregunta);
     }
+
+    public int agregarPreguntasAlBancoManual(int idBancoCreado, List<Pregunta> filasSeleccionadas) {
+        return DocenteDAO.agregarPreguntasAlBancoManual(idBancoCreado , filasSeleccionadas );
+    }
+
+    public int getCantidadPreguntasBanco(int idExamenCreado) {
+        return DocenteDAO.getCantidadPreguntasBanco(idExamenCreado);
+    }
 }
 

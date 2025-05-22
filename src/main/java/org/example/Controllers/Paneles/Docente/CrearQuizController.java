@@ -327,6 +327,16 @@ public class CrearQuizController implements Initializable {
 
             //crea el examen sin preguntas
             int idExamenCreado= 1+ uQuizzes.crearQuiz(idDocente, idGrupo, idMateria, nombreQuiz, fechaInicio, cantidadPreguntas, tiempo , hora , descripcion , pesoMateria , tieneTiempo , notaMinimaPasar , fechaFin , horaLimite , cantidadPreguntasBanco);
+            int idBancoCreado = 0;
+
+            if(idExamenCreado != 0){
+                mostrarInfo("Éxito", "El quiz ha sido creado exitosamente.");
+
+                //Crea el banco
+                System.out.println("la cantidad de preguntasBanco es "+cantidadPreguntasBanco);
+                 idBancoCreado =1+ uQuizzes.crearBancoPreguntas(idExamenCreado, cantidadPreguntasBanco);
+                mostrarInfo("Éxito", "El banco de preguntas ha sido creado exitosamente.");
+            }
 
 
             String modoCreacion = comboBoxAutomaticoManual.getValue();
@@ -338,11 +348,8 @@ public class CrearQuizController implements Initializable {
                         mostrarInfo("Éxito", "El quiz ha sido creado exitosamente.");
 
                         //Crea el banco
-                        System.out.println("la cantidad de preguntasBanco es "+cantidadPreguntasBanco);
-                        int idBancoCreado = uQuizzes.crearBancoPreguntas((idExamenCreado), cantidadPreguntasBanco);
 
                         if(idBancoCreado != 0){
-                            mostrarInfo("Éxito", "El banco de preguntas ha sido creado exitosamente.");
 
                             ArrayList<Integer> listaIdTemasSeleccionado= new ArrayList<>();
                             for (TemaCheck tema : temasSeleccionados) {
@@ -351,7 +358,7 @@ public class CrearQuizController implements Initializable {
                             }
 
 
-                            if (uQuizzes.agregarPreguntasAlBanco(idBancoCreado + 1, listaIdTemasSeleccionado) > 0) {
+                            if (uQuizzes.agregarPreguntasAlBanco(idBancoCreado, listaIdTemasSeleccionado) > 0) {
                                 mostrarInfo("Éxito", "Preguntas añadidas al banco");
 
                                 limpiarCampos();
@@ -377,7 +384,7 @@ public class CrearQuizController implements Initializable {
 
                 SeleccionarPreguntasController controller = loader.getController();
                 controller.setIdExamenCreado(idExamenCreado);
-                controller.setInfo(nombreQuiz , cantidadPreguntasBanco , dificultad );
+                controller.setInfo(nombreQuiz , cantidadPreguntasBanco , dificultad , idBancoCreado);
 
                 Stage popupStage = new Stage();
                 popupStage.setTitle("Agregar preguntas manualmente");

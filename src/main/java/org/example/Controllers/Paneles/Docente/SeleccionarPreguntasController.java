@@ -24,6 +24,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.example.Model.UQuizzes;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -62,6 +64,9 @@ public class SeleccionarPreguntasController implements Initializable {
     private Button AgregarButton;
 
     @FXML
+    private Button btnFinalizar;
+
+    @FXML
     private TableColumn<Pregunta, String> ColumnPregunta;
 
     @FXML
@@ -88,8 +93,11 @@ public class SeleccionarPreguntasController implements Initializable {
     @FXML
     private Label lblDificultad;
 
+    private UQuizzes uQuizzes = UQuizzes.getInstance();
+
     private final List<Pregunta> filasSeleccionadas = new ArrayList<>();
     private int idExamenCreado;
+    private int idBancoCreado;
 
     @FXML
     void agregarButton(ActionEvent event) {
@@ -135,9 +143,6 @@ public class SeleccionarPreguntasController implements Initializable {
         }
     }
 
-
-
-
     public List<Pregunta> obtenerPreguntas() {
         String query = "SELECT p.idpregunta, p.enunciado, n.nivel , t.nombre AS nombreTema " +
                 "FROM pregunta p " +
@@ -169,13 +174,52 @@ public class SeleccionarPreguntasController implements Initializable {
 
 
 
-    public void setInfo(String nombreQuiz, int cantidadPreguntasBanco, String dificultad) {
+    public void setInfo(String nombreQuiz, int cantidadPreguntasBanco, String dificultad, int idBancoCreado) {
         lblExamen.setText("Examen: " + nombreQuiz);
         lblCantidadBanco.setText("Cantidad banco: " + cantidadPreguntasBanco);
         lblDificultad.setText("Dificultad: " + dificultad);
+        this.idBancoCreado = idBancoCreado;
     }
 
     public void setIdExamenCreado(int idExamenCreado) {
         this.idExamenCreado = idExamenCreado;
+    }
+
+
+    public void crearExamen(ActionEvent actionEvent) {
+
+        if (filasSeleccionadas.isEmpty() ) {
+            mostrarAlerta("No se han seleccionado preguntas", "Por favor, selecciona al menos una pregunta.");
+            return;
+        }
+        if(filasSeleccionadas.size() < obtenerCantidadMaxima()){
+            mostrarAlerta("Faltan preguntas", "Por favor, selecciona " + obtenerCantidadMaxima() + " preguntas.");
+            return;
+        }
+
+        if(idBancoCreado != 0){
+
+            if (uQuizzes.agregarPreguntasAlBancoManual(idBancoCreado, filasSeleccionadas )  == obtenerCantidadMaxima()) {
+               if(uQuizzes.getCantidadPreguntasBanco(idExamenCreado) == obtenerCantidadMaxima()){
+                    mostrarAlerta("Éxito", "Preguntas añadidas al banco");
+
+
+
+
+
+                   Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                   stage.close();
+                }
+                else{
+                    mostrarAlerta("Error", "No se han añadido todas las preguntas al banco");
+                }
+
+
+
+            }
+
+        }
+
+
     }
 }

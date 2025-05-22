@@ -11,6 +11,7 @@ import org.example.Model.Docente.ExamenDTO;
 import org.example.Model.Docente.GrupoDTO;
 import org.example.Model.Docente.MateriaDTO;
 import org.example.Model.OpcionesRespuesta.OpcionMultipleRespuesta;
+import org.example.Model.Pregunta;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -18,6 +19,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class DocenteDAO {
+
+
 
     public List<Map<String, Object>> getExamenes(String idDocente) throws SQLException {
         String call = "{ ? = call obtenerExamenesDocente(?) }";
@@ -684,6 +687,66 @@ public class DocenteDAO {
         }
 
         return lista;
+    }
+
+
+    public static int agregarPreguntasAlBancoManual(int idBancoCreado, List<Pregunta> filasSeleccionadas) {
+        int suma=0;
+
+        String call = "{ ? = call addPreguntasAlBancoManual(?, ?) }";
+
+        for(Pregunta pregunta : filasSeleccionadas){
+            try (
+                    Connection conn = new ConexionOracle().conectar();
+                    CallableStatement stmt = conn.prepareCall(call)
+            ) {
+
+                stmt.registerOutParameter(1, Types.INTEGER);
+                stmt.setInt(2, idBancoCreado);
+                stmt.setInt(3, pregunta.getIdPregunta());
+
+
+                stmt.execute();
+
+                int resultado = stmt.getInt(1);
+
+
+                suma=suma + resultado;
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, "Error al agregar preguntas al banco:\n" + e.getMessage()).showAndWait();
+            }
+        }
+        return suma;
+    }
+
+
+    public static int getCantidadPreguntasBanco(int idExamenCreado) {
+        int cantidadPreguntasBanco = 0;
+
+        String call = "{ ? = call getCantidadPreguntasBanco(?) }";
+
+        try (
+                Connection conn = new ConexionOracle().conectar();
+                CallableStatement stmt = conn.prepareCall(call)
+        ) {
+
+            stmt.registerOutParameter(1, Types.INTEGER);
+            stmt.setInt(2, idExamenCreado);
+
+            stmt.execute();
+
+            cantidadPreguntasBanco = stmt.getInt(1);
+
+            return cantidadPreguntasBanco;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Error al obtener la cantidad de preguntas del banco:\n" + e.getMessage()).showAndWait();
+        }
+        return -1;
     }
 
 }
