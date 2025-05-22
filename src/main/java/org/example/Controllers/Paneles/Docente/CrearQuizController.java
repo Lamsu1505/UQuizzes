@@ -11,10 +11,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxListCell;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.example.ConexionDB.ConexionOracle;
 import org.example.Model.UQuizzes;
 
+import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -68,6 +71,9 @@ public class CrearQuizController implements Initializable {
     private ComboBox<String> grupoComboBox;
 
     @FXML
+    private ComboBox<String> dificultadComboBox;
+
+    @FXML
     private ComboBox<String> comboBoxAutomaticoManual;
 
     @FXML
@@ -95,6 +101,13 @@ public class CrearQuizController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // Inicializar componentes
         configurarListView();
+
+        ObservableList<String> dificultad = FXCollections.observableArrayList();
+        dificultad.add("Facil");
+        dificultad.add("Medio");
+        dificultad.add("Dificil");
+
+        dificultadComboBox.setItems(dificultad);
 
         ObservableList<String> automaticoManual = FXCollections.observableArrayList();
         automaticoManual.add("Automatico");
@@ -263,26 +276,29 @@ public class CrearQuizController implements Initializable {
     }
 
     @FXML
-    private void siguienteEvent() {
-        // Validar campos
-        if (!validarCampos()) {
-            return;
-        }
+    private void siguienteEvent() throws IOException {
 
-        // Obtener temas seleccionados
-        for (TemaCheck tema : temasData) {
-            if (tema.isSeleccionado()) {
-                temasSeleccionados.add(tema);
+        //obtiene si manual o automatico
+        if(comboBoxAutomaticoManual.getValue() == null){
+            mostrarAlerta("Error", "Debe seleccionar un modo de creación.");
+            return;
+        }else {
+
+            if (!validarCampos()) {
+                return;
             }
-        }
 
-        if (temasSeleccionados.isEmpty()) {
-            mostrarAlerta("Error", "Debe seleccionar al menos un tema.");
-            return;
-        }
+            // Obtener temas seleccionados
+            for (TemaCheck tema : temasData) {
+                if (tema.isSeleccionado()) {
+                    temasSeleccionados.add(tema);
+                }
+            }
 
-        try{
-
+            if (temasSeleccionados.isEmpty()) {
+                mostrarAlerta("Error", "Debe seleccionar al menos un tema.");
+                return;
+            }
             int idDocente = Integer.parseInt(uQuizzes.getUsuarioEnSesion());
             int idGrupo = getIdGrupoSeleccionado();
             int idMateria = Integer.parseInt(idMateriaSeleccionada);
@@ -296,6 +312,7 @@ public class CrearQuizController implements Initializable {
             int cantidadPreguntasBanco = Integer.parseInt(cantidadPreguntasBancoTextField.getText());
             String fechaFin = fechaLimiteTextField.getText();
             String horaLimite = horaLimiteTextField.getText();
+            String dificultad = dificultadComboBox.getValue();
 
             String tieneTiempo;
             int tiempo;
@@ -309,42 +326,75 @@ public class CrearQuizController implements Initializable {
             }
 
             //crea el examen sin preguntas
-            int idExamenCreado= uQuizzes.crearQuiz(idDocente, idGrupo, idMateria, nombreQuiz, fechaInicio, cantidadPreguntas, tiempo , hora , descripcion , pesoMateria , tieneTiempo , notaMinimaPasar , fechaFin , horaLimite , cantidadPreguntasBanco);
+            int idExamenCreado= 1+ uQuizzes.crearQuiz(idDocente, idGrupo, idMateria, nombreQuiz, fechaInicio, cantidadPreguntas, tiempo , hora , descripcion , pesoMateria , tieneTiempo , notaMinimaPasar , fechaFin , horaLimite , cantidadPreguntasBanco);
 
-            if(idExamenCreado != 0){
-                mostrarInfo("Éxito", "El quiz ha sido creado exitosamente.");
 
-                //Crea el banco
-                System.out.println("la cantidad de preguntasBanco es "+cantidadPreguntasBanco);
-                int idBancoCreado = uQuizzes.crearBancoPreguntas((idExamenCreado + 1), cantidadPreguntasBanco);
-                if(idBancoCreado != 0){
-                    mostrarInfo("Éxito", "El banco de preguntas ha sido creado exitosamente.");
+            String modoCreacion = comboBoxAutomaticoManual.getValue();
 
-                    ArrayList<Integer> listaIdTemasSeleccionado= new ArrayList<>();
-                    for (TemaCheck tema : temasSeleccionados) {
-                        listaIdTemasSeleccionado.add(tema.getId());
-                        System.out.println("Tema agregado a la lista " + tema.getId());
+            if (modoCreacion.equals("Automatico")) {
+
+                try{
+                    if(idExamenCreado != 0){
+                        mostrarInfo("Éxito", "El quiz ha sido creado exitosamente.");
+
+                        //Crea el banco
+                        System.out.println("la cantidad de preguntasBanco es "+cantidadPreguntasBanco);
+                        int idBancoCreado = uQuizzes.crearBancoPreguntas((idExamenCreado), cantidadPreguntasBanco);
+
+                        if(idBancoCreado != 0){
+                            mostrarInfo("Éxito", "El banco de preguntas ha sido creado exitosamente.");
+
+                            ArrayList<Integer> listaIdTemasSeleccionado= new ArrayList<>();
+                            for (TemaCheck tema : temasSeleccionados) {
+                                listaIdTemasSeleccionado.add(tema.getId());
+                                System.out.println("Tema agregado a la lista " + tema.getId());
+                            }
+
+
+                            if (uQuizzes.agregarPreguntasAlBanco(idBancoCreado + 1, listaIdTemasSeleccionado) > 0) {
+                                mostrarInfo("Éxito", "Preguntas añadidas al banco");
+
+                                limpiarCampos();
+                            }
+
+                        }
+                        else{
+                            mostrarAlerta("Error", "No se pudo crear el banco de preguntas.");
+                        }
+                    } else {
+                        mostrarAlerta("Error", "No se pudo crear el quiz.");
                     }
-
-
-                    if (uQuizzes.agregarPreguntasAlBanco(idBancoCreado + 1, listaIdTemasSeleccionado) > 0) {
-                        mostrarInfo("Éxito", "Preguntas añadidas al banco");
-
-                        limpiarCampos();
-                    }
-
+                }catch (Exception e){
+                    mostrarAlerta("Error", "Error al crear el quiz: " + e.getMessage());
+                    e.printStackTrace();
                 }
-                else{
-                    mostrarAlerta("Error", "No se pudo crear el banco de preguntas.");
-                }
-            } else {
-                mostrarAlerta("Error", "No se pudo crear el quiz.");
+
+            } else if (modoCreacion.equals("Manual")) {
+
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfaces/Paneles/Docente/seleccionar_preguntas.fxml"));
+                Parent root = loader.load();
+
+                SeleccionarPreguntasController controller = loader.getController();
+                controller.setIdExamenCreado(idExamenCreado);
+                controller.setInfo(nombreQuiz , cantidadPreguntasBanco , dificultad );
+
+                Stage popupStage = new Stage();
+                popupStage.setTitle("Agregar preguntas manualmente");
+                popupStage.setScene(new Scene(root));
+                popupStage.setResizable(false);
+
+                Stage owner = (Stage) nombreQuizTextField.getScene().getWindow();
+                popupStage.initModality(javafx.stage.Modality.WINDOW_MODAL);
+                popupStage.initOwner(owner);
+
+                popupStage.centerOnScreen();
+                popupStage.showAndWait();
+
+
+
             }
-        }catch (Exception e){
-            mostrarAlerta("Error", "Error al crear el quiz: " + e.getMessage());
-            e.printStackTrace();
         }
-
 
         // Guardar datos y proceder a la siguiente pantalla
         //guardarQuiz(temasSeleccionados);

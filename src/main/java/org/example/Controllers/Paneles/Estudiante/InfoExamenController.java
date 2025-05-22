@@ -58,9 +58,10 @@ public class InfoExamenController {
         Parent root = loader.load();
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
-        stage.setWidth(900);
-        stage.setHeight(650);
+        stage.setWidth(830);
+        stage.setHeight(810);
         stage.centerOnScreen();
+        stage.setTitle("Solucionar examen - UQuizzes");
         stage.show();
 
         ResponderQuizController controller = loader.getController();

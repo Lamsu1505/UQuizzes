@@ -4,11 +4,21 @@ public class Pregunta {
     private int idPregunta;
     private String enunciado;
     private String nivel;
+    private String tema;
 
-    public Pregunta(int idPregunta, String enunciado, String nivel) {
+    public Pregunta(int idPregunta, String enunciado, String nivel , String nombreTema) {
         this.idPregunta = idPregunta;
         this.enunciado = enunciado;
         this.nivel = nivel;
+        this.tema = nombreTema;
+    }
+
+    public String getTema() {
+        return tema;
+    }
+
+    public void setTema(String tema) {
+        this.tema = tema;
     }
 
     public int getIdPregunta() {

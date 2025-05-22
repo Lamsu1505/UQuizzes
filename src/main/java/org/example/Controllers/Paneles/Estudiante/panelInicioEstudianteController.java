@@ -45,12 +45,7 @@ public class panelInicioEstudianteController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Connection conn = new ConexionOracle().conectar();
         System.out.println("se iniciando el panel de inicio estudiante");
-        try {
-            cargarMateriasComboBox();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+        //cargarMateriasComboBox();
 
         try {
             String sql = "select nombre , apellido from estudiante where idEstudiante = ?";

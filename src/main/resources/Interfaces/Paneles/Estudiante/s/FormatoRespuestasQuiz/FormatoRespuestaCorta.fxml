@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:id="respuestaCortaPanel" prefWidth="710.0" spacing="15.0" styleClass="pregunta-panel" stylesheets="@../../../../../Estilos/MultipleUnicaRespuesa.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Estudiante.FormatosRespuestas.FormatoRespuestaCortaController">
+<VBox fx:id="respuestaCortaPanel" prefWidth="710.0" spacing="15.0" styleClass="pregunta-panel" stylesheets="@../../../../../Estilos/MultipleUnicaRespuesa.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Estudiante.FormatosRespuestas.FormatoRespuestaCortaController">
     <padding>
         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
     </padding>
@@ -37,7 +36,7 @@
          <children>
                 <Label fx:id="mensajeError" prefHeight="22.0" prefWidth="294.0" styleClass="error-message" textFill="RED" />
             <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <Button fx:id="btnValidarRespuesta" mnemonicParsing="false" onAction="#registrarRespuesta" text="Validar" />
+            <Button fx:id="btnValidarRespuesta" mnemonicParsing="false" onAction="#registrarRespuesta" styleClass="resolver-button" text="Validar" />
          </children>
       </HBox>
     </children>

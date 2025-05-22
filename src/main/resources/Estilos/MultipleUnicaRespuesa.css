@@ -27,18 +27,34 @@
 
 /* Botón agregar opción */
 .add-button {
-    -fx-background-color: #007e38;
-    -fx-text-fill: white;
+    -fx-background-color: #e4e4e4;
+    -fx-text-fill: #292929;
     -fx-font-weight: bold;
     -fx-padding: 8 16 8 16;
     -fx-background-radius: 6px;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0,126,56,0.3), 5, 0.2, 0, 2);
     -fx-transition: all 0.3s ease-in-out;
 }
 
 .add-button:hover {
-    -fx-background-color: #005c2a;
+    -fx-text-fill: #d3d3d3;
+    -fx-background-color: #454545;
+}
+
+
+.resolver-button {
+    -fx-background-color: #138f31;
+    -fx-text-fill: #e6e6e6;
+    -fx-font-weight: bold;
+    -fx-padding: 8 16 8 16;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease-in-out;
+}
+
+.resolver-button:hover {
+    -fx-text-fill: #e8e8e8;
+    -fx-background-color: #6a6a6a;
 }
 
 /* Mensaje de error */
