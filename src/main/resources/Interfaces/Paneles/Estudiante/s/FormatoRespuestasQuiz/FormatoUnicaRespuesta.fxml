@@ -16,7 +16,7 @@
             </font>
         </Label>
 
-        <ScrollPane fitToWidth="true" prefHeight="224.0" prefWidth="680.0" style="-fx-background: white; -fx-border-color: #d3d3d3; -fx-border-radius: 5;" styleClass="opciones-container">
+        <ScrollPane fx:id="scrollContenedor" fitToWidth="true" prefHeight="224.0" prefWidth="680.0" style="-fx-background: white; -fx-border-color: #d3d3d3; -fx-border-radius: 5;" styleClass="opciones-container">
             <content>
                 <VBox fx:id="opcionesContainer" spacing="10.0" style="-fx-padding: 10;">
                     <children>

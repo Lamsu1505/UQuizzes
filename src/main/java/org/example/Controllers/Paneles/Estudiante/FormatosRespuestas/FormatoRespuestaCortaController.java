@@ -1,9 +1,12 @@
 package org.example.Controllers.Paneles.Estudiante.FormatosRespuestas;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -24,11 +27,19 @@ public class FormatoRespuestaCortaController {
     @FXML
     private Button agregarRespuestaButton;
 
+    @FXML private Button btnValidarRespuesta;
+
     @FXML
     private Label lblEnunciado;
 
     @FXML
     private Label mensajeError;
+
+    @FXML
+    private ScrollPane scrollContenedor;
+
+    @FXML
+    private VBox respuestaCortaPanel;
 
     private int idPregunta;
     private UQuizzes uQuizzes = UQuizzes.getInstance();
@@ -111,15 +122,58 @@ public class FormatoRespuestaCortaController {
         if(uQuizzes.validarRespuestaCorta(idPregunta, getListaOpciones())){
             mensajeError.setText("Respuesta correcta");
             mensajeError.setTextFill(Paint.valueOf("green"));
+            disableAndColorContainer(true);
         } else {
             mensajeError.setText("Respuesta incorrecta");
             mensajeError.setTextFill(Paint.valueOf("red"));
+            disableAndColorContainer(false);
         }
 
         mensajeError.setVisible(true);
 
 
     }
+
+
+    private void disableAndColorContainer(boolean correcto) {
+        // 1) Guardar posición actual
+        double vPos = scrollContenedor.getVvalue();
+        double hPos = scrollContenedor.getHvalue();
+
+        // 2) Deshabilitar botones y campo de texto
+        btnValidarRespuesta.setDisable(true);
+        agregarRespuestaButton.setDisable(true);
+        nuevaRespuestaTextField.setDisable(true);
+
+        // 3) Escoger color de fondo
+        String color = correcto ? "#C8E6C9" : "#FFCDD2";
+
+        // 4) Pintar panel principal
+        respuestaCortaPanel.setStyle("-fx-background-color: " + color + ";");
+
+        // 5) Pintar ScrollPane y su viewport
+        scrollContenedor.setStyle("-fx-background-color: " + color + ";");
+        Node viewport = scrollContenedor.lookup(".viewport");
+        if (viewport != null) viewport.setStyle("-fx-background-color: " + color + ";");
+
+        // 6) Pintar contenedor de respuestas
+        respuestasContainer.setStyle("-fx-background-color: " + color + ";");
+
+        // 7) Pintar y bloquear cada HBox de respuesta
+        for (RespuestaCorta rc : listaRespuestas) {
+            HBox box = rc.getContenedor();
+            box.setStyle("-fx-background-color: " + color + ";");
+            box.setDisable(true);
+            box.setFocusTraversable(false);
+        }
+
+        // 8) Restaurar scroll tras el relayout
+        Platform.runLater(() -> {
+            scrollContenedor.setVvalue(vPos);
+            scrollContenedor.setHvalue(hPos);
+        });
+    }
+
 
 
 

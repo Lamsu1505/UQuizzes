@@ -12,6 +12,47 @@ import java.util.Map;
 
 public class EstudianteDAO {
 
+    public static List<Map<String, Object>> getExamenesEstudianteByMateria(int idMateriaSeleccionada, String usuarioEnSesion) {
+            int idEstudiante = Integer.parseInt(usuarioEnSesion);
+
+
+        String call = "{ ? = call obtenerExamenesEstudianteByMateria(? , ?) }";
+
+        try (
+                Connection conn = new ConexionOracle().conectar();
+                CallableStatement stmt = conn.prepareCall(call)
+        ) {
+
+            stmt.registerOutParameter(1, OracleTypes.CURSOR);
+
+            stmt.setInt(2, idEstudiante);
+            stmt.setInt(3, idMateriaSeleccionada);
+
+            stmt.execute();
+
+            // 4) Obtener el ResultSet del cursor
+            try (ResultSet rs = (ResultSet) stmt.getObject(1)) {
+                List<Map<String, Object>> lista = new ArrayList<>();
+                ResultSetMetaData md = rs.getMetaData();
+
+                int cols = md.getColumnCount();
+
+                while (rs.next()) {
+                    Map<String,Object> fila = new HashMap<>();
+
+                    for (int i = 1; i <= cols; i++) {
+                        fila.put(md.getColumnLabel(i), rs.getObject(i));
+                    }
+                    lista.add(fila);
+                }
+                return lista;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
     public String iniciarSesion(String usuario, String password) {
         String call = "{ ? = call iniciarSesionEstudiante(?, ?) }";
 

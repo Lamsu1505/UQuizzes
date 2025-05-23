@@ -16,7 +16,7 @@
             </font>
         </Label>
 
-        <ScrollPane fitToWidth="true" prefHeight="252.0" prefWidth="676.0" styleClass="respuestas-container">
+        <ScrollPane fx:id="scrollContenedor" fitToWidth="true" prefHeight="252.0" prefWidth="676.0" styleClass="respuestas-container">
             <content>
                 <VBox fx:id="respuestasContainer" spacing="10.0">
                     <children>

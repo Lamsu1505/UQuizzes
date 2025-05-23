@@ -1,11 +1,10 @@
 package org.example.Controllers.Paneles.Estudiante.FormatosRespuestas;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
@@ -25,6 +24,16 @@ public class FormatoSeleccionMultipleController {
 
     @FXML
     private Label lblEnunciado;
+
+
+    @FXML
+    private Button btnValidarRespuesta;
+
+    @FXML
+    private ScrollPane scrollContenedor;
+
+    @FXML
+    private VBox seleccionMultiplePanel;
 
     private int idPregunta;
 
@@ -148,16 +157,21 @@ public class FormatoSeleccionMultipleController {
         mensajeError.setVisible(false);
 
 
+        boolean esCorrecta;
         if(uQuizzes.validarRespuestaMultiple(idPregunta , opcionesSeleccionadas)){
             mensajeError.setText("Respuesta correcta");
             mensajeError.setTextFill(Paint.valueOf("green"));
             mensajeError.setVisible(true);
+             esCorrecta = true;
         }
         else {
             mensajeError.setText("Respuesta incorrecta");
             mensajeError.setTextFill(Paint.valueOf("red"));
             mensajeError.setVisible(true);
+            esCorrecta = false;
         }
+
+        disableAndColorContainer(esCorrecta);
     }
 
     public void setOpciones(List<OpcionMultipleRespuesta> opciones , int idPregunta) {
@@ -231,6 +245,43 @@ public class FormatoSeleccionMultipleController {
         public void setSeleccionada(boolean seleccionada) {
             checkBox.setSelected(seleccionada);
         }
+    }
+
+
+    private void disableAndColorContainer(boolean correcto) {
+
+        double vPos = scrollContenedor.getVvalue();
+        double hPos = scrollContenedor.getHvalue();
+
+        // 1) Deshabilita botón
+        btnValidarRespuesta.setDisable(true);
+
+        // 2) Elige color
+        String color = correcto ? "#C8E6C9" : "#FFCDD2";
+
+        // 3) Pinta panel principal
+        seleccionMultiplePanel.setStyle("-fx-background-color: " + color + ";");
+
+        // 4) Pinta ScrollPane + su viewport
+        scrollContenedor.setStyle("-fx-background-color: " + color + ";");
+        Node viewport = scrollContenedor.lookup(".viewport");
+        if (viewport != null) viewport.setStyle("-fx-background-color: " + color + ";");
+
+        // 5) Pinta VBox de opciones
+        opcionesContainer.setStyle("-fx-background-color: " + color + ";");
+
+        // 6) Para cada opción: pinta y bloquea su HBox entero
+        for (OpcionMultiple opt : listaOpciones) {
+            HBox box = opt.getContenedor();
+            box.setStyle("-fx-background-color: " + color + ";");
+            box.setDisable(true);
+        }
+
+
+        Platform.runLater(() -> {
+            scrollContenedor.setVvalue(vPos);
+            scrollContenedor.setHvalue(hPos);
+        });
     }
 }
 

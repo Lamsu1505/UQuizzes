@@ -16,7 +16,7 @@
             </font>
         </Label>
 
-        <ScrollPane fitToWidth="true" prefHeight="180.0" styleClass="opciones-container">
+        <ScrollPane fx:id="scrollContenedor" fitToWidth="true" prefHeight="180.0" styleClass="opciones-container">
             <content>
                 <VBox fx:id="opcionesContainer" spacing="10.0">
                     <children>
@@ -33,7 +33,5 @@
             <Button fx:id="btnValidarRespuesta" mnemonicParsing="false" onAction="#registrarRespuesta" styleClass="resolver-button" text="Validar" />
             </children>
         </HBox>
-
-        <VBox spacing="10.0" />
     </children>
 </VBox>

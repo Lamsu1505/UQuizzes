@@ -1,0 +1,168 @@
+
+.root {
+    -fx-font-family: "System";
+    -fx-base: white;
+}
+
+.primary_color {
+    -fx-background-color: #009a43ff;
+}
+
+.button {
+    -fx-background-color: #dbdbdbff;
+    -fx-text-fill: #009a43ff;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 3, 0.5, 0, 2);
+}
+
+.button:hover {
+    -fx-background-color: #8c8c8c;
+    -fx-text-fill: white;
+    -fx-border-color: transparent;
+}
+
+.label {
+    -fx-text-fill: #323232;
+    -fx-font-size: 15px;
+}
+
+/* ===== ESTILOS ESPECÍFICOS PARA PANEL ESTUDIANTE ===== */
+
+/* Label de Bienvenida */
+#lblBienvenido {
+    -fx-text-fill: white;
+    -fx-font-size: 37px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 2, 0.8, 0, 1);
+}
+
+/* Label de Exámenes Recientes */
+#lblExamenesRecientes {
+    -fx-text-fill: #222222;
+    -fx-font-size: 27px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 0 20 0;
+}
+
+/* Clase para el contenedor con borde verde (header) */
+.greenColor {
+    -fx-background-color: linear-gradient(to bottom, #009a43ff, #007a35ff);
+    -fx-background-radius: 15 15 0 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 4, 0.3, 0, 2);
+}
+
+/* Clase para el borde inferior del contenedor */
+.BottonBorder {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0.2, 0, 3);
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 15;
+    -fx-border-width: 1;
+}
+
+/* ComboBox personalizado */
+#comboBoxMateria {
+    -fx-background-color: #dbdbdbff;
+    -fx-border-color: #009a43ff;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #323232;
+    -fx-prompt-text-fill: #7a7a7a;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 3, 0.5, 0, 2);
+    -fx-cursor: hand;
+    -fx-min-width: 200px;
+}
+
+#comboBoxMateria:hover {
+    -fx-border-color: #007a35ff;
+    -fx-background-color: #f0f0f0ff;
+}
+
+#comboBoxMateria:focused {
+    -fx-border-color: #009a43ff;
+    -fx-border-width: 2;
+    -fx-background-color: white;
+}
+
+/* Estilo para el dropdown del ComboBox */
+#comboBoxMateria .list-view {
+    -fx-background-color: white;
+    -fx-border-color: #009a43ff;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0.3, 0, 3);
+}
+
+#comboBoxMateria .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #323232;
+    -fx-font-size: 14px;
+    -fx-padding: 8 12 8 12;
+}
+
+#comboBoxMateria .list-cell:hover {
+    -fx-background-color: #f0f8f4;
+    -fx-text-fill: #009a43ff;
+}
+
+#comboBoxMateria .list-cell:selected {
+    -fx-background-color: #009a43ff;
+    -fx-text-fill: white;
+}
+
+/* ScrollPane personalizado */
+#scrollPane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+#scrollPane .viewport {
+    -fx-background-color: transparent;
+}
+
+#scrollPane .scroll-bar:vertical {
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: transparent;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-pref-width: 12;
+}
+
+#scrollPane .scroll-bar:vertical .track {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
+
+#scrollPane .scroll-bar:vertical .thumb {
+    -fx-background-color: #009a43ff;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
+
+#scrollPane .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #007a35ff;
+}
+
+/* Contenedor de exámenes */
+#vBoxContenedorExamenes {
+    -fx-background-color: transparent;
+    -fx-spacing: 20;
+}
+
+/* Mejoras de spacing y layout */
+.root {
+    -fx-background-color: #f8f9fa;
+}
+
+/* Efectos de transición para elementos interactivos */
+#comboBoxMateria, .button {
+    -fx-transition: all 0.2s ease;
+}

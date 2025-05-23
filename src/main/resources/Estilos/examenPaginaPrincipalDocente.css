@@ -1,0 +1,244 @@
+/* ===== ESTILOS PARA TARJETA DE EXAMEN - VISTA DOCENTE ===== */
+
+/* Contenedor principal de la tarjeta */
+.root {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1;
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 6, 0.3, 0, 3);
+}
+
+/* Efecto hover para toda la tarjeta */
+.root:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 10, 0.4, 0, 5);
+    -fx-border-color: #009a43ff;
+    -fx-border-width: 2;
+}
+
+/* Título del examen */
+#lblNombreExamen {
+    -fx-text-fill: #009a43ff;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 5 0;
+}
+
+/* Labels de información (Materia, Grupo, Fecha, Hora) */
+#lblMateria {
+    -fx-text-fill: #444444;
+    -fx-font-size: 16px;
+    -fx-font-weight: normal;
+    -fx-padding: 0 0 0 0;
+}
+
+#lblGrupo {
+    -fx-text-fill: #444444;
+    -fx-font-size: 16px;
+    -fx-font-weight: normal;
+    -fx-padding: 0 0 0 0;
+}
+
+#lblFecha {
+    -fx-text-fill: #666666;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 0 0;
+}
+
+#lblHora {
+    -fx-text-fill: #666666;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 0 0;
+}
+
+/* ===== BOTONES ESPECÍFICOS PARA DOCENTE ===== */
+
+/* Botón Editar */
+#btnEditar {
+    -fx-background-color: #1e973c;
+    -fx-text-fill: white;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgb(23, 103, 41), 4, 0.5, 0, 2);
+    -fx-min-height: 46;
+    -fx-pref-height: 46;
+}
+
+#btnEditar:hover {
+    -fx-background-color: #3c6043;
+    -fx-effect: dropshadow(gaussian, rgb(26, 35, 27), 6, 0.6, 0, 3);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+#btnEditar:pressed {
+    -fx-background-color: #21618c;
+    -fx-effect: dropshadow(gaussian, rgba(52, 152, 219, 0.2), 2, 0.3, 0, 1);
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+/* Botón Stats (pregunta) */
+#btnStats1 {
+    -fx-background-color: #3c78e7;
+    -fx-text-fill: white;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(16, 32, 108, 0.3), 4, 0.5, 0, 2);
+    -fx-min-height: 48;
+    -fx-pref-height: 48;
+}
+
+#btnStats1:hover {
+    -fx-background-color: #303761;
+    -fx-effect: dropshadow(gaussian, rgba(27, 31, 44, 0.4), 6, 0.6, 0, 3);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+#btnStats1:pressed {
+    -fx-background-color: #6e6e6e;
+    -fx-effect: dropshadow(gaussian, rgba(43, 43, 43, 0.2), 2, 0.3, 0, 1);
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+/* Botón Stats (Estudiantes) */
+#btnEditar1 {
+    -fx-background-color: #d68125;
+    -fx-text-fill: white;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgb(119, 80, 4), 4, 0.5, 0, 2);
+    -fx-min-height: 46;
+    -fx-pref-height: 46;
+}
+
+#btnEditar1:hover {
+    -fx-background-color: #755428;
+    -fx-effect: dropshadow(gaussian, rgb(26, 35, 27), 6, 0.6, 0, 3);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+#btnEditar1:pressed {
+    -fx-background-color: #9f4206;
+    -fx-effect: dropshadow(gaussian, rgba(243, 156, 18, 0.2), 2, 0.3, 0, 1);
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+/* ===== EFECTOS Y TRANSICIONES ===== */
+
+/* Animaciones suaves para todos los botones */
+#btnEditar, #btnStats1, #btnEditar1, .root {
+    -fx-transition: all 0.2s ease;
+}
+
+/* Focus para accesibilidad */
+#btnEditar:focused {
+    -fx-border-color: #74b9ff;
+    -fx-border-width: 3;
+    -fx-border-radius: 10;
+}
+
+#btnStats1:focused {
+    -fx-border-color: #ff7675;
+    -fx-border-width: 3;
+    -fx-border-radius: 10;
+}
+
+#btnEditar1:focused {
+    -fx-border-color: #fdcb6e;
+    -fx-border-width: 3;
+    -fx-border-radius: 10;
+}
+
+/* ===== ESTADOS ESPECIALES ===== */
+
+/* Examen activo (en curso) */
+.active {
+    -fx-border-color: #00b894;
+    -fx-background-color: #f8fff9;
+}
+
+.active #lblNombreExamen {
+    -fx-text-fill: #00b894;
+}
+
+/* Examen finalizado */
+.finished {
+    -fx-opacity: 0.8;
+    -fx-border-color: #636e72;
+    -fx-background-color: #f8f9fa;
+}
+
+.finished #lblNombreExamen {
+    -fx-text-fill: #636e72;
+}
+
+.finished #btnEditar,
+.finished #btnStats1,
+.finished #btnEditar1 {
+    -fx-opacity: 0.9;
+}
+
+/* Examen próximo (menos de 1 hora) */
+.upcoming {
+    -fx-border-color: #fdcb6e;
+    -fx-background-color: #fffef7;
+}
+
+.upcoming #lblFecha,
+.upcoming #lblHora {
+    -fx-text-fill: #e17055;
+    -fx-font-weight: bold;
+}
+
+/* ===== LAYOUT MEJORADO ===== */
+
+/* Espaciado mejorado para la información */
+.info-container {
+    -fx-spacing: 20;
+    -fx-padding: 5 0 0 0;
+}
+
+/* Contenedor de botones con mejor alineación */
+.button-container {
+    -fx-spacing: 10;
+    -fx-alignment: center;
+}
+
+/* Separador visual sutil */
+.section-divider {
+    -fx-border-color: transparent #f0f0f0 transparent transparent;
+    -fx-border-width: 0 1 0 0;
+    -fx-padding: 0 15 0 0;
+}
+
+/* ===== MEJORAS TIPOGRÁFICAS ===== */
+
+/* Texto secundario más suave */
+.secondary-text {
+    -fx-text-fill: #7f8c8d;
+    -fx-font-size: 14px;
+}
+
+/* Texto de estado */
+.status-text {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #95a5a6;
+}

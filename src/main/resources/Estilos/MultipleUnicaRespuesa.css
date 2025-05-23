@@ -59,10 +59,10 @@
 
 /* Mensaje de error */
 .error-message {
-    -fx-font-size: 12px;
-    -fx-text-fill: red;
+    -fx-font-size: 17px;
+    -fx-text-fill: #1d1f35;
     -fx-padding: 5 0 0 0;
-    -fx-font-style: italic;
+    -fx-font-style: bold;
 }
 
 /* Estilo de botones de opción (si se agregan dinámicamente) */
@@ -73,4 +73,9 @@
 
 .radio-button:hover, .check-box:hover {
     -fx-text-fill: #007e38;
+}
+
+.button:disabled {
+    -fx-background-color: #b6b6b6;
+    -fx-text-fill: #4c4c4c;
 }

@@ -1,10 +1,12 @@
 package org.example.Controllers.Paneles.Estudiante.FormatosRespuestas;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -23,8 +25,6 @@ public class FormatoUnicaRespuestaController implements Initializable {
     @FXML
     private VBox opcionesContainer;
 
-    @FXML
-    private Button agregarOpcionButton;
 
     @FXML
     private Label mensajeError;
@@ -34,6 +34,15 @@ public class FormatoUnicaRespuestaController implements Initializable {
 
     @FXML
     private Label lblEnunciado;
+
+    @FXML
+    private VBox opcionMultiplePanel;
+
+    @FXML
+    private Button btnValidarRespuesta;
+
+    @FXML
+    private ScrollPane scrollContenedor;
 
     private UQuizzes uQuizzes = UQuizzes.getInstance();
 
@@ -189,14 +198,54 @@ public class FormatoUnicaRespuestaController implements Initializable {
             mensajeError.setText("Respuesta correcta");
             mensajeError.setTextFill(Paint.valueOf("green"));
             mensajeError.setVisible(true);
+            disableAndColorContainer(true);
         }
         else {
             mensajeError.setText("Respuesta incorrecta");
             mensajeError.setTextFill(Paint.valueOf("red"));
             mensajeError.setVisible(true);
+            disableAndColorContainer(false);
         }
 
         System.out.println("Respuesta registrada: " + listaOpcionesModel.get(indiceSeleccionado).getTexto());
+    }
+
+    private void disableAndColorContainer(boolean correcto) {
+        // 1) guardar scroll
+        double vPos = scrollContenedor.getVvalue();
+        double hPos = scrollContenedor.getHvalue();
+
+        // 2) deshabilitar botones
+        btnValidarRespuesta.setDisable(true);
+
+        // 3) color de fondo
+        String color = correcto ? "#C8E6C9" : "#FFCDD2";
+
+        // 4) pintar panel principal
+        opcionMultiplePanel.setStyle("-fx-background-color: " + color + ";");
+
+        // 5) pintar ScrollPane + viewport
+        scrollContenedor.setStyle("-fx-background-color: " + color + ";");
+        Node viewport = scrollContenedor.lookup(".viewport");
+        if (viewport != null) {
+            viewport.setStyle("-fx-background-color: " + color + ";");
+        }
+
+        // 6) pintar VBox de opciones
+        opcionesContainer.setStyle("-fx-background-color: " + color + ";");
+
+        // 7) para cada HBox: pintar y deshabilitar
+        for (HBox box : listaOpciones) {
+            box.setStyle("-fx-background-color: " + color + ";");
+            box.setDisable(true);
+            box.setFocusTraversable(false);
+        }
+
+        // 8) restaurar scroll al próximo ciclo de render
+        Platform.runLater(() -> {
+            scrollContenedor.setVvalue(vPos);
+            scrollContenedor.setHvalue(hPos);
+        });
     }
 
 }

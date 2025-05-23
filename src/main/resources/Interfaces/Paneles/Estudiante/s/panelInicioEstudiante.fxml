@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="699.0" prefWidth="926.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Estudiante.panelInicioEstudianteController">
+<BorderPane prefHeight="699.0" prefWidth="926.0" stylesheets="@../../../../Estilos/ventanaInicioEstudiante.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Estudiante.panelInicioEstudianteController">
 
     <padding>
         <Insets bottom="2.0" left="10.0" right="10.0" top="25.0" />
@@ -28,7 +28,7 @@
                     <content>
                         <StackPane alignment="TOP_CENTER" prefHeight="988.0" prefWidth="875.0">
                             <children>
-                                <VBox fx:id="VBoxContenedorExamenes" alignment="TOP_CENTER" prefWidth="400" spacing="20.0">
+                                <VBox fx:id="vBoxContenedorExamenes" alignment="TOP_CENTER" prefWidth="400" spacing="20.0">
                                     <padding>
                                         <Insets top="15.0" />
                                     </padding>
@@ -64,7 +64,7 @@
                       </VBox>
                   </children>
               </HBox>
-            <ComboBox fx:id="comboBoxMateria" prefWidth="150.0" promptText="Materia" />
+            <ComboBox fx:id="comboBoxMateria" prefWidth="150.0" promptText="Materia" translateY="5.0" />
          </children>
       </VBox>
    </top>

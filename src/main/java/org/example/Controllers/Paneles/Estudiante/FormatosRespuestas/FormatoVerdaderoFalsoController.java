@@ -2,10 +2,8 @@ package org.example.Controllers.Paneles.Estudiante.FormatosRespuestas;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import org.example.Model.OpcionesRespuesta.OpcionMultipleRespuesta;
 import org.example.Model.UQuizzes;
@@ -24,10 +22,15 @@ public class FormatoVerdaderoFalsoController {
     private ToggleGroup respuestaToggleGroup;
 
     @FXML
+    private VBox verdaderoFalsoPanel;
+
+    @FXML
     private Label lblEnunciado;
 
     @FXML
     private Label mensajeError;
+
+    @FXML private Button btnValidarRespuesta;
 
     private UQuizzes uQuizzes = UQuizzes.getInstance();
     private List<OpcionMultipleRespuesta> opciones = new ArrayList<>();
@@ -77,11 +80,34 @@ public class FormatoVerdaderoFalsoController {
         if (uQuizzes.validarRespuestaVerdaderoFalso(idPregunta, respuesta)) {
             mensajeError.setText("Respuesta correcta");
             mensajeError.setTextFill(Paint.valueOf("green"));
+            disableAndColorContainer(true);
         } else {
             mensajeError.setText("Respuesta incorrecta");
             mensajeError.setTextFill(Paint.valueOf("red"));
+            disableAndColorContainer(false);
         }
 
         mensajeError.setVisible(true);
+    }
+
+
+    private void disableAndColorContainer(boolean correcto) {
+        // 1) Deshabilitar controles
+        btnValidarRespuesta.setDisable(true);
+        verdaderoRadioButton.setDisable(true);
+        falsoRadioButton.setDisable(true);
+
+        // 2) Escoger color de fondo
+        String color = correcto ? "#C8E6C9" : "#FFCDD2";
+
+        // 3) Pintar panel completo
+        verdaderoFalsoPanel.setStyle("-fx-background-color: " + color + ";");
+
+        // 4) (Opcional) Quitar foco de los radios para evitar scroll o saltos
+        verdaderoRadioButton.setFocusTraversable(false);
+        falsoRadioButton.setFocusTraversable(false);
+
+        // 5) Si hubiera algún relayout, en un runLater podrías restaurar scroll,
+        //    pero como no hay ScrollPane aquí, no hace falta.
     }
 }

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="699.0" prefWidth="926.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Docente.panelInicioDocenteController">
+<BorderPane prefHeight="699.0" stylesheets="@../../../Estilos/ventanaInicioEstudiante.css" prefWidth="926.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Docente.panelInicioDocenteController">
 
     <padding>
         <Insets bottom="2.0" left="10.0" right="10.0" top="25.0" />

@@ -40,7 +40,7 @@
             </children>
         </HBox>
 
-        <ScrollPane fitToWidth="true" prefHeight="150.0" styleClass="parejas-container">
+        <ScrollPane fx:id="scrollPaneContenedor" fitToWidth="true" prefHeight="150.0" styleClass="parejas-container">
             <content>
                 <VBox fx:id="parejasContainer" spacing="10.0">
                     <children>

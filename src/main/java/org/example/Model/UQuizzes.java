@@ -170,5 +170,9 @@ public class UQuizzes {
     public int getCantidadPreguntasBanco(int idExamenCreado) {
         return DocenteDAO.getCantidadPreguntasBanco(idExamenCreado);
     }
+
+    public List<Map<String, Object>> getExamenesEstudianteByMateria(int idMateriaSeleccionada) {
+        return EstudianteDAO.getExamenesEstudianteByMateria(idMateriaSeleccionada , getUsuarioEnSesion());
+    }
 }
 

@@ -1,11 +1,11 @@
 package org.example.Controllers.Paneles.Estudiante.FormatosRespuestas;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
@@ -22,6 +22,9 @@ public class FormatoEmparejamientoController {
     private VBox parejasContainer;
 
     @FXML
+    private VBox emparejamientoPanel;
+
+    @FXML
     private Label mensajeError;
 
     @FXML
@@ -29,6 +32,10 @@ public class FormatoEmparejamientoController {
 
     @FXML
     private Button btnValidarRespuesta;
+
+    @FXML
+    private ScrollPane scrollPaneContenedor;
+
 
     private UQuizzes uQuizzes = UQuizzes.getInstance();
 
@@ -149,11 +156,15 @@ public class FormatoEmparejamientoController {
                 mensajeError.setText("Respuesta correcta");
                 mensajeError.setTextFill(Paint.valueOf("green"));
                 mensajeError.setVisible(true);
+                disableAndColorContainer(true);
             }
             else{
                 mensajeError.setText("Respuesta incorrecta");
                 mensajeError.setTextFill(Paint.valueOf("red"));
                 mensajeError.setVisible(true);
+
+                //para deshabilitar el botón y cambiar el color de fondo
+                disableAndColorContainer(false);
             }
         }
 
@@ -162,7 +173,6 @@ public class FormatoEmparejamientoController {
         for (String r : respuestasUsuario) {
             System.out.println(r);
         }
-
     }
 
 
@@ -228,27 +238,6 @@ public class FormatoEmparejamientoController {
         }
     }
 
-    public boolean validarPares() {
-        // Limpiar mensaje de error previo
-        mensajeError.setText("");
-
-        // Verificar que no haya pares vacíos
-        for (ParElementos par : listaPares) {
-            if (par.getElementoA().isEmpty() || par.getElementoB().isEmpty()) {
-                mensajeError.setText("Todos los pares deben tener elementos definidos");
-                return false;
-            }
-        }
-
-        // Verificar que no haya elementos duplicados
-        if (hayElementosDuplicados()) {
-            mensajeError.setText("No pueden existir elementos duplicados");
-            return false;
-        }
-
-        return true;
-    }
-
 
     private boolean hayElementosDuplicados() {
         List<String> elementosA = new ArrayList<>();
@@ -269,7 +258,47 @@ public class FormatoEmparejamientoController {
         return false;
     }
 
-    public List<ParElementos> obtenerPares() {
-        return new ArrayList<>(listaPares);
+
+    private void disableAndColorContainer(boolean correcto) {
+
+
+        double vPos = scrollPaneContenedor.getVvalue();
+        double hPos = scrollPaneContenedor.getHvalue();
+
+        // 1) Deshabilita el botón
+        btnValidarRespuesta.setDisable(true);
+
+        if(correcto){
+            mensajeError.setText("Respuesta correcta");
+        }
+        else {
+            mensajeError.setText("Respuesta incorrecta");
+        }
+        mensajeError.setVisible(true);
+        // 2) Elige el color
+        String color = correcto ? "#C8E6C9" : "#FFCDD2";
+
+        // 3) Pinta panel, scrollPane, viewport y VBox contenedor
+        emparejamientoPanel.setStyle("-fx-background-color: " + color + ";");
+        scrollPaneContenedor.setStyle("-fx-background-color: " + color + ";");
+        Node viewport = scrollPaneContenedor.lookup(".viewport");
+        if (viewport != null) viewport.setStyle("-fx-background-color: " + color + ";");
+        parejasContainer.setStyle("-fx-background-color: " + color + ";");
+
+        // 4) Para cada par: pinta el HBox y deshabilita sus ComboBoxes
+        for (ParElementos par : listaPares) {
+            par.getContenedor().setStyle("-fx-background-color: " + color + ";");
+
+            // deshabilita sólo los ComboBoxes
+            par.opcionesRespuestaColA.setDisable(true);
+            par.opcionesRespuestaColB.setDisable(true);
+        }
+
+        Platform.runLater(() -> {
+            scrollPaneContenedor.setVvalue(vPos);
+            scrollPaneContenedor.setHvalue(hPos);
+        });
     }
+
+
 }
