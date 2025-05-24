@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
@@ -9,7 +10,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="619.0" prefWidth="1041.0" stylesheets="@../../Estilos/ventanaInicioDocente.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Ventanas.Estudiante.VentanaPrincipalEstudianteController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="664.0" prefWidth="1041.0" stylesheets="@../../Estilos/ventanaInicioDocente.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Ventanas.Estudiante.VentanaPrincipalEstudianteController">
     <left>
         <VBox prefHeight="542.0" prefWidth="220.0" spacing="15.0" styleClass="primary_color" BorderPane.alignment="CENTER">
             <children>
@@ -128,14 +129,14 @@
                 </HBox>
             </top>
             <center>
-                <BorderPane fx:id="panelCentral" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                <BorderPane fx:id="panelCentral" prefHeight="518.0" prefWidth="811.0" BorderPane.alignment="CENTER">
                     <center>
-                        <StackPane fx:id="contenedorCambiante" prefHeight="547.0" prefWidth="811.0" BorderPane.alignment="CENTER" />
+                        <StackPane fx:id="contenedorCambiante" prefHeight="510.0" prefWidth="811.0" BorderPane.alignment="CENTER" />
                     </center>
                 </BorderPane>
             </center>
             <bottom>
-                <HBox prefHeight="52.0" prefWidth="811.0" BorderPane.alignment="CENTER" />
+                <HBox prefHeight="13.0" prefWidth="811.0" BorderPane.alignment="CENTER" />
             </bottom>
         </BorderPane>
     </center>
