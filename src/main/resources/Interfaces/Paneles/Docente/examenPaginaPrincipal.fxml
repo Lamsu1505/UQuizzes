@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import java.net.URL?>
+<?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="153.0" prefWidth="1101.0" style="-fx-border-color: grey; -fx-background-color: #dddddd;" stylesheets="@../../../Estilos/examenPaginaPrincipalDocente.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Docente.ExamenPaginaPrincipalController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="153.0" prefWidth="1101.0" style="-fx-border-color: grey; -fx-background-color: #dddddd;" stylesheets="@../../../Estilos/examenPaginaPrincipalDocente.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Docente.ExamenPaginaPrincipalController">
    <center>
       <HBox prefHeight="153.0" prefWidth="846.0" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
@@ -50,7 +46,7 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="131.0" prefWidth="116.0">
                      <children>
-                        <Button fx:id="btnEditar" mnemonicParsing="false" prefHeight="46.0" prefWidth="120.0" text="Editar" />
+                        <Button fx:id="btnEditar" mnemonicParsing="false" onAction="#irVentanaEditarExamen" prefHeight="46.0" prefWidth="120.0" text="Editar" />
                      </children>
                   </HBox>
                </children>

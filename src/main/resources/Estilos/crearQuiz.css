@@ -37,9 +37,7 @@
 /* Labels específicos del formulario */
 #nombreQuizLabel, #materiaLabel, #unidadLabel, #fechaInicioLabel,
 #horaLabel, #tiempoLabel, #pesoMateriaLabel, #cantidadPreguntasLbl,
-#grupoLbl, #dificultadLbl, #temaLabel, #descripcionLabel,
-#tipoPreguntaLabel, #enunciadoLabel, #grupoLabel, #publicaLabel,
-#subpreguntaLabel, #pesoLabel, #nivelLabel {
+#grupoLbl, #dificultadLbl, #temaLabel, #descripcionLabel {
     -fx-text-fill: #2c5234;
     -fx-font-size: 15px;
     -fx-font-weight: bold;
