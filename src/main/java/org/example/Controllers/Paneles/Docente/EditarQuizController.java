@@ -6,17 +6,14 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxListCell;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.example.ConexionDB.ConexionOracle;
 import org.example.Model.UQuizzes;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -28,8 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-
-public class CrearQuizController implements Initializable {
+public class EditarQuizController implements Initializable {
 
     @FXML
     private Label tituloLabel;
@@ -65,7 +61,7 @@ public class CrearQuizController implements Initializable {
     private TextField cantidadPreguntasTextField;
 
     @FXML
-    private ListView<TemaCheck> temasListView;
+    private ListView<CrearQuizController.TemaCheck> temasListView;
 
     @FXML
     private ComboBox<String> grupoComboBox;
@@ -85,17 +81,16 @@ public class CrearQuizController implements Initializable {
     @FXML
     private TextField horaLimiteTextField;
 
-
-
-    private ObservableList<TemaCheck> temasData = FXCollections.observableArrayList();
+    private ObservableList<CrearQuizController.TemaCheck> temasData = FXCollections.observableArrayList();
 
     private String idMateriaSeleccionada;
     private String idUnidadSeleccionada;
     private String idGrupoSeleccionado;
 
-    List<TemaCheck> temasSeleccionados = new ArrayList<>();
+    List<CrearQuizController.TemaCheck> temasSeleccionados = new ArrayList<>();
 
     private UQuizzes uQuizzes = UQuizzes.getInstance();
+    private int idExamen;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -106,7 +101,6 @@ public class CrearQuizController implements Initializable {
         dificultad.add("Facil");
         dificultad.add("Medio");
         dificultad.add("Dificil");
-
         dificultadComboBox.setItems(dificultad);
 
         ObservableList<String> automaticoManual = FXCollections.observableArrayList();
@@ -114,165 +108,51 @@ public class CrearQuizController implements Initializable {
         automaticoManual.add("Manual");
         comboBoxAutomaticoManual.setItems(automaticoManual);
 
-        try {
-            cargarMaterias();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        // Listener para cargar unidades cuando se selecciona una materia
-        materiaComboBox.setOnAction(event -> {
-            unidadComboBox.getSelectionModel().clearSelection();
-            unidadComboBox.getItems().clear();
-            temasData.clear();
-            temasListView.getItems().clear();
-
-
-            String nombreMateriaSeleccionada = materiaComboBox.getValue();
-            if (nombreMateriaSeleccionada != null) {
-
-                ConexionOracle conexion = new ConexionOracle();
-
-                if (conexion == null) {
-                    mostrarAlerta("Error de conexion", "Error de conexión con la base de datos.");
-                    return;
-                }
-
-                String sql = "select idmateria " +
-                        "from materia where nombre = '" + nombreMateriaSeleccionada + "'";
-
-                try (Connection connection = conexion.conectar();
-                     PreparedStatement stmt = connection.prepareStatement(sql)) {
-
-                    try (ResultSet rs = stmt.executeQuery()) {
-                        while (rs.next()) {
-                            idMateriaSeleccionada = rs.getString("IDMATERIA");
-                        }
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-
-                try {
-                    cargarGrupos();
-                    cargarUnidades();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    mostrarAlerta("Error" , "Error al cargar grupos en crearPreguntaController: " + e.getMessage());
-                }
-            }
-        });
-
-        // Listener para cargar temas cuando se selecciona una unidad
-        unidadComboBox.setOnAction(event -> {
-            temasListView.getItems().clear();
-            try{
-                String nombreUnidadSeleccionada = unidadComboBox.getValue();
-                if (nombreUnidadSeleccionada != null) {
-                    ConexionOracle conexion = new ConexionOracle();
-                    if (conexion == null) {
-                        mostrarAlerta("Error" , "Error de conexión con la base de datos.");
-                        return;
-                    }
-
-                    String sql = "select idunidad " +
-                            "from unidad where nombre = '" + nombreUnidadSeleccionada + "'";
-
-                    try (Connection connection = conexion.conectar();
-                         PreparedStatement stmt = connection.prepareStatement(sql)) {
-
-                        try (ResultSet rs = stmt.executeQuery()) {
-                            while (rs.next()) {
-                                idUnidadSeleccionada = rs.getString("IDUNIDAD");
-                            }
-                        }
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                try {
-                    cargarTemas();
-
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    mostrarAlerta("Error" , "Error al cargar temas en crearPreguntaController: " + e.getMessage());
-                }
-
-
-            }
-            catch(Exception e){
-                e.printStackTrace();
-            }
-        });
+        grupoComboBox.setEditable(false);
+        materiaComboBox.setEditable(false);
+        unidadComboBox.setEditable(false);
     }
 
     private void configurarListView() {
         // Configurar el ListView para usar CheckBoxes
-        temasListView.setCellFactory(CheckBoxListCell.forListView(TemaCheck::seleccionadoProperty));
-        // Asignar los datos al ListView
-        //temasListView.setItems(temasData);
+        temasListView.setCellFactory(CheckBoxListCell.forListView(CrearQuizController.TemaCheck::seleccionadoProperty));
     }
 
-    private void cargarMaterias() throws SQLException {
-        ObservableList<String> materias = FXCollections.observableArrayList();
-        List<Map<String, Object>> listaSQL = uQuizzes.getMateriasDocente(uQuizzes.getUsuarioEnSesion());
-
-        for (int i = 0; i < listaSQL.size(); i++) {
-            String nombreMateria = listaSQL.get(i).get("NOMBRE_MATERIA").toString();
-            materias.add(nombreMateria);
-            System.out.println(nombreMateria);
+    private void cargarInformacionExamen() {
+        // Cargar información del examen desde la base de datos
+        List<Map<String, Object>> lista = uQuizzes.obtenerExamenById(idExamen);
+        if(lista.size() > 1) {
+            throw new UnsupportedOperationException("Hay mas de un examen con el mismo id");
         }
+        else{
+            Map<String, Object> examen = lista.get(0);
+            System.out.println("Examen: " + examen.get("IDEXAMEN"));
 
-        materiaComboBox.setItems(materias);
-    }
+            nombreQuizTextField.setText(examen.get("NOMBRE").toString());
+            fechaInicioTextField.setText(examen.get("FECHA").toString());
+            horaTextField.setText(examen.get("HORA").toString());
+            descripcionTextField.setText(examen.get("DESCRIPCION").toString());
+            cantidadPreguntasTextField.setText(examen.get("CANTIDADPREGUNTAS").toString());
+            cantidadPreguntasBancoTextField.setText(examen.get("CANTIDADPREGUNTASBANCO").toString());
+            pesoMateriaTextField.setText(examen.get("PESOMATERIA").toString());
+            fechaLimiteTextField.setText(examen.get("FECHALIMITE").toString());
+            horaLimiteTextField.setText(examen.get("HORALIMITE").toString());
+            tiempoTextField.setText(examen.get("TIEMPOMINUTOS").toString());
 
-    private void cargarUnidades() throws SQLException {
+            //TODO en el metodo sql hacer join con materia, unidad y grupo para moestrar nombres
+            System.out.println("El examen es de " + examen.get("IDMATERIA"));
+            materiaComboBox.setValue(examen.get("IDMATERIA").toString());
 
-        ObservableList<String> unidades = FXCollections.observableArrayList();
-        List<Map<String, Object>> listaSQL = uQuizzes.getUnidadesDocenteByMateria(idMateriaSeleccionada);
 
-        for(int i =0 ; i < listaSQL.size() ; i++){
-            String nombreGrupo = listaSQL.get(i).get("NOMBRE_UNIDAD").toString();
-            unidades.add(nombreGrupo);
+            //TODO luego de poner informacion, poder editar el examen correctamente desde la base de datos
+
         }
-        unidadComboBox.setItems(unidades);
     }
 
-    private void cargarTemas() throws SQLException {
-        temasData.clear();
-        List<Map<String, Object>> listaSQL = uQuizzes.getTemasDocenteByUnidad(idUnidadSeleccionada);
-
-        System.out.println("la lista tiene " + listaSQL.size() + " elementos");
-
-        for (int i = 0; i < listaSQL.size(); i++) {
-            String nombreTema = listaSQL.get(i).get("NOMBRE").toString();
-            int idTema = Integer.parseInt(listaSQL.get(i).get("ID_TEMA").toString());
-            temasData.add(new TemaCheck(idTema, nombreTema, false));
-        }
-
-        temasListView.setItems(temasData);
-
-    }
-
-
-    private void cargarGrupos() throws SQLException {
-        ObservableList<String> grupos = FXCollections.observableArrayList();
-        List<Map<String, Object>> listaSQL = uQuizzes.getGruposDocenteByMateria(uQuizzes.getUsuarioEnSesion() , idMateriaSeleccionada);
-
-        for(int i =0 ; i < listaSQL.size() ; i++){
-            String nombreGrupo = listaSQL.get(i).get("NOMBRE_GRUPO").toString();
-            grupos.add(nombreGrupo);
-        }
-        grupoComboBox.setItems(grupos);
-
-
-    }
 
     @FXML
     private void cancelarEvent() {
-            limpiarCampos();
+        limpiarCampos();
     }
 
     @FXML
@@ -289,7 +169,7 @@ public class CrearQuizController implements Initializable {
             }
 
             // Obtener temas seleccionados
-            for (TemaCheck tema : temasData) {
+            for (CrearQuizController.TemaCheck tema : temasData) {
                 if (tema.isSeleccionado()) {
                     temasSeleccionados.add(tema);
                 }
@@ -334,7 +214,7 @@ public class CrearQuizController implements Initializable {
 
                 //Crea el banco
                 System.out.println("la cantidad de preguntasBanco es "+cantidadPreguntasBanco);
-                 idBancoCreado =1+ uQuizzes.crearBancoPreguntas(idExamenCreado, cantidadPreguntasBanco);
+                idBancoCreado =1+ uQuizzes.crearBancoPreguntas(idExamenCreado, cantidadPreguntasBanco);
                 mostrarInfo("Éxito", "El banco de preguntas ha sido creado exitosamente.");
             }
 
@@ -352,7 +232,7 @@ public class CrearQuizController implements Initializable {
                         if(idBancoCreado != 0){
 
                             ArrayList<Integer> listaIdTemasSeleccionado= new ArrayList<>();
-                            for (TemaCheck tema : temasSeleccionados) {
+                            for (CrearQuizController.TemaCheck tema : temasSeleccionados) {
                                 listaIdTemasSeleccionado.add(tema.getId());
                                 System.out.println("Tema agregado a la lista " + tema.getId());
                             }
@@ -397,8 +277,6 @@ public class CrearQuizController implements Initializable {
 
                 popupStage.centerOnScreen();
                 popupStage.showAndWait();
-
-
 
             }
         }
@@ -539,8 +417,13 @@ public class CrearQuizController implements Initializable {
         alert.showAndWait();
     }
 
+    public void setIdExamen(int idExamen) {
+        this.idExamen = idExamen;
+        cargarInformacionExamen();
+    }
 
-    public static class TemaCheck {
+
+    public class TemaCheck {
         private final IntegerProperty id;
         private final StringProperty nombre;
         private final BooleanProperty seleccionado;

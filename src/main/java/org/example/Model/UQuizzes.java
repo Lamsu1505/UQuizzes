@@ -174,5 +174,9 @@ public class UQuizzes {
     public List<Map<String, Object>> getExamenesEstudianteByMateria(int idMateriaSeleccionada) {
         return EstudianteDAO.getExamenesEstudianteByMateria(idMateriaSeleccionada , getUsuarioEnSesion());
     }
+
+    public List<Map<String, Object>> obtenerExamenById(int idExamen) {
+        return DocenteDAO.obtenerExamenById(idExamen);
+    }
 }
 

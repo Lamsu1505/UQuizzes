@@ -21,6 +21,35 @@ import java.util.stream.Collectors;
 public class DocenteDAO {
 
 
+    public static List<Map<String, Object>> obtenerExamenById(int idExamen) {
+        String call = "{ ? = call obtenerInformacionExamen(?) }";
+
+        List<Map<String, Object>> listaExamenes = new ArrayList<>();
+
+        try (
+                Connection conn = new ConexionOracle().conectar();
+                CallableStatement stmt = conn.prepareCall(call)
+        ) {
+            stmt.registerOutParameter(1, OracleTypes.CURSOR);
+            stmt.setInt(2, idExamen);
+            stmt.execute();
+
+            try (ResultSet rs = (ResultSet) stmt.getObject(1)) {
+                ResultSetMetaData md = rs.getMetaData();
+                int cols = md.getColumnCount();
+
+                while (rs.next()) {
+                    Map<String, Object> fila = new HashMap<>();
+                    for (int i = 1; i <= cols; i++) {
+                        fila.put(md.getColumnLabel(i), rs.getObject(i));
+                    }
+                    listaExamenes.add(fila);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();}
+        return listaExamenes;
+    }
 
     public List<Map<String, Object>> getExamenes(String idDocente) throws SQLException {
         String call = "{ ? = call obtenerExamenesDocente(?) }";

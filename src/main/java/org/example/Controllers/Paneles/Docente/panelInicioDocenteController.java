@@ -84,6 +84,7 @@ public class panelInicioDocenteController implements Initializable {
                 // 2) Obtén el controller y pásale los datos
                 ExamenPaginaPrincipalController ctrl = loader.getController();
 
+                ctrl.setIdExamen(Integer.parseInt(fila.get("IDEXAMEN").toString()));
                 ctrl.setNombreExamen("" + fila.get("NOMBRE_EXAMEN"));
                 ctrl.setMateria      ("" + fila.get("NOMBRE_MATERIA"));
                 ctrl.setGrupo        ("" + fila.get("NOMBRE_GRUPO"));
