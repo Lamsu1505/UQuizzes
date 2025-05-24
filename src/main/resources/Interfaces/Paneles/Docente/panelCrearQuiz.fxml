@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane prefHeight="752.0" prefWidth="1157.0" stylesheets="@../../../Estilos/crearQuiz.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Docente.CrearQuizController">
+<StackPane prefHeight="878.0" prefWidth="1157.0" stylesheets="@../../../Estilos/crearQuiz.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Docente.CrearQuizController">
     <children>
-        <VBox alignment="CENTER" maxWidth="1000.0" spacing="40.0">
+        <VBox alignment="CENTER" maxWidth="1000.0" spacing="50.0">
             <padding>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
@@ -27,7 +27,7 @@
                   <TextField fx:id="descripcionTextField" prefHeight="39.0" prefWidth="548.0" promptText="Descripcion" />
                </children>
             </HBox>
-                <GridPane hgap="15.0" vgap="15.0">
+                <GridPane hgap="15.0" vgap="15.0" VBox.vgrow="NEVER">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="300.0" />
@@ -35,11 +35,11 @@
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="160.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
