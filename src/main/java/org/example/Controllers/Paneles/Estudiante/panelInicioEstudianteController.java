@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -27,6 +28,7 @@ public class panelInicioEstudianteController implements Initializable {
     @FXML private Label lblBienvenido;
     @FXML private VBox vBoxContenedorExamenes;
     @FXML private ComboBox<String> comboBoxMateria;
+
 
     private int idMateriaSeleccionada;
     private final UQuizzes uQuizzes = UQuizzes.getInstance();
@@ -127,7 +129,7 @@ public class panelInicioEstudianteController implements Initializable {
         boolean hay = false;
 
         for (Map<String, Object> fila : lista) {
-            if (presentoExamen(fila)) continue;
+
 
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/Interfaces/Paneles/Estudiante/s/examenPaginaPrincipal.fxml")
@@ -138,11 +140,17 @@ public class panelInicioEstudianteController implements Initializable {
             ctrl.setNombreExamen(fila.get("NOMBRE_EXAMEN").toString());
             ctrl.setMateria(fila.get("NOMBRE_MATERIA").toString());
             ctrl.setGrupo(fila.get("NOMBRE_GRUPO").toString());
-            ctrl.setFecha(fila.get("FECHA").toString().substring(0, 10));
-            ctrl.setHora(fila.get("HORA").toString());
+            ctrl.setFecha(fila.get("FECHALIMITE").toString().substring(0, 10));
+            ctrl.setHora(fila.get("HORALIMITE").toString());
 
             vBoxContenedorExamenes.getChildren().add(examenNode);
             hay = true;
+
+            if (presentoExamen(fila)){
+                ctrl.deshabilitarBotonEmpezar();
+                ctrl.setNombreExamen(fila.get("NOMBRE_EXAMEN").toString() + " (YA PRESENTADO)");
+                continue;
+            };
         }
 
         if (!hay) {

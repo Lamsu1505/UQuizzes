@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.example.ConexionDB.ConexionOracle;
@@ -38,8 +39,8 @@ public class ExamenPaginaPrincipalController {
     @FXML
     private Label lblHora;
 
-    @FXML
-    private Button btnEditar;
+    @FXML private Button btnEmpezar;
+    @FXML private HBox hBoxContenedor;
 
 
     public void setNombreExamen(String nombre) {
@@ -117,5 +118,10 @@ public class ExamenPaginaPrincipalController {
     } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void deshabilitarBotonEmpezar() {
+        btnEmpezar.setDisable(true);
+        hBoxContenedor.setStyle("-fx-background-color: #bcabab");
     }
 }

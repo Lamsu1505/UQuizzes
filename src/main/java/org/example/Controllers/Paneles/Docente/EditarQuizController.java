@@ -108,9 +108,9 @@ public class EditarQuizController implements Initializable {
         automaticoManual.add("Manual");
         comboBoxAutomaticoManual.setItems(automaticoManual);
 
-        grupoComboBox.setEditable(false);
-        materiaComboBox.setEditable(false);
-        unidadComboBox.setEditable(false);
+
+
+
     }
 
     private void configurarListView() {
@@ -139,150 +139,131 @@ public class EditarQuizController implements Initializable {
             horaLimiteTextField.setText(examen.get("HORALIMITE").toString());
             tiempoTextField.setText(examen.get("TIEMPOMINUTOS").toString());
 
-            //TODO en el metodo sql hacer join con materia, unidad y grupo para moestrar nombres
             System.out.println("El examen es de " + examen.get("IDMATERIA"));
             materiaComboBox.setValue(examen.get("IDMATERIA").toString());
 
+            String sql = "SELECT m.nombre AS materia, t.nombre AS tema, u.nombre AS unidad, g.nombre AS grupo " +
+                    "FROM examen e " +
+                    "JOIN grupo g ON e.grupo_idgrupo = g.idGrupo " +
+                    "JOIN materia m ON e.materia_idmateria = m.idmateria " +
+                    "JOIN unidad u ON u.Materia_idmateria = m.idmateria " +
+                    "JOIN tema t ON u.idunidad = t.unidad_idunidad " +
+                    "WHERE e.idexamen = " + examen.get("IDEXAMEN");
 
-            //TODO luego de poner informacion, poder editar el examen correctamente desde la base de datos
 
+            try (Connection connection = new ConexionOracle().conectar();
+                 PreparedStatement stmt = connection.prepareStatement(sql);
+                 ResultSet rs = stmt.executeQuery()) {
+
+                String unidad = "";
+                while (rs.next()) {
+
+                    materiaComboBox.setValue(rs.getString("materia"));
+                    grupoComboBox.setValue(rs.getString("grupo"));
+                    unidad = rs.getString("unidad");
+                    unidadComboBox.setValue(unidad);
+                }
+
+                grupoComboBox.setEditable(false);
+                materiaComboBox.setEditable(false);
+                unidadComboBox.setEditable(false);
+
+                String sql2 = "select idunidad " +
+                        "from unidad where nombre = '" +  unidad +"'";
+
+
+                     PreparedStatement stmt2 = connection.prepareStatement(sql2);
+
+                    try (ResultSet rs2 = stmt2.executeQuery()) {
+                        while (rs2.next()) {
+                            idUnidadSeleccionada = rs2.getString("IDUNIDAD");
+                        }
+                    }catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                System.out.println(" la uniad es " +idUnidadSeleccionada);
+                temasData.clear();
+                List<Map<String, Object>> listaSQL = uQuizzes.getTemasDocenteByUnidad(idUnidadSeleccionada);
+
+                System.out.println("la lista tiene " + listaSQL.size() + " elementos");
+
+                for (int i = 0; i < listaSQL.size(); i++) {
+                    String nombreTema = listaSQL.get(i).get("NOMBRE").toString();
+                    int idTema = Integer.parseInt(listaSQL.get(i).get("ID_TEMA").toString());
+                    temasData.add(new CrearQuizController.TemaCheck(idTema, nombreTema, false));
+                }
+
+                temasListView.setItems(temasData);
+
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                mostrarAlerta("Error", "Error al cargar las materias, temas y unidades: " + e.getMessage());
+            }
+
+            temasListView.setEditable(false);
+            temasListView.setDisable(true);
+            comboBoxAutomaticoManual.setDisable(true);
+            dificultadComboBox.setDisable(true);
+            cantidadPreguntasBancoTextField.setEditable(false);
         }
     }
 
 
     @FXML
     private void cancelarEvent() {
-        limpiarCampos();
+        // Cerrar la ventana actual
+        Stage stage = (Stage) nombreQuizTextField.getScene().getWindow();
+        stage.close();
     }
 
     @FXML
-    private void siguienteEvent() throws IOException {
+    private void siguienteEvent() throws IOException, SQLException {
 
-        //obtiene si manual o automatico
-        if(comboBoxAutomaticoManual.getValue() == null){
-            mostrarAlerta("Error", "Debe seleccionar un modo de creación.");
+        if (!validarCampos()) {
             return;
-        }else {
-
-            if (!validarCampos()) {
-                return;
-            }
-
-            // Obtener temas seleccionados
-            for (CrearQuizController.TemaCheck tema : temasData) {
-                if (tema.isSeleccionado()) {
-                    temasSeleccionados.add(tema);
-                }
-            }
-
-            if (temasSeleccionados.isEmpty()) {
-                mostrarAlerta("Error", "Debe seleccionar al menos un tema.");
-                return;
-            }
-            int idDocente = Integer.parseInt(uQuizzes.getUsuarioEnSesion());
-            int idGrupo = getIdGrupoSeleccionado();
-            int idMateria = Integer.parseInt(idMateriaSeleccionada);
-            String nombreQuiz = nombreQuizTextField.getText();
-            String fechaInicio = fechaInicioTextField.getText();
-            int cantidadPreguntas = Integer.parseInt(cantidadPreguntasTextField.getText());
-            String hora = horaTextField.getText();
-            String descripcion = descripcionTextField.getText();
-            int pesoMateria = Integer.parseInt(pesoMateriaTextField.getText());
-            double notaMinimaPasar=3.0;
-            int cantidadPreguntasBanco = Integer.parseInt(cantidadPreguntasBancoTextField.getText());
-            String fechaFin = fechaLimiteTextField.getText();
-            String horaLimite = horaLimiteTextField.getText();
-            String dificultad = dificultadComboBox.getValue();
-
-            String tieneTiempo;
-            int tiempo;
-            if(tiempoTextField.getText().isEmpty()){
-                tiempo = 0;
-                tieneTiempo="N";
-            }
-            else{
-                tiempo = Integer.parseInt(tiempoTextField.getText());
-                tieneTiempo="S";
-            }
-
-            //crea el examen sin preguntas
-            int idExamenCreado= 1+ uQuizzes.crearQuiz(idDocente, idGrupo, idMateria, nombreQuiz, fechaInicio, cantidadPreguntas, tiempo , hora , descripcion , pesoMateria , tieneTiempo , notaMinimaPasar , fechaFin , horaLimite , cantidadPreguntasBanco);
-            int idBancoCreado = 0;
-
-            if(idExamenCreado != 0){
-                mostrarInfo("Éxito", "El quiz ha sido creado exitosamente.");
-
-                //Crea el banco
-                System.out.println("la cantidad de preguntasBanco es "+cantidadPreguntasBanco);
-                idBancoCreado =1+ uQuizzes.crearBancoPreguntas(idExamenCreado, cantidadPreguntasBanco);
-                mostrarInfo("Éxito", "El banco de preguntas ha sido creado exitosamente.");
-            }
-
-
-            String modoCreacion = comboBoxAutomaticoManual.getValue();
-
-            if (modoCreacion.equals("Automatico")) {
-
-                try{
-                    if(idExamenCreado != 0){
-                        mostrarInfo("Éxito", "El quiz ha sido creado exitosamente.");
-
-                        //Crea el banco
-
-                        if(idBancoCreado != 0){
-
-                            ArrayList<Integer> listaIdTemasSeleccionado= new ArrayList<>();
-                            for (CrearQuizController.TemaCheck tema : temasSeleccionados) {
-                                listaIdTemasSeleccionado.add(tema.getId());
-                                System.out.println("Tema agregado a la lista " + tema.getId());
-                            }
-
-
-                            if (uQuizzes.agregarPreguntasAlBanco(idBancoCreado, listaIdTemasSeleccionado) > 0) {
-                                mostrarInfo("Éxito", "Preguntas añadidas al banco");
-
-                                limpiarCampos();
-                            }
-
-                        }
-                        else{
-                            mostrarAlerta("Error", "No se pudo crear el banco de preguntas.");
-                        }
-                    } else {
-                        mostrarAlerta("Error", "No se pudo crear el quiz.");
-                    }
-                }catch (Exception e){
-                    mostrarAlerta("Error", "Error al crear el quiz: " + e.getMessage());
-                    e.printStackTrace();
-                }
-
-            } else if (modoCreacion.equals("Manual")) {
-
-
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfaces/Paneles/Docente/seleccionar_preguntas.fxml"));
-                Parent root = loader.load();
-
-                SeleccionarPreguntasController controller = loader.getController();
-                controller.setIdExamenCreado(idExamenCreado);
-                controller.setInfo(nombreQuiz , cantidadPreguntasBanco , dificultad , idBancoCreado);
-
-                Stage popupStage = new Stage();
-                popupStage.setTitle("Agregar preguntas manualmente");
-                popupStage.setScene(new Scene(root));
-                popupStage.setResizable(false);
-
-                Stage owner = (Stage) nombreQuizTextField.getScene().getWindow();
-                popupStage.initModality(javafx.stage.Modality.WINDOW_MODAL);
-                popupStage.initOwner(owner);
-
-                popupStage.centerOnScreen();
-                popupStage.showAndWait();
-
-            }
         }
 
-        // Guardar datos y proceder a la siguiente pantalla
-        //guardarQuiz(temasSeleccionados);
+        int idDocente = Integer.parseInt(uQuizzes.getUsuarioEnSesion());
+        String nombreQuiz = nombreQuizTextField.getText();
+        String fechaInicio = fechaInicioTextField.getText();
+        int cantidadPreguntas = Integer.parseInt(cantidadPreguntasTextField.getText());
+        String hora = horaTextField.getText();
+        String descripcion = descripcionTextField.getText();
+        int pesoMateria = Integer.parseInt(pesoMateriaTextField.getText());
+        double notaMinimaPasar=3.0;
+        int cantidadPreguntasBanco = Integer.parseInt(cantidadPreguntasBancoTextField.getText());
+        String fechaFin = fechaLimiteTextField.getText();
+        String horaLimite = horaLimiteTextField.getText();
+
+        String tieneTiempo;
+        int tiempo;
+        if(tiempoTextField.getText().isEmpty()){
+            tiempo = 0;
+            tieneTiempo="N";
+        }
+        else{
+            tiempo = Integer.parseInt(tiempoTextField.getText());
+            tieneTiempo="S";
+        }
+
+        try{
+            //edita el examen
+
+            boolean editaExamen = uQuizzes.editarQuiz(idExamen , idDocente, nombreQuiz, fechaInicio, cantidadPreguntas, tiempo , hora , descripcion , pesoMateria , tieneTiempo , notaMinimaPasar , fechaFin , horaLimite , cantidadPreguntasBanco);
+            if(editaExamen){
+
+                mostrarInfo("Examen editado", "El examen ha sido editado correctamente.");
+                Stage stage = (Stage) nombreQuizTextField.getScene().getWindow();
+                stage.close();
+
+            }
+        }catch (SQLException e){
+            mostrarAlerta("Error al crear el examen", e.getMessage());
+            return;
+        }
+
+
     }
 
     private void limpiarCampos() {

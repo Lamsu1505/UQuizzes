@@ -61,8 +61,5 @@ INSERT INTO Examen (
 
 RETURN v_idQuiz;
 
-EXCEPTION
-    WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('Error al insertar en Opciones: ' || SQLERRM);
 RETURN 0;
 END crearExamen;

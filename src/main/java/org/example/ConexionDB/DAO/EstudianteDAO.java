@@ -53,6 +53,47 @@ public class EstudianteDAO {
         }
     }
 
+    public static boolean empezarExamenBaseDatos(int idUsuario, int idExamen) throws SQLException {
+
+        boolean respuesta = false;
+        String call = "{ ? = call empezarExamen(?, ?) }";
+
+        try (
+                Connection conn = new ConexionOracle().conectar();
+                CallableStatement stmt = conn.prepareCall(call)
+        ) {
+
+            stmt.registerOutParameter(1, Types.INTEGER);
+
+            stmt.setInt(2, idExamen);
+            stmt.setInt(3, idUsuario);
+
+            stmt.execute();
+
+            int resultado = stmt.getInt(1);
+
+            if(resultado == 1){
+                return true;
+            }
+
+        } catch (SQLException ex) {
+            int errorCode = ex.getErrorCode();
+            String mensaje   = ex.getMessage();
+            switch (errorCode) {
+                case 20001:
+                case 20002:
+                case 20003:
+                case 20010:
+                    // relanzamos la misma excepción para que suba al controlador
+                    throw new SQLException(mensaje, ex.getSQLState(), errorCode);
+                default:
+                    // los demás los dejamos que suban normalmente
+                    throw ex;
+            }
+        }
+        return respuesta;
+    }
+
     public String iniciarSesion(String usuario, String password) {
         String call = "{ ? = call iniciarSesionEstudiante(?, ?) }";
 

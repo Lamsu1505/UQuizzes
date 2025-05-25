@@ -24,7 +24,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="691.0" prefWidth="1041.0" stylesheets="@../../Estilos/ventanaInicioDocente.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Ventanas.Docente.VentanaPrincipalDocenteController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="619.0" prefWidth="1041.0" stylesheets="@../../Estilos/ventanaInicioDocente.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Ventanas.Docente.VentanaPrincipalDocenteController">
     <left>
         <VBox prefHeight="542.0" prefWidth="220.0" spacing="15.0" styleClass="primary_color" BorderPane.alignment="CENTER">
             <children>

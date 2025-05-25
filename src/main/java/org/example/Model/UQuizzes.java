@@ -1,5 +1,6 @@
 package org.example.Model;
 
+import oracle.jdbc.proxy.annotation.Pre;
 import org.example.ConexionDB.ConexionOracle;
 import org.example.ConexionDB.DAO.DocenteDAO;
 import org.example.ConexionDB.DAO.EstudianteDAO;
@@ -115,7 +116,7 @@ public class UQuizzes {
     }
 
 
-    public int crearQuiz(int idDocente, int idGrupo, int idMateria, String nombreQuiz, String fechaInicio, int cantidadPreguntas, int tiempo, String hora, String descripcion, int pesoMateria, String tieneTiempo, double notaMinimaPasar , String fechaFin , String horaLimite , int cantidadBanco) {
+    public int crearQuiz(int idDocente, int idGrupo, int idMateria, String nombreQuiz, String fechaInicio, int cantidadPreguntas, int tiempo, String hora, String descripcion, int pesoMateria, String tieneTiempo, double notaMinimaPasar , String fechaFin , String horaLimite , int cantidadBanco) throws SQLException {
         return docenteDAO.crearQuiz(idDocente , idGrupo , idMateria , nombreQuiz , fechaInicio , cantidadPreguntas , tiempo , hora , descripcion , pesoMateria , tieneTiempo , notaMinimaPasar , fechaFin , horaLimite ,  cantidadBanco);
     }
 
@@ -143,8 +144,8 @@ public class UQuizzes {
         return estudianteDAO.getMateriasEstudiante(usuarioEnSesion);
     }
 
-    public boolean validarRespuestaUnicaRespuesta(int idPregunta, String respuesta) {
-        return PreguntaDAO.validarRespuestaUnicaRespuesta(idPregunta, respuesta);
+    public boolean validarRespuesta(int idPregunta, String respuesta) {
+        return PreguntaDAO.validarRespuesta(idPregunta, respuesta);
     }
 
     public boolean validarRespuestaVerdaderoFalso(int idPregunta, String respuesta) {
@@ -177,6 +178,27 @@ public class UQuizzes {
 
     public List<Map<String, Object>> obtenerExamenById(int idExamen) {
         return DocenteDAO.obtenerExamenById(idExamen);
+    }
+
+
+    public boolean editarQuiz(int idExamen, int idDocente, String nombreQuiz, String fechaInicio, int cantidadPreguntas, int tiempo, String hora, String descripcion, int pesoMateria, String tieneTiempo, double notaMinimaPasar, String fechaFin, String horaLimite, int cantidadPreguntasBanco) throws SQLException {
+        return DocenteDAO.editarQuiz(idExamen, idDocente, nombreQuiz, fechaInicio, cantidadPreguntas, tiempo, hora, descripcion, pesoMateria, tieneTiempo, notaMinimaPasar, fechaFin, horaLimite, cantidadPreguntasBanco);
+    }
+
+    public boolean empezarExamenBaseDatos(int idUsuario, int idExamen) throws SQLException {
+        return EstudianteDAO.empezarExamenBaseDatos(idUsuario, idExamen);
+    }
+
+    public Map<PruebaPreguntas, List<OpcionMultipleRespuesta>> obtenerPreguntasPorExamen(int idExamen) {
+        return PreguntaDAO.obtenerPreguntasPorExamen(idExamen);
+    }
+
+    public int registrarPreguntaDetalleEnSolucion(int idPregunta, int idUsuario, int idExamen) {
+        return PreguntaDAO.registrarPreguntaDetalleEnSolucion(idPregunta, idUsuario, idExamen);
+    }
+
+    public boolean guardarRespuesta(int idPregunta, String respuesta, boolean esCorrecta) {
+        return  PreguntaDAO.guardarRespuesta(idPregunta, respuesta, esCorrecta);
     }
 }
 

@@ -46,6 +46,8 @@ public class FormatoUnicaRespuestaController implements Initializable {
 
     private UQuizzes uQuizzes = UQuizzes.getInstance();
 
+    private int idPreguntaDetalle;
+
 
     private ToggleGroup toggleGroup = new ToggleGroup(); // para controlar selección única
     private List<HBox> listaOpciones = new ArrayList<>();
@@ -69,7 +71,6 @@ public class FormatoUnicaRespuestaController implements Initializable {
     private void agregarOpcionConTexto(String texto) {
         // Crear modelo
         OpcionMultipleRespuesta opcion = new OpcionMultipleRespuesta(texto);
-        listaOpcionesModel.add(opcion);
 
         // Crear contenedor visual
         HBox opcionHBox = new HBox(10);
@@ -131,25 +132,6 @@ public class FormatoUnicaRespuestaController implements Initializable {
         return -1;
     }
 
-    private void ponerOpcionSeleccionada() {
-        for (OpcionMultipleRespuesta op : listaOpcionesModel) {
-            op.setEsCorrecta(false);
-        }
-        int opcionCorrecta = getOpcionCorrectaVista();
-
-        if (opcionCorrecta >= 0 && opcionCorrecta < listaOpcionesModel.size()) {
-            listaOpcionesModel.get(opcionCorrecta).setEsCorrecta(true);
-        }
-    }
-
-    public List<OpcionMultipleRespuesta> getListaOpciones() {
-
-        System.out.println(listaOpcionesModel.size() + " " + listaOpciones.size());
-        ponerOpcionSeleccionada();
-        return listaOpcionesModel;
-    }
-
-
 
     public void setOpciones(List<OpcionMultipleRespuesta> opciones , int idPregunta) {
         System.out.println("laaaaaaaaaaaaaaaaaa pregunta es " + idPregunta);
@@ -171,7 +153,10 @@ public class FormatoUnicaRespuestaController implements Initializable {
 
 
     public void registrarRespuesta(ActionEvent actionEvent) {
+        System.out.println(listaOpcionesModel);
+        System.out.println(listaOpciones);
         int indiceSeleccionado = getOpcionCorrectaVista();
+        System.out.println("el indice seleccionado es " + indiceSeleccionado);
 
         if (indiceSeleccionado == -1) {
             mensajeError.setText("Debe seleccionar al menos una opción .");
@@ -194,20 +179,38 @@ public class FormatoUnicaRespuestaController implements Initializable {
 
         System.out.println("Respuesta seleccionada: " + respuesta);
 
-        if(uQuizzes.validarRespuestaUnicaRespuesta(idPregunta , respuesta)){
-            mensajeError.setText("Respuesta correcta");
-            mensajeError.setTextFill(Paint.valueOf("green"));
-            mensajeError.setVisible(true);
-            disableAndColorContainer(true);
+        boolean respuestaIsCOrrecta = uQuizzes.validarRespuesta(idPregunta , respuesta);
+
+        System.out.println("Respuesta es correcta?: " + respuestaIsCOrrecta);
+
+        if(respuestaIsCOrrecta){
+            //guardar respuesta
+            if(uQuizzes.guardarRespuesta(idPreguntaDetalle , respuesta , true)){
+                System.out.println("Respuesta guardada correctamente");
+
+                mensajeError.setText("Respuesta correcta");
+                mensajeError.setTextFill(Paint.valueOf("green"));
+                mensajeError.setVisible(true);
+                disableAndColorContainer(true);
+            }
+            else {
+                mensajeError.setText("Error al guardar la respuesta en la base de datos");
+                mensajeError.setVisible(true);
+            }
         }
         else {
-            mensajeError.setText("Respuesta incorrecta");
-            mensajeError.setTextFill(Paint.valueOf("red"));
-            mensajeError.setVisible(true);
-            disableAndColorContainer(false);
-        }
 
-        System.out.println("Respuesta registrada: " + listaOpcionesModel.get(indiceSeleccionado).getTexto());
+            if(uQuizzes.guardarRespuesta(idPreguntaDetalle , respuesta , false)){
+                System.out.println("Respuesta guardada correctamente");
+
+                mensajeError.setText("Respuesta incorrecta");
+                mensajeError.setTextFill(Paint.valueOf("red"));
+                mensajeError.setVisible(true);
+                disableAndColorContainer(false);
+            }else {
+                mensajeError.setText("Error al guardar la respuesta en la base de datos");
+            }
+        }
     }
 
     private void disableAndColorContainer(boolean correcto) {
@@ -248,4 +251,7 @@ public class FormatoUnicaRespuestaController implements Initializable {
         });
     }
 
+    public void setIdPreguntaDetalle(int idPreguntaDetalle) {
+        this.idPreguntaDetalle = idPreguntaDetalle;
+    }
 }

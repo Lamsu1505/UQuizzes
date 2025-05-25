@@ -51,6 +51,85 @@ public class DocenteDAO {
         return listaExamenes;
     }
 
+    public static boolean editarQuiz(
+            int idExamen,
+            int idDocente,
+            String nombreQuiz,
+            String fechaInicio,
+            int cantidadPreguntas,
+            int tiempo,
+            String hora,
+            String descripcion,
+            int pesoMateria,
+            String tieneTiempo,
+            double notaMinimaPasar,
+            String fechaLimite,
+            String horaLimite,
+            int cantidadPreguntasBanco
+    ) throws SQLException {
+        boolean respuesta = false;
+
+        // Ahora tenemos 14 parámetros IN, así que 14 signos de ? dentro de los paréntesis:
+        String call = "{ ? = call editarExamen(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }";
+
+        try (
+                Connection conn = new ConexionOracle().conectar();
+                CallableStatement stmt = conn.prepareCall(call)
+        ) {
+            stmt.registerOutParameter(1, Types.INTEGER);
+
+            // 1er IN  → p_idExamen
+            stmt.setInt(2, idExamen);
+            // 2º IN  → p_idDocente
+            stmt.setInt(3, idDocente);
+            // 3º IN  → p_nombre
+            stmt.setString(4, nombreQuiz);
+            // 4º IN  → p_fecha
+            stmt.setString(5, fechaInicio);
+            // 5º IN  → p_cantidadPreguntas
+            stmt.setInt(6, cantidadPreguntas);
+            // 6º IN  → p_tiempoMinutos
+            stmt.setInt(7, tiempo);
+            // 7º IN  → p_hora
+            stmt.setString(8, hora);
+            // 8º IN  → p_descripcion
+            stmt.setString(9, descripcion);
+            // 9º IN  → p_pesoMateria
+            stmt.setInt(10, pesoMateria);
+            // 10º IN → p_tieneLimiteTiempo
+            stmt.setString(11, tieneTiempo);
+            // 11º IN → p_notaMinimaPasar
+            stmt.setDouble(12, notaMinimaPasar);
+            // 12º IN → p_fechaLimite
+            stmt.setString(13, fechaLimite);
+            // 13º IN → p_horaLimite
+            stmt.setString(14, horaLimite);
+            // 14º IN → p_cantidadBanco
+            stmt.setInt(15, cantidadPreguntasBanco);
+
+            stmt.execute();
+
+            // el RETURN de la función PL/SQL llega en getInt(1)
+            respuesta = (stmt.getInt(1) == 1);
+            return respuesta;
+
+        } catch (SQLException ex) {
+            // tu bloque personalizado de catch, sin tocar
+            int errorCode = ex.getErrorCode();
+            String mensaje   = ex.getMessage();
+            switch (errorCode) {
+                case 20001:
+                case 20002:
+                case 20003:
+                case 20010:
+                    throw new SQLException(mensaje, ex.getSQLState(), errorCode);
+                default:
+                    throw ex;
+            }
+        }
+    }
+
+
     public List<Map<String, Object>> getExamenes(String idDocente) throws SQLException {
         String call = "{ ? = call obtenerExamenesDocente(?) }";
 
@@ -535,7 +614,7 @@ public class DocenteDAO {
     }
 
 
-    public int crearQuiz(int idDocente, int idGrupo, int idMateria, String nombreQuiz, String fechaInicio, int cantidadPreguntas, int tiempo, String hora, String descripcion, int pesoMateria, String tieneTiempo, double notaMinimaPasar ,  String fechaLimite , String horaLimite , int cantidadBanco) {
+    public int crearQuiz(int idDocente, int idGrupo, int idMateria, String nombreQuiz, String fechaInicio, int cantidadPreguntas, int tiempo, String hora, String descripcion, int pesoMateria, String tieneTiempo, double notaMinimaPasar ,  String fechaLimite , String horaLimite , int cantidadBanco) throws SQLException {
 
         int respuesta = 0;
 
@@ -575,16 +654,23 @@ public class DocenteDAO {
             return respuesta;
 
 
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Optional<ButtonType> buttonType = new Alert(Alert.AlertType.ERROR,
-                    "Error al crear la pregunta:\n" + e.getMessage()).showAndWait();
-
+        } catch (SQLException ex) {
+            int errorCode = ex.getErrorCode();
+            String mensaje   = ex.getMessage();
+            switch (errorCode) {
+                case 20001:
+                case 20002:
+                case 20003:
+                case 20010:
+                    // relanzamos la misma excepción para que suba al controlador
+                    throw new SQLException(mensaje, ex.getSQLState(), errorCode);
+                default:
+                    // los demás los dejamos que suban normalmente
+                    throw ex;
+            }
 
         }
-        return respuesta;
+
     }
 
     public int crearBancoPreguntasExamen(int idExamenCreado, int cantidadPreguntasBanco) {

@@ -40,6 +40,7 @@ public class FormatoEmparejamientoController {
     private UQuizzes uQuizzes = UQuizzes.getInstance();
 
     private int idPregunta;
+    private int idPreguntaDetalle;
 
 
     // Lista para almacenar los pares de elementos
@@ -152,27 +153,53 @@ public class FormatoEmparejamientoController {
 
             respuestasUsuario.add(ladoA + ";" + ladoB);
 
-            if(uQuizzes.validarRespuestaEmparejar(respuestasUsuario, idPregunta)){
-                mensajeError.setText("Respuesta correcta");
-                mensajeError.setTextFill(Paint.valueOf("green"));
-                mensajeError.setVisible(true);
-                disableAndColorContainer(true);
+            String respuestas= "";
+            for (String respuesta : respuestasUsuario) {
+                respuestas += respuesta + "/";
             }
-            else{
-                mensajeError.setText("Respuesta incorrecta");
-                mensajeError.setTextFill(Paint.valueOf("red"));
-                mensajeError.setVisible(true);
 
-                //para deshabilitar el botón y cambiar el color de fondo
-                disableAndColorContainer(false);
+
+            boolean respuestaIsCOrrecta = uQuizzes.validarRespuestaEmparejar(respuestasUsuario , idPregunta);
+
+            System.out.println("Respuesta es correcta?: " + respuestaIsCOrrecta);
+            System.out.println("idPreguntaDetallee: " + idPreguntaDetalle);
+
+            if(respuestaIsCOrrecta){
+                //guardar respuesta
+                if(uQuizzes.guardarRespuesta(idPreguntaDetalle , respuestas , true)){
+                    System.out.println("Respuesta guardada correctamente");
+
+                    mensajeError.setText("Respuesta correcta");
+                    mensajeError.setTextFill(Paint.valueOf("green"));
+                    mensajeError.setVisible(true);
+                    disableAndColorContainer(true);
+                }
+                else {
+                    mensajeError.setText("Error al guardar la respuesta en la base de datos");
+                    mensajeError.setVisible(true);
+                }
             }
+            else {
+
+                if(uQuizzes.guardarRespuesta(idPreguntaDetalle , respuestas , false)){
+                    System.out.println("Respuesta guardada correctamente");
+
+                    mensajeError.setText("Respuesta incorrecta");
+                    mensajeError.setTextFill(Paint.valueOf("red"));
+                    mensajeError.setVisible(true);
+                    disableAndColorContainer(false);
+                }else {
+                    mensajeError.setText("Error al guardar la respuesta en la base de datos");
+                }
+            }
+
         }
 
-        // Mostrar respuestas (solo para prueba)
-        System.out.println("Respuestas emparejadas del usuario:");
-        for (String r : respuestasUsuario) {
-            System.out.println(r);
-        }
+
+    }
+
+    public void setIdPreguntaDetalle(int idPreguntaDetalle) {
+        this.idPreguntaDetalle = idPreguntaDetalle;
     }
 
 

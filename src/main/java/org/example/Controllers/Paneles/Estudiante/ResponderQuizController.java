@@ -3,6 +3,7 @@ package org.example.Controllers.Paneles.Estudiante;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -12,6 +13,7 @@ import org.example.ConexionDB.DAO.PreguntaDAO;
 import org.example.Controllers.Paneles.Estudiante.FormatosRespuestas.*;
 import org.example.Model.OpcionesRespuesta.OpcionMultipleRespuesta;
 import org.example.Model.PruebaPreguntas;
+import org.example.Model.UQuizzes;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -40,6 +42,9 @@ public class ResponderQuizController {
     @FXML
     private Label lblIdExamen;
 
+
+    private UQuizzes uQuizzes = UQuizzes.getInstance();
+
     @FXML
     public void initialize() {
 
@@ -47,8 +52,9 @@ public class ResponderQuizController {
 
 
     public void cargarPreguntasDelExamen(int idExamen , int cantidadPreguntasBanco , int cantidadPreguntasGeneral) {
-        PreguntaDAO dao = new PreguntaDAO();
-        Map<PruebaPreguntas, List<OpcionMultipleRespuesta>> preguntasMap = dao.obtenerPreguntasPorExamen(idExamen);
+
+        Map<PruebaPreguntas, List<OpcionMultipleRespuesta>> preguntasMap = uQuizzes.obtenerPreguntasPorExamen(idExamen);
+        System.out.println(preguntasMap);
 
         // Obtener la lista de todas las preguntas disponibles
         List<Map.Entry<PruebaPreguntas, List<OpcionMultipleRespuesta>>> listaPreguntas = new ArrayList<>(preguntasMap.entrySet());
@@ -62,11 +68,28 @@ public class ResponderQuizController {
 
         // Agregar las preguntas seleccionadas
         for (Map.Entry<PruebaPreguntas, List<OpcionMultipleRespuesta>> entry : seleccionadas) {
-            agregarPregunta(entry.getKey(), entry.getValue());
+
+            //añadir pregunta a detallePregunta con idSolucion
+            int idPregunta = entry.getKey().getIdPregunta();
+            int idUsuario = Integer.parseInt(uQuizzes.getUsuarioEnSesion());
+
+            int idPreguntaDetalle = 2 + uQuizzes.registrarPreguntaDetalleEnSolucion(idPregunta, idUsuario , idExamen );
+            System.out.println("ID de pregunta detalle registrado: " + idPreguntaDetalle);
+
+            if(idPreguntaDetalle == -1){
+                System.out.println("Error al registrar la pregunta en detallePregunta");
+                return;
+            }
+            else {
+                System.out.println("Pregunta registrada en detallePregunta con ID: " + idPreguntaDetalle);
+                agregarPregunta(entry.getKey(), entry.getValue() , idPreguntaDetalle);
+            }
+
+
         }
     }
 
-    public void agregarPregunta(PruebaPreguntas pregunta, List<OpcionMultipleRespuesta> opciones) {
+    public void agregarPregunta(PruebaPreguntas pregunta, List<OpcionMultipleRespuesta> opciones , int idPreguntaDetalle) {
         try {
             String fxmlRuta = "";
             FXMLLoader loader;
@@ -101,6 +124,7 @@ public class ResponderQuizController {
                 FormatoUnicaRespuestaController controller = loader.getController();
                 controller.setOpciones(opciones , pregunta.getIdPregunta() );
                 controller.setEnunciado(pregunta.getEnunciado());
+                controller.setIdPreguntaDetalle(idPreguntaDetalle);
 
             }
 
@@ -108,24 +132,29 @@ public class ResponderQuizController {
                 FormatoVerdaderoFalsoController controller = loader.getController();
                 controller.setEnunciado(pregunta.getEnunciado());
                 controller.setOpciones(opciones , pregunta.getIdPregunta());
+                controller.setIdPreguntaDetalle(idPreguntaDetalle);
+
             }
 
             else if (pregunta.getIdTipoPregunta() == 3) {
                 FormatoRespuestaCortaController controller = loader.getController();
                 controller.setEnunciado(pregunta.getEnunciado());
                 controller.setIdPregunta(pregunta.getIdPregunta());
+                controller.setIdPreguntaDetalle(idPreguntaDetalle);
             }
 
             else if (pregunta.getIdTipoPregunta() == 4) {
                 FormatoEmparejamientoController controller = loader.getController();
                 controller.setEnunciado(pregunta.getEnunciado());
                 controller.setOpciones(opciones , pregunta.getIdPregunta());
+                controller.setIdPreguntaDetalle(idPreguntaDetalle);
             }
 
             else if (pregunta.getIdTipoPregunta() == 5) {
                 FormatoSeleccionMultipleController controller = loader.getController();
                 controller.setEnunciado(pregunta.getEnunciado());
                 controller.setOpciones(opciones , pregunta.getIdPregunta());
+                controller.setIdPreguntaDetalle(idPreguntaDetalle);
 
             }
 
@@ -141,7 +170,40 @@ public class ResponderQuizController {
         this.idExamen = idExamen;
         lblIdExamen.setText("Examen " + idExamen);
 
-        cargarPreguntas();
+        empezarExamenBaseDatos();
+
+    }
+
+    private void empezarExamenBaseDatos() {
+
+        int idUsuario = Integer.parseInt( uQuizzes.getUsuarioEnSesion());
+        System.out.println("ID de usuario: " + idUsuario);
+        System.out.println("ID de examen: " + idExamen);
+        try{
+            boolean empezado = uQuizzes.empezarExamenBaseDatos(idUsuario, idExamen);
+
+            if (empezado) {
+                cargarPreguntas();
+            } else {
+                System.out.println("Error al iniciar el examen en la base de datos.");
+            }
+
+
+        }catch (Exception e) {
+
+            mostrarAlerta("Error al crear el examen", e.getMessage());
+            return;  //
+        }
+
+
+    }
+
+    private void mostrarAlerta(String titulo, String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
     }
 
     public void cargarPreguntas() {

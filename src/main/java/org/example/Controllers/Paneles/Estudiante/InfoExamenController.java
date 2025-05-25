@@ -66,7 +66,7 @@ public class InfoExamenController {
 
         ResponderQuizController controller = loader.getController();
 
-        //Carga preguntas del examen
+        //Carga preguntas del examen y regisstra que lo empezó
         controller.setIdExamen(idExamen);
 
     }

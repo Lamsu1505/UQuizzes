@@ -39,6 +39,8 @@ public class FormatoSeleccionMultipleController {
 
     private UQuizzes uQuizzes = UQuizzes.getInstance();
 
+    private int idPreguntaDetalle;
+
 
     // Lista para almacenar las opciones
     private List<OpcionMultiple> listaOpciones = new ArrayList<>();
@@ -157,21 +159,44 @@ public class FormatoSeleccionMultipleController {
         mensajeError.setVisible(false);
 
 
-        boolean esCorrecta;
-        if(uQuizzes.validarRespuestaMultiple(idPregunta , opcionesSeleccionadas)){
-            mensajeError.setText("Respuesta correcta");
-            mensajeError.setTextFill(Paint.valueOf("green"));
-            mensajeError.setVisible(true);
-             esCorrecta = true;
-        }
-        else {
-            mensajeError.setText("Respuesta incorrecta");
-            mensajeError.setTextFill(Paint.valueOf("red"));
-            mensajeError.setVisible(true);
-            esCorrecta = false;
+        boolean respuestaIsCOrrecta = uQuizzes.validarRespuestaMultiple(idPregunta , opcionesSeleccionadas);
+
+        String respuesta="";
+        for (OpcionMultipleRespuesta op : opcionesSeleccionadas) {
+            respuesta += op.getTexto();
+            respuesta += ";";
         }
 
-        disableAndColorContainer(esCorrecta);
+        System.out.println("Respuesta es correcta?: " + respuestaIsCOrrecta);
+
+        if(respuestaIsCOrrecta){
+            //guardar respuesta
+            if(uQuizzes.guardarRespuesta(idPreguntaDetalle , respuesta , true)){
+                System.out.println("Respuesta guardada correctamente");
+
+                mensajeError.setText("Respuesta correcta");
+                mensajeError.setTextFill(Paint.valueOf("green"));
+                mensajeError.setVisible(true);
+                disableAndColorContainer(true);
+            }
+            else {
+                mensajeError.setText("Error al guardar la respuesta en la base de datos");
+                mensajeError.setVisible(true);
+            }
+        }
+        else {
+
+            if(uQuizzes.guardarRespuesta(idPreguntaDetalle , respuesta , false)){
+                System.out.println("Respuesta guardada correctamente");
+
+                mensajeError.setText("Respuesta incorrecta");
+                mensajeError.setTextFill(Paint.valueOf("red"));
+                mensajeError.setVisible(true);
+                disableAndColorContainer(false);
+            }else {
+                mensajeError.setText("Error al guardar la respuesta en la base de datos");
+            }
+        }
     }
 
     public void setOpciones(List<OpcionMultipleRespuesta> opciones , int idPregunta) {
@@ -182,6 +207,10 @@ public class FormatoSeleccionMultipleController {
         for (OpcionMultipleRespuesta opcion : opciones) {
             agregarOpcion(opcion.getTexto());
         }
+    }
+
+    public void setIdPreguntaDetalle(int idPreguntaDetalle) {
+        this.idPreguntaDetalle = idPreguntaDetalle;
     }
 
 

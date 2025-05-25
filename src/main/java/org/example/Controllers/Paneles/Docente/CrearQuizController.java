@@ -276,7 +276,7 @@ public class CrearQuizController implements Initializable {
     }
 
     @FXML
-    private void siguienteEvent() throws IOException {
+    private void siguienteEvent() throws IOException, SQLException {
 
         //obtiene si manual o automatico
         if(comboBoxAutomaticoManual.getValue() == null){
@@ -325,16 +325,32 @@ public class CrearQuizController implements Initializable {
                 tieneTiempo="S";
             }
 
-            //crea el examen sin preguntas
-            int idExamenCreado= 1+ uQuizzes.crearQuiz(idDocente, idGrupo, idMateria, nombreQuiz, fechaInicio, cantidadPreguntas, tiempo , hora , descripcion , pesoMateria , tieneTiempo , notaMinimaPasar , fechaFin , horaLimite , cantidadPreguntasBanco);
+
+            int idExamenCreado;
             int idBancoCreado = 0;
+            try {
+                idExamenCreado = 1+ uQuizzes.crearQuiz(
+                        idDocente, idGrupo, idMateria,
+                        nombreQuiz, fechaInicio, cantidadPreguntas,
+                        tiempo, hora, descripcion, pesoMateria,
+                        tieneTiempo, notaMinimaPasar, fechaFin,
+                        horaLimite, cantidadPreguntasBanco
+                );
+
+
+            } catch (SQLException ex) {
+                // Aquí mostramos el popup con el mensaje exacto del trigger
+                mostrarAlerta("Error al crear el examen", ex.getMessage());
+                return;  // detenemos la ejecución del método
+            }
+
 
             if(idExamenCreado != 0){
                 mostrarInfo("Éxito", "El quiz ha sido creado exitosamente.");
 
                 //Crea el banco
                 System.out.println("la cantidad de preguntasBanco es "+cantidadPreguntasBanco);
-                 idBancoCreado =1+ uQuizzes.crearBancoPreguntas(idExamenCreado, cantidadPreguntasBanco);
+                idBancoCreado =1+ uQuizzes.crearBancoPreguntas(idExamenCreado, cantidadPreguntasBanco);
                 mostrarInfo("Éxito", "El banco de preguntas ha sido creado exitosamente.");
             }
 

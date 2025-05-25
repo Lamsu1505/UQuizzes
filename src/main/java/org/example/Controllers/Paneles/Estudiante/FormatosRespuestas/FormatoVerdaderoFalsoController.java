@@ -32,6 +32,8 @@ public class FormatoVerdaderoFalsoController {
 
     @FXML private Button btnValidarRespuesta;
 
+    private int idPreguntaDetalle;
+
     private UQuizzes uQuizzes = UQuizzes.getInstance();
     private List<OpcionMultipleRespuesta> opciones = new ArrayList<>();
     private int idPregunta;
@@ -77,17 +79,38 @@ public class FormatoVerdaderoFalsoController {
 
         System.out.println("Respuesta seleccionada: " + respuesta);
 
-        if (uQuizzes.validarRespuestaVerdaderoFalso(idPregunta, respuesta)) {
-            mensajeError.setText("Respuesta correcta");
-            mensajeError.setTextFill(Paint.valueOf("green"));
-            disableAndColorContainer(true);
-        } else {
-            mensajeError.setText("Respuesta incorrecta");
-            mensajeError.setTextFill(Paint.valueOf("red"));
-            disableAndColorContainer(false);
-        }
+        boolean respuestaIsCOrrecta = uQuizzes.validarRespuestaVerdaderoFalso(idPregunta , respuesta);
 
-        mensajeError.setVisible(true);
+        System.out.println("Respuesta es correcta?: " + respuestaIsCOrrecta);
+
+        if(respuestaIsCOrrecta){
+            //guardar respuesta
+            if(uQuizzes.guardarRespuesta(idPreguntaDetalle , respuesta , true)){
+                System.out.println("Respuesta guardada correctamente");
+
+                mensajeError.setText("Respuesta correcta");
+                mensajeError.setTextFill(Paint.valueOf("green"));
+                mensajeError.setVisible(true);
+                disableAndColorContainer(true);
+            }
+            else {
+                mensajeError.setText("Error al guardar la respuesta en la base de datos");
+                mensajeError.setVisible(true);
+            }
+        }
+        else {
+
+            if(uQuizzes.guardarRespuesta(idPreguntaDetalle , respuesta , false)){
+                System.out.println("Respuesta guardada correctamente");
+
+                mensajeError.setText("Respuesta incorrecta");
+                mensajeError.setTextFill(Paint.valueOf("red"));
+                mensajeError.setVisible(true);
+                disableAndColorContainer(false);
+            }else {
+                mensajeError.setText("Error al guardar la respuesta en la base de datos");
+            }
+        }
     }
 
 
@@ -109,5 +132,10 @@ public class FormatoVerdaderoFalsoController {
 
         // 5) Si hubiera algún relayout, en un runLater podrías restaurar scroll,
         //    pero como no hay ScrollPane aquí, no hace falta.
+    }
+
+    public void setIdPreguntaDetalle(int idPreguntaDetalle) {
+        this.idPreguntaDetalle = idPreguntaDetalle;
+
     }
 }

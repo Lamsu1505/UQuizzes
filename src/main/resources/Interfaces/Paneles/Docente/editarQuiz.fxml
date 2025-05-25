@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane prefHeight="826.0" prefWidth="1157.0" stylesheets="@../../../Estilos/crearQuiz.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Docente.EditarQuizController">
+<StackPane prefHeight="826.0" prefWidth="1157.0" stylesheets="@../../../Estilos/crearQuiz.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Docente.EditarQuizController">
     <children>
         <VBox alignment="CENTER" maxWidth="1074.0" prefHeight="790.0" prefWidth="1074.0" spacing="40.0">
             <padding>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
             <children>
-                <Label fx:id="tituloLabel" text="Editar Quiz">
+                <Label fx:id="tituloLabel" text="Editar Quiz (solo info propia de examen)">
                     <font>
-                        <Font name="System Bold" size="24.0" />
+                        <Font name="System Bold" size="12.0" />
                     </font>
                 </Label>
                 <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="960.0" spacing="5.0">

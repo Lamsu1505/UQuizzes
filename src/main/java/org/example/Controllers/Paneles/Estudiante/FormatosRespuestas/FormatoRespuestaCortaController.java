@@ -46,6 +46,7 @@ public class FormatoRespuestaCortaController {
 
     // Lista para almacenar las respuestas aceptadas
     private List<RespuestaCorta> listaRespuestas = new ArrayList<>();
+    private int idPreguntaDetalle;
 
     @FXML
     private void initialize() {
@@ -119,18 +120,44 @@ public class FormatoRespuestaCortaController {
     public void registrarRespuesta(ActionEvent actionEvent) {
         int idPregunta = getIdPregunta();
 
-        if(uQuizzes.validarRespuestaCorta(idPregunta, getListaOpciones())){
-            mensajeError.setText("Respuesta correcta");
-            mensajeError.setTextFill(Paint.valueOf("green"));
-            disableAndColorContainer(true);
-        } else {
-            mensajeError.setText("Respuesta incorrecta");
-            mensajeError.setTextFill(Paint.valueOf("red"));
-            disableAndColorContainer(false);
+        String respuesta = "";
+        for (String respuestaS : getListaOpciones()) {
+            respuesta += respuestaS;
+            respuesta += ";";
         }
 
-        mensajeError.setVisible(true);
+        boolean respuestaIsCOrrecta = uQuizzes.validarRespuestaCorta(idPregunta , getListaOpciones());
 
+        System.out.println("Respuesta es correcta?: " + respuestaIsCOrrecta);
+
+        if(respuestaIsCOrrecta){
+            //guardar respuesta
+            if(uQuizzes.guardarRespuesta(idPreguntaDetalle , respuesta , true)){
+                System.out.println("Respuesta guardada correctamente");
+
+                mensajeError.setText("Respuesta correcta");
+                mensajeError.setTextFill(Paint.valueOf("green"));
+                mensajeError.setVisible(true);
+                disableAndColorContainer(true);
+            }
+            else {
+                mensajeError.setText("Error al guardar la respuesta en la base de datos");
+                mensajeError.setVisible(true);
+            }
+        }
+        else {
+
+            if(uQuizzes.guardarRespuesta(idPreguntaDetalle , respuesta , false)){
+                System.out.println("Respuesta guardada correctamente");
+
+                mensajeError.setText("Respuesta incorrecta");
+                mensajeError.setTextFill(Paint.valueOf("red"));
+                mensajeError.setVisible(true);
+                disableAndColorContainer(false);
+            }else {
+                mensajeError.setText("Error al guardar la respuesta en la base de datos");
+            }
+        }
 
     }
 
@@ -183,6 +210,10 @@ public class FormatoRespuestaCortaController {
 
     public void setIdPregunta(int idPregunta) {
         this.idPregunta = idPregunta;
+    }
+
+    public void setIdPreguntaDetalle(int idPreguntaDetalle) {
+        this.idPreguntaDetalle = idPreguntaDetalle;
     }
 
     /**

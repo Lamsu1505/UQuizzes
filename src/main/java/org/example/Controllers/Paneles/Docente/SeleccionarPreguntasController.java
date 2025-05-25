@@ -32,32 +32,10 @@ import java.util.ResourceBundle;
 public class SeleccionarPreguntasController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        List<Pregunta> preguntas = obtenerPreguntas();
-        TableViewPregunta.setItems(FXCollections.observableArrayList(preguntas));
-
-        ColumnPregunta.setCellValueFactory(cellData ->
-                new ReadOnlyStringWrapper(cellData.getValue().getEnunciado()));
-
-        ColumnDificultadPregunta.setCellValueFactory(cellData ->
-                new ReadOnlyStringWrapper(cellData.getValue().getNivel()));
-
-        columnaTema.setCellValueFactory(cellData ->
-                new ReadOnlyStringWrapper(cellData.getValue().getTema()));
 
 
-        TableViewPregunta.setRowFactory(tv -> new TableRow<>() {
-            @Override
-            protected void updateItem(Pregunta item, boolean empty) {
-                super.updateItem(item, empty);
-                if (item == null || empty) {
-                    setStyle("");
-                } else if (filasSeleccionadas.contains(item)) {
-                    setStyle("-fx-background-color: #138f31;"); // Color verde suave
-                } else {
-                    setStyle("");
-                }
-            }
-        });
+
+
     }
 
     @FXML
@@ -147,7 +125,11 @@ public class SeleccionarPreguntasController implements Initializable {
         String query = "SELECT p.idpregunta, p.enunciado, n.nivel , t.nombre AS nombreTema " +
                 "FROM pregunta p " +
                 "JOIN nivelpregunta n ON p.nivelpregunta_idnivelpregunta = n.idnivelpregunta " +
-                "JOIN tema t ON p.tema_idtema = t.idtema ";
+                "JOIN tema t ON p.tema_idtema = t.idtema " +
+                "JOIN unidad u ON t.unidad_idunidad= u.idUnidad " +
+                "JOIN materia m ON u.materia_idmateria = m.idmateria " +
+                "WHERE m.idmateria = (SELECT materia_idmateria FROM examen WHERE idexamen = '" + idExamenCreado + "') ";
+
 
         List<Pregunta> listaPreguntas = new ArrayList<>();
 
@@ -179,6 +161,37 @@ public class SeleccionarPreguntasController implements Initializable {
         lblCantidadBanco.setText("Cantidad banco: " + cantidadPreguntasBanco);
         lblDificultad.setText("Dificultad: " + dificultad);
         this.idBancoCreado = idBancoCreado;
+
+        llenarTabla();
+    }
+
+    private void llenarTabla() {
+        List<Pregunta> preguntas = obtenerPreguntas();
+        TableViewPregunta.setItems(FXCollections.observableArrayList(preguntas));
+
+        ColumnPregunta.setCellValueFactory(cellData ->
+                new ReadOnlyStringWrapper(cellData.getValue().getEnunciado()));
+
+        ColumnDificultadPregunta.setCellValueFactory(cellData ->
+                new ReadOnlyStringWrapper(cellData.getValue().getNivel()));
+
+        columnaTema.setCellValueFactory(cellData ->
+                new ReadOnlyStringWrapper(cellData.getValue().getTema()));
+
+
+        TableViewPregunta.setRowFactory(tv -> new TableRow<>() {
+            @Override
+            protected void updateItem(Pregunta item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item == null || empty) {
+                    setStyle("");
+                } else if (filasSeleccionadas.contains(item)) {
+                    setStyle("-fx-background-color: #138f31;"); // Color verde suave
+                } else {
+                    setStyle("");
+                }
+            }
+        });
     }
 
     public void setIdExamenCreado(int idExamenCreado) {
@@ -202,11 +215,6 @@ public class SeleccionarPreguntasController implements Initializable {
             if (uQuizzes.agregarPreguntasAlBancoManual(idBancoCreado, filasSeleccionadas )  == obtenerCantidadMaxima()) {
                if(uQuizzes.getCantidadPreguntasBanco(idExamenCreado) == obtenerCantidadMaxima()){
                     mostrarAlerta("Éxito", "Preguntas añadidas al banco");
-
-
-
-
-
                    Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
                    stage.close();
                 }
