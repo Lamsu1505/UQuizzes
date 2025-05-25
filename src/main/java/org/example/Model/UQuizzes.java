@@ -200,5 +200,17 @@ public class UQuizzes {
     public boolean guardarRespuesta(int idPregunta, String respuesta, boolean esCorrecta) {
         return  PreguntaDAO.guardarRespuesta(idPregunta, respuesta, esCorrecta);
     }
+
+    public double calcularNotaExamen(int idExamen , int idEstudiante) {
+        return EstudianteDAO.calcularNotaExamen(idExamen , idEstudiante);
+    }
+
+    public boolean registrarNotaExamen(int idSolucionEstudiante, int idEstudiante, double notaFinal , int cantidadCorrectas) {
+        return  EstudianteDAO.registrarNotaExamen(idSolucionEstudiante , idEstudiante , notaFinal , cantidadCorrectas);
+    }
+
+    public int contarRespuestasCorrectas(int idExamen, int idEstudiante) {
+        return EstudianteDAO.contarRespuestasCorrectas(idExamen , idEstudiante);
+    }
 }
 

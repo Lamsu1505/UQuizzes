@@ -1,5 +1,6 @@
 package org.example.Controllers.Paneles.Estudiante;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -42,6 +43,8 @@ public class ResponderQuizController {
     @FXML
     private Label lblIdExamen;
 
+    @FXML
+    private Label lblNotaFinal;
 
     private UQuizzes uQuizzes = UQuizzes.getInstance();
 
@@ -229,5 +232,28 @@ public class ResponderQuizController {
         }
 
         cargarPreguntasDelExamen(idExamen , cantidadPreguntasBanco ,cantidadPreguntasGeneral );
+    }
+
+    public void terminarExamen(ActionEvent actionEvent) {
+         //logica para terminar el examen y calificarlo
+
+        double notaFinal = uQuizzes.calcularNotaExamen(idExamen , Integer.parseInt(uQuizzes.getUsuarioEnSesion()));
+        int cantidadCorrectas = uQuizzes.contarRespuestasCorrectas(idExamen , Integer.parseInt(uQuizzes.getUsuarioEnSesion()));
+
+        System.out.println("respuestas correctas: " + cantidadCorrectas);
+        boolean registrarNota = uQuizzes.registrarNotaExamen(idExamen , Integer.parseInt(uQuizzes.getUsuarioEnSesion()) , notaFinal , cantidadCorrectas);
+
+        if (registrarNota) {
+            mostrarAlerta("Examen terminado", "Su examen ha sido calificado y registrado correctamente.");
+            lblNotaFinal.setText("Nota final: " + notaFinal);
+            enviarButton.setText("Salir y confirmar");
+            enviarButton.setOnAction(e -> {
+                ((Node) e.getSource()).getScene().getWindow().hide();
+            });
+        } else {
+            mostrarAlerta("Error", "No se pudo registrar la nota del examen.");
+        }
+
+
     }
 }

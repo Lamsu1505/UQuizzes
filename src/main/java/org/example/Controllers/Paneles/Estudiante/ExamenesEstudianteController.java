@@ -21,13 +21,15 @@ import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.util.Callback;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.example.Model.UQuizzes;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
 
 public class ExamenesEstudianteController implements Initializable {
 
-    private int idEstudiante = 1; // Puedes cambiar esto con la sesión
+    private int idEstudiante; // Puedes cambiar esto con la sesión
 
     @FXML
     private TableColumn<InfoExamenPresentadoEstudiante, String> ColumnNombreQuiz;
@@ -109,8 +111,12 @@ public class ExamenesEstudianteController implements Initializable {
         return listaResumenes;
     }
 
+    private UQuizzes uQuizzes = UQuizzes.getInstance();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        idEstudiante = Integer.parseInt(uQuizzes.getUsuarioEnSesion());
+
         List<InfoExamenPresentadoEstudiante> resumenes = obtenerResumenesExamenPorEstudiante(idEstudiante);
 
         TableViewReporte.setItems(FXCollections.observableArrayList(resumenes));

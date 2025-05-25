@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="800.0" prefWidth="830.0" style="-fx-background-color: #eef4fb;" stylesheets="@../../../../Estilos/resolverQuiz.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Estudiante.ResponderQuizController">
+<AnchorPane prefHeight="800.0" prefWidth="830.0" style="-fx-background-color: #eef4fb;" stylesheets="@../../../../Estilos/resolverQuiz.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Paneles.Estudiante.ResponderQuizController">
 
     <children>
         <!-- Scrollable area where all the questions will be loaded -->
@@ -15,7 +15,12 @@
         </ScrollPane>
 
         <!-- Button to submit the quiz -->
-        <Button fx:id="enviarButton" layoutX="583.0" layoutY="724.0" prefHeight="31.0" prefWidth="187.0" styleClass="boton-seleccionar" text="Terminar intento" />
-      <Label fx:id="lblIdExamen" layoutX="56.0" layoutY="730.0" text="Id Examen:" />
+        <Button fx:id="enviarButton" layoutX="583.0" layoutY="724.0" onAction="#terminarExamen" prefHeight="31.0" prefWidth="187.0" styleClass="boton-seleccionar" text="Terminar intento" />
+      <Label fx:id="lblIdExamen" layoutX="442.0" layoutY="730.0" text="Id Examen:" />
+      <Label fx:id="lblNotaFinal" layoutX="56.0" layoutY="730.0" text="Nota final:">
+         <font>
+            <Font name="System Bold" size="21.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>

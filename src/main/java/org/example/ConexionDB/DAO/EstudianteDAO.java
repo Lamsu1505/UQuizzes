@@ -94,6 +94,91 @@ public class EstudianteDAO {
         return respuesta;
     }
 
+    public static double calcularNotaExamen(int idExamen, int idEstudiante) {
+        double resultado = -1.0;
+        String call = "{ ? = call calcularNotaExamen(?, ?) }";
+
+        try (
+                Connection conn = new ConexionOracle().conectar();
+                CallableStatement stmt = conn.prepareCall(call)
+        ) {
+
+            stmt.registerOutParameter(1, Types.DOUBLE);
+
+            stmt.setInt(2, idExamen);
+            stmt.setInt(3, idEstudiante);
+
+            stmt.execute();
+
+            resultado = stmt.getDouble(1);
+
+            return resultado;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultado;
+    }
+
+    public static boolean registrarNotaExamen(int idSolucionEstudiante, int idEstudiante, double notaFinal , int cantidadCorrectas) {
+        boolean respuesta = false;
+
+        String call = "{ ? = call registrarNotaExamen(?, ?, ? , ?) }";
+
+        try (
+                Connection conn = new ConexionOracle().conectar();
+                CallableStatement stmt = conn.prepareCall(call)
+        ) {
+
+            stmt.registerOutParameter(1, Types.INTEGER);
+
+            stmt.setInt(2, idSolucionEstudiante);
+            stmt.setInt(3, idEstudiante);
+            stmt.setDouble(4, notaFinal);
+            stmt.setInt(5, cantidadCorrectas);
+
+            stmt.execute();
+
+            int resultado = stmt.getInt(1);
+
+            if(resultado == 1){
+                respuesta = true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return respuesta;
+    }
+
+    public static int contarRespuestasCorrectas(int idExamen, int idEstudiante) {
+        int respuesta = -1;
+        String call = "{ ? = call contarRespuestasCorrectas(?, ?) }";
+
+        try (
+                Connection conn = new ConexionOracle().conectar();
+                CallableStatement stmt = conn.prepareCall(call)
+        ) {
+
+            stmt.registerOutParameter(1, Types.INTEGER);
+
+            stmt.setInt(2, idExamen);
+            stmt.setInt(3, idEstudiante);
+
+            stmt.execute();
+
+            int resultado = stmt.getInt(1);
+
+            if(resultado != 0){
+                respuesta= resultado;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return respuesta;
+    }
+
     public String iniciarSesion(String usuario, String password) {
         String call = "{ ? = call iniciarSesionEstudiante(?, ?) }";
 
