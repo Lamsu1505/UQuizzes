@@ -159,7 +159,6 @@ public class VentanaPrincipalEstudianteController implements Initializable {
         btnClases.setStyle("");
         btnInicio.setStyle("");
         btnExamenes.setStyle("");
-        btnExamenesPendientes.setStyle("");
     }
 
     @FXML
