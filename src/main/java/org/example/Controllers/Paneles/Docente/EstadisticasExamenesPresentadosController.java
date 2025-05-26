@@ -34,6 +34,7 @@ public class EstadisticasExamenesPresentadosController implements Initializable 
     @FXML
     private TableView<EstudianteExamenInfo> TableViewReporte;
 
+
     @FXML
     private TableColumn<EstudianteExamenInfo, String> ColumnFecha;
 
@@ -140,18 +141,23 @@ public class EstadisticasExamenesPresentadosController implements Initializable 
     }
 
     @FXML
-    void seleccionarExamen(ActionEvent event) {
-        /*ExamenDTO examenSeleccionado = comboBoxExamen.getSelectionModel().getSelectedItem();
+    void cargarTabla(ActionEvent event) {
+        String nombreExamenSeleccionado = comboBoxExamen.getValue();
+        List<Map<String, Object>> listaExamenes = uQuizzes.obtenerEstadisticasExamenesPresentados(nombreExamenSeleccionado , idGrupoSeleccionado);
+        ObservableList<EstudianteExamenInfo> listaEstudiantes = FXCollections.observableArrayList();
+        for (Map<String, Object> fila : listaExamenes) {
+            String fechaInicio = fila.get("FECHAINICIO").toString();
+            String horaInicio = fila.get("HORAINICIO").toString();
+            String codigo = fila.get("CODIGO").toString();
+            String nombre = fila.get("NOMBRE").toString();
+            String apellido = fila.get("APELLIDO").toString();
+            double notaFinal = Double.parseDouble(fila.get("NOTAFINAL").toString());
+            double tiempoTomado =  Double.parseDouble(fila.get("TIEMPOTOMADO").toString());
 
-        if (examenSeleccionado != null) {
-            int idExamen = examenSeleccionado.getIdExamen();
-
-
-            List<EstudianteExamenInfo> estudiantes = uQuizzes.obtenerEstudiantesPorExamen(idExamen);
-
-            // Cargar en TableView
-            TableViewReporte.setItems(FXCollections.observableArrayList(estudiantes));
-        }*/
+            EstudianteExamenInfo infoEstudiante = new EstudianteExamenInfo(fechaInicio, horaInicio, codigo, nombre, apellido, notaFinal, tiempoTomado);
+            listaEstudiantes.add(infoEstudiante);
+        }
+        TableViewReporte.setItems(listaEstudiantes);
     }
 
     @FXML

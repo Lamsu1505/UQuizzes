@@ -5,13 +5,23 @@ public class InfoExamenPresentadoEstudiante { private String nombreExamen;
     private double notaMinimaPasar;
     private double notaFinal;
     private double tiempoTomadoMinutos;
+    private String materia;
 
-    public InfoExamenPresentadoEstudiante(String nombreExamen, String fechaExamen, double notaMinimaPasar, double notaFinal, double tiempoTomadoMinutos) {
+    public InfoExamenPresentadoEstudiante(String nombreExamen, String fechaExamen, double notaMinimaPasar, double notaFinal, double tiempoTomadoMinutos ,  String materia) {
         this.nombreExamen = nombreExamen;
         this.fechaExamen = fechaExamen;
         this.notaMinimaPasar = notaMinimaPasar;
         this.notaFinal = notaFinal;
         this.tiempoTomadoMinutos = tiempoTomadoMinutos;
+        this.materia = materia;
+    }
+
+    public String getMateria() {
+        return materia;
+    }
+
+    public void setMateria(String materia) {
+        this.materia = materia;
     }
 
     public String getNombreExamen() {

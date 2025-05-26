@@ -78,9 +78,11 @@ public class ExamenesEstudianteController implements Initializable {
                 "e.fecha AS fechaExamen, " +
                 "e.notaminimapasar, " +
                 "s.notafinal, " +
-                "s.tiempotomadominutos " +
+                "s.tiempotomadominutos, " +
+                "m.nombre as materia " +
                 "FROM examen e " +
                 "JOIN solucionexamenestudiante s ON e.idexamen = s.examen_idexamen " +
+                "JOIN materia m ON e.materia_idmateria = m.idmateria " +
                 "WHERE s.estudiante_idestudiante = ?";
 
         List<InfoExamenPresentadoEstudiante> listaResumenes = new ArrayList<>();
@@ -96,9 +98,10 @@ public class ExamenesEstudianteController implements Initializable {
                     double notaMinima = rs.getDouble("notaminimapasar");
                     double notaFinal = rs.getDouble("notafinal");
                     double tiempoTomado = rs.getDouble("tiempotomadominutos");
+                    String materia = rs.getString("materia");
 
                     InfoExamenPresentadoEstudiante resumen = new InfoExamenPresentadoEstudiante(
-                            nombreExamen, fechaExamen, notaMinima, notaFinal, tiempoTomado
+                            nombreExamen, fechaExamen, notaMinima, notaFinal, tiempoTomado , materia
                     );
                     listaResumenes.add(resumen);
                 }
@@ -122,10 +125,9 @@ public class ExamenesEstudianteController implements Initializable {
         TableViewReporte.setItems(FXCollections.observableArrayList(resumenes));
 
         ColumnNombreQuiz.setCellValueFactory(new PropertyValueFactory<>("nombreExamen"));
-        ColumnMateriaQuiz.setCellValueFactory(new PropertyValueFactory<>("fechaExamen")); // Puedes cambiar esto si agregas materia
+        ColumnMateriaQuiz.setCellValueFactory(new PropertyValueFactory<>("materia"));
         ColumnNotaQuiz.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(String.format("%.2f", cellData.getValue().getNotaFinal())));
-        ColumnUnidadQuiz.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(String.format("%.2f", cellData.getValue().getTiempoTomadoMinutos())));
-        ColumnTemaQuiz.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(String.format("%.2f", cellData.getValue().getNotaMinimaPasar())));
+        ColumnUnidadQuiz.setCellValueFactory(new PropertyValueFactory<>("fechaExamen"));
     }
 
 

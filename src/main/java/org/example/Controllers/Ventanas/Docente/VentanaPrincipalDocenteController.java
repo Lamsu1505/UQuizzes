@@ -159,7 +159,6 @@ public class VentanaPrincipalDocenteController implements Initializable {
         btnInicio.setStyle("");
         btnCrearQuiz.setStyle("");
         btnInformes.setStyle("");
-        btnMisClases.setStyle("");
     }
 
     public void irPanelInicio(ActionEvent actionEvent) {

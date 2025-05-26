@@ -130,6 +130,37 @@ public class DocenteDAO {
     }
 
 
+    public static List<Map<String, Object>> obtenerEstadisticasExamenesPresentados(String nombreExamenSeleccionado, String idGrupoSeleccionado) {
+        String call = "{ ? = call obtenerEstadisticasExamenesPresentados(?, ?) }";
+        List<Map<String, Object>> listaEstadisticas = new ArrayList<>();
+
+        try (
+                Connection conn = new ConexionOracle().conectar();
+                CallableStatement stmt = conn.prepareCall(call)
+        ) {
+            stmt.registerOutParameter(1, OracleTypes.CURSOR);
+            stmt.setString(2, nombreExamenSeleccionado);
+            stmt.setString(3, idGrupoSeleccionado);
+            stmt.execute();
+
+            try (ResultSet rs = (ResultSet) stmt.getObject(1)) {
+                ResultSetMetaData md = rs.getMetaData();
+                int cols = md.getColumnCount();
+
+                while (rs.next()) {
+                    Map<String, Object> fila = new HashMap<>();
+                    for (int i = 1; i <= cols; i++) {
+                        fila.put(md.getColumnLabel(i), rs.getObject(i));
+                    }
+                    listaEstadisticas.add(fila);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaEstadisticas;
+    }
+
     public List<Map<String, Object>> getExamenes(String idDocente) throws SQLException {
         String call = "{ ? = call obtenerExamenesDocente(?) }";
 

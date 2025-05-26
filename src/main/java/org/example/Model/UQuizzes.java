@@ -1,16 +1,10 @@
 package org.example.Model;
 
-import oracle.jdbc.proxy.annotation.Pre;
-import org.example.ConexionDB.ConexionOracle;
 import org.example.ConexionDB.DAO.DocenteDAO;
 import org.example.ConexionDB.DAO.EstudianteDAO;
 import org.example.ConexionDB.DAO.PreguntaDAO;
-import org.example.Controllers.Paneles.Docente.CrearQuizController;
 import org.example.Controllers.Paneles.Docente.TiposPregunta.SeleccionMultipleController;
 import org.example.Model.Docente.EstudianteExamenInfo;
-import org.example.Model.Docente.ExamenDTO;
-import org.example.Model.Docente.GrupoDTO;
-import org.example.Model.Docente.MateriaDTO;
 import org.example.Model.OpcionesRespuesta.OpcionMultipleRespuesta;
 
 import java.sql.*;
@@ -211,6 +205,11 @@ public class UQuizzes {
 
     public int contarRespuestasCorrectas(int idExamen, int idEstudiante) {
         return EstudianteDAO.contarRespuestasCorrectas(idExamen , idEstudiante);
+    }
+
+    public List<Map<String, Object>> obtenerEstadisticasExamenesPresentados(String nombreExamenSeleccionado, String idGrupoSeleccionado) {
+
+        return DocenteDAO.obtenerEstadisticasExamenesPresentados(nombreExamenSeleccionado, idGrupoSeleccionado);
     }
 }
 

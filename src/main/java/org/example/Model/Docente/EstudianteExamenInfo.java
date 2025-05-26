@@ -7,19 +7,31 @@ public class EstudianteExamenInfo {
     private String nombre;
     private String apellido;
     private double notaFinal;
-    private int tiempoTomado;
+    private double tiempoTomado;
 
     public EstudianteExamenInfo(){
 
     }
 
-    public EstudianteExamenInfo(String fechaInicio, String horaInicio, String codigo, String nombre, String apellido, double notaFinal, int tiempoTomado) {
+    public EstudianteExamenInfo(String fechaInicio, String horaInicio, String codigo, String nombre, String apellido, double notaFinal, double tiempoTomado) {
         this.fechaInicio = fechaInicio;
         this.horaInicio = horaInicio;
         this.codigo = codigo;
         this.nombre = nombre;
         this.apellido = apellido;
         this.notaFinal = notaFinal;
+        this.tiempoTomado = tiempoTomado;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setTiempoTomado(double tiempoTomado) {
         this.tiempoTomado = tiempoTomado;
     }
 
@@ -63,7 +75,7 @@ public class EstudianteExamenInfo {
         this.notaFinal = notaFinal;
     }
 
-    public int getTiempoTomado() {
+    public double getTiempoTomado() {
         return tiempoTomado;
     }
 
